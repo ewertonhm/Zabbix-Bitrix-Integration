@@ -6,7 +6,7 @@ CREATE TABLE usuario (
                          email VARCHAR(90) NOT NULL,
                          senha VARCHAR(32) NOT NULL,
                          nome VARCHAR(90) NOT NULL,
-                         api_key VARCHAR(32) NOT NOT,
+                         api_key VARCHAR(32) NOT NULL,
                          bitrix_id VARCHAR(10) NOT NULL,
                          admin INTEGER
 );
