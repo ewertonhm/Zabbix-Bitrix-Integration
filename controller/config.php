@@ -11,6 +11,11 @@ use Monolog\Handler\StreamHandler;
 */
 use Propel\Runtime\Propel;
 
+//setup whoops
+$whoops = new \Whoops\Run;
+$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+$whoops->register();
+
 /*$defaultLogger = new Logger('defaultLogger');
 $defaultLogger->pushHandler(new StreamHandler('/var/log/propel.log', Logger::WARNING));
 Propel::getServiceContainer()->setLogger('defaultLogger', $defaultLogger);
