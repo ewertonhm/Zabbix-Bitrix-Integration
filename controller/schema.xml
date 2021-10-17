@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+  <table name="colaborador" idMethod="native" phpName="Colaborador">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="nome" phpName="Nome" type="VARCHAR" size="90" required="true"/>
+    <column name="bitrix_id" phpName="BitrixId" type="VARCHAR" size="10" required="true"/>
+    <column name="unidade_id" phpName="UnidadeId" type="INTEGER"/>
+    <column name="tecnologia_id" phpName="TecnologiaId" type="INTEGER"/>
+    <foreign-key foreignTable="tecnologia" name="colaborador_tecnologia_id_fkey">
+      <reference local="tecnologia_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="unidade" name="colaborador_unidade_id_fkey">
+      <reference local="unidade_id" foreign="id"/>
+    </foreign-key>
+  </table>
+  <table name="task" idMethod="native" phpName="Task">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="usuario_id" phpName="UsuarioId" type="INTEGER"/>
+    <column name="title" phpName="Title" type="VARCHAR" size="90" required="true"/>
+    <column name="descript" phpName="Descript" type="VARCHAR" size="500" required="true"/>
+    <column name="deadline" phpName="Deadline" type="VARCHAR" size="50"/>
+    <column name="responsible_id" phpName="ResponsibleId" type="INTEGER"/>
+    <column name="group_id" phpName="GroupId" type="VARCHAR" size="10"/>
+    <foreign-key foreignTable="colaborador" name="task_responsible_id_fkey">
+      <reference local="responsible_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="usuario" name="task_usuario_id_fkey">
+      <reference local="usuario_id" foreign="id"/>
+    </foreign-key>
+  </table>
+  <table name="task_accomplice" idMethod="native" phpName="TaskAccomplice">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="task_id" phpName="TaskId" type="INTEGER"/>
+    <column name="accomplice_id" phpName="AccompliceId" type="INTEGER"/>
+    <foreign-key foreignTable="colaborador" name="task_accomplice_accomplice_id_fkey">
+      <reference local="accomplice_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="task" name="task_accomplice_task_id_fkey">
+      <reference local="task_id" foreign="id"/>
+    </foreign-key>
+  </table>
+  <table name="task_auditor" idMethod="native" phpName="TaskAuditor">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="task_id" phpName="TaskId" type="INTEGER"/>
+    <column name="auditor_id" phpName="AuditorId" type="INTEGER"/>
+    <foreign-key foreignTable="colaborador" name="task_auditor_auditor_id_fkey">
+      <reference local="auditor_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="task" name="task_auditor_task_id_fkey">
+      <reference local="task_id" foreign="id"/>
+    </foreign-key>
+  </table>
+  <table name="tecnologia" idMethod="native" phpName="Tecnologia">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="tecnologia" phpName="Tecnologia" type="VARCHAR" size="50"/>
+  </table>
+  <table name="unidade" idMethod="native" phpName="Unidade">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="nome" phpName="Nome" type="VARCHAR" size="50"/>
+    <column name="sigla" phpName="Sigla" type="VARCHAR" size="10"/>
+  </table>
+  <table name="usuario" idMethod="native" phpName="Usuario">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="email" phpName="Email" type="VARCHAR" size="90" required="true"/>
+    <column name="senha" phpName="Senha" type="VARCHAR" size="32" required="true"/>
+    <column name="nome" phpName="Nome" type="VARCHAR" size="90" required="true"/>
+    <column name="api_key" phpName="ApiKey" type="VARCHAR" size="32" required="true"/>
+    <column name="bitrix_id" phpName="BitrixId" type="VARCHAR" size="10" required="true"/>
+    <column name="admin" phpName="Admin" type="INTEGER"/>
+  </table>
+</database>
