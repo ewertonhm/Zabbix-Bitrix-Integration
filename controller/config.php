@@ -16,6 +16,15 @@ $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
 
+//setup twig
+$loader = new \Twig\Loader\FilesystemLoader('classes/Views');
+$twig = new \Twig\Environment($loader, [
+    //'cache' => 'App/TwigTemplates/compilation_cache', //descomentar após o desenvolvimento
+    'debug' => true, //comentar após o desenvolvimento
+]);
+// comentar após o desenvolvimento
+$twig->addExtension(new \Twig\Extension\DebugExtension());
+
 /*$defaultLogger = new Logger('defaultLogger');
 $defaultLogger->pushHandler(new StreamHandler('/var/log/propel.log', Logger::WARNING));
 Propel::getServiceContainer()->setLogger('defaultLogger', $defaultLogger);

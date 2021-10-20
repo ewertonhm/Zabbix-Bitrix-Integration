@@ -58,7 +58,7 @@ class ColaboradorTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class ColaboradorTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
      * the column name for the id field
@@ -86,16 +86,6 @@ class ColaboradorTableMap extends TableMap
     const COL_BITRIX_ID = 'colaborador.bitrix_id';
 
     /**
-     * the column name for the unidade_id field
-     */
-    const COL_UNIDADE_ID = 'colaborador.unidade_id';
-
-    /**
-     * the column name for the tecnologia_id field
-     */
-    const COL_TECNOLOGIA_ID = 'colaborador.tecnologia_id';
-
-    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -107,11 +97,11 @@ class ColaboradorTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Nome', 'BitrixId', 'UnidadeId', 'TecnologiaId', ),
-        self::TYPE_CAMELNAME     => array('id', 'nome', 'bitrixId', 'unidadeId', 'tecnologiaId', ),
-        self::TYPE_COLNAME       => array(ColaboradorTableMap::COL_ID, ColaboradorTableMap::COL_NOME, ColaboradorTableMap::COL_BITRIX_ID, ColaboradorTableMap::COL_UNIDADE_ID, ColaboradorTableMap::COL_TECNOLOGIA_ID, ),
-        self::TYPE_FIELDNAME     => array('id', 'nome', 'bitrix_id', 'unidade_id', 'tecnologia_id', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id', 'Nome', 'BitrixId', ),
+        self::TYPE_CAMELNAME     => array('id', 'nome', 'bitrixId', ),
+        self::TYPE_COLNAME       => array(ColaboradorTableMap::COL_ID, ColaboradorTableMap::COL_NOME, ColaboradorTableMap::COL_BITRIX_ID, ),
+        self::TYPE_FIELDNAME     => array('id', 'nome', 'bitrix_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -121,11 +111,11 @@ class ColaboradorTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Nome' => 1, 'BitrixId' => 2, 'UnidadeId' => 3, 'TecnologiaId' => 4, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'nome' => 1, 'bitrixId' => 2, 'unidadeId' => 3, 'tecnologiaId' => 4, ),
-        self::TYPE_COLNAME       => array(ColaboradorTableMap::COL_ID => 0, ColaboradorTableMap::COL_NOME => 1, ColaboradorTableMap::COL_BITRIX_ID => 2, ColaboradorTableMap::COL_UNIDADE_ID => 3, ColaboradorTableMap::COL_TECNOLOGIA_ID => 4, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'nome' => 1, 'bitrix_id' => 2, 'unidade_id' => 3, 'tecnologia_id' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Nome' => 1, 'BitrixId' => 2, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'nome' => 1, 'bitrixId' => 2, ),
+        self::TYPE_COLNAME       => array(ColaboradorTableMap::COL_ID => 0, ColaboradorTableMap::COL_NOME => 1, ColaboradorTableMap::COL_BITRIX_ID => 2, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'nome' => 1, 'bitrix_id' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -154,22 +144,6 @@ class ColaboradorTableMap extends TableMap
         'COL_BITRIX_ID' => 'BITRIX_ID',
         'bitrix_id' => 'BITRIX_ID',
         'colaborador.bitrix_id' => 'BITRIX_ID',
-        'UnidadeId' => 'UNIDADE_ID',
-        'Colaborador.UnidadeId' => 'UNIDADE_ID',
-        'unidadeId' => 'UNIDADE_ID',
-        'colaborador.unidadeId' => 'UNIDADE_ID',
-        'ColaboradorTableMap::COL_UNIDADE_ID' => 'UNIDADE_ID',
-        'COL_UNIDADE_ID' => 'UNIDADE_ID',
-        'unidade_id' => 'UNIDADE_ID',
-        'colaborador.unidade_id' => 'UNIDADE_ID',
-        'TecnologiaId' => 'TECNOLOGIA_ID',
-        'Colaborador.TecnologiaId' => 'TECNOLOGIA_ID',
-        'tecnologiaId' => 'TECNOLOGIA_ID',
-        'colaborador.tecnologiaId' => 'TECNOLOGIA_ID',
-        'ColaboradorTableMap::COL_TECNOLOGIA_ID' => 'TECNOLOGIA_ID',
-        'COL_TECNOLOGIA_ID' => 'TECNOLOGIA_ID',
-        'tecnologia_id' => 'TECNOLOGIA_ID',
-        'colaborador.tecnologia_id' => 'TECNOLOGIA_ID',
     ];
 
     /**
@@ -193,8 +167,6 @@ class ColaboradorTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('nome', 'Nome', 'VARCHAR', true, 90, null);
         $this->addColumn('bitrix_id', 'BitrixId', 'VARCHAR', true, 10, null);
-        $this->addForeignKey('unidade_id', 'UnidadeId', 'INTEGER', 'unidade', 'id', false, null, null);
-        $this->addForeignKey('tecnologia_id', 'TecnologiaId', 'INTEGER', 'tecnologia', 'id', false, null, null);
     } // initialize()
 
     /**
@@ -202,20 +174,13 @@ class ColaboradorTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Tecnologia', '\\Tecnologia', RelationMap::MANY_TO_ONE, array (
+        $this->addRelation('ColaboradorTecnologia', '\\ColaboradorTecnologia', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
-    0 => ':tecnologia_id',
+    0 => ':colaborador_id',
     1 => ':id',
   ),
-), null, null, null, false);
-        $this->addRelation('Unidade', '\\Unidade', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':unidade_id',
-    1 => ':id',
-  ),
-), null, null, null, false);
+), null, null, 'ColaboradorTecnologias', false);
         $this->addRelation('Task', '\\Task', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
@@ -383,14 +348,10 @@ class ColaboradorTableMap extends TableMap
             $criteria->addSelectColumn(ColaboradorTableMap::COL_ID);
             $criteria->addSelectColumn(ColaboradorTableMap::COL_NOME);
             $criteria->addSelectColumn(ColaboradorTableMap::COL_BITRIX_ID);
-            $criteria->addSelectColumn(ColaboradorTableMap::COL_UNIDADE_ID);
-            $criteria->addSelectColumn(ColaboradorTableMap::COL_TECNOLOGIA_ID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.nome');
             $criteria->addSelectColumn($alias . '.bitrix_id');
-            $criteria->addSelectColumn($alias . '.unidade_id');
-            $criteria->addSelectColumn($alias . '.tecnologia_id');
         }
     }
 
@@ -411,14 +372,10 @@ class ColaboradorTableMap extends TableMap
             $criteria->removeSelectColumn(ColaboradorTableMap::COL_ID);
             $criteria->removeSelectColumn(ColaboradorTableMap::COL_NOME);
             $criteria->removeSelectColumn(ColaboradorTableMap::COL_BITRIX_ID);
-            $criteria->removeSelectColumn(ColaboradorTableMap::COL_UNIDADE_ID);
-            $criteria->removeSelectColumn(ColaboradorTableMap::COL_TECNOLOGIA_ID);
         } else {
             $criteria->removeSelectColumn($alias . '.id');
             $criteria->removeSelectColumn($alias . '.nome');
             $criteria->removeSelectColumn($alias . '.bitrix_id');
-            $criteria->removeSelectColumn($alias . '.unidade_id');
-            $criteria->removeSelectColumn($alias . '.tecnologia_id');
         }
     }
 

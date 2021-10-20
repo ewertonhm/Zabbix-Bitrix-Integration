@@ -1,0 +1,99 @@
+{% extends "base.twig" %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block content %}
+    <form method="post" action="cad-colaborador.php">
+        <fieldset>
+            <label for="nameField">Cadastrar Colaborador</label>
+
+            <!-- EDITAR -->
+            {% if editar %}
+            <input type="text" name="nome" value="{{editar.nome}}">
+            <input type="text" name="bitrix" value="{{editar.bitrix}}">
+                     
+            <input type="hidden" name="id" value="{{editar.id}}">
+
+            <label>Unidades</label>
+            {% for unidade in unidades %}
+                <input 
+                    type="checkbox" 
+                    name="unidade[]" 
+                    id="{{ unidade.id }}" 
+                    value="{{ unidade.id }}"
+                    {% for u in editar.unidades %}
+                        {% if u.id == unidade.id %}
+                            checked
+                        {% else %}
+                            {{ u.id }}
+                            {{ unidade.id }}
+                        {% endif %}
+                    {% endfor %}
+                >
+                <label class="label-inline" for="{{ unidade.id }}">{{ unidade.sigla }} - {{ unidade.nome }}</label><br>
+            {% endfor %}
+
+            <label>Tecnologias</label>
+            {% for tecnologia in tecnologias %}
+                <input 
+                    type="checkbox" 
+                    name="tecnologia[]" 
+                    id="{{ tecnologia.id }}" 
+                    value="{{ tecnologia.id }}"
+                    {% for t in editar.tecnologias %}
+                        {% if t.id == tecnologia.id %}
+                            checked
+                        {% endif %}
+                    {% endfor %}
+                >
+                <label class="label-inline" for="{{ tecnologia.id }}">{{ tecnologia.tecnologia }}</label><br>
+            {% endfor %}
+
+            <!-- CADASTRAR -->
+            {% else %}
+            <input type="text" name="nome" placeholder="Nome do Colaborador">
+            <input type="text" name="bitrix" placeholder="Bitrix ID">                    
+
+            <label>Unidades</label>
+            {% for unidade in unidades %}
+                <input type="checkbox" name="unidade[]" id="{{ unidade.id }}" value="{{ unidade.id }}">
+                <label class="label-inline" for="{{ unidade.id }}">{{ unidade.sigla }} - {{ unidade.nome }}</label><br>
+            {% endfor %}
+
+            <label>Tecnologias</label>
+            {% for tecnologia in tecnologias %}
+                <input type="checkbox" name="tecnologia[]" id="{{ tecnologia.id }}" value="{{ tecnologia.id }}">
+                <label class="label-inline" for="{{ tecnologia.id }}">{{ tecnologia.tecnologia }}</label><br>
+            {% endfor %}
+
+            {% endif %}
+            <input class="button-primary" type="submit" {% if editar %} value="Editar" name='editar' {% else %} value="Cadastrar" name='cadastrar'{% endif %}>
+        </fieldset>
+    </form>
+    {% if colaboradores %}
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Bitrix ID</th>
+                <th>Editar</th>
+                <th>Deletar</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for colaborador in colaboradores %}
+                    <tr>
+                        <td>{{ colaborador.id }}</td>
+                        <td>{{ colaborador.nome }}</td>
+                        <td>{{ colaborador.bitrix }}</td>
+                        <td><a class="button button-small" href="cad-colaborador.php?edite={{  colaborador.id }}">Editar</a></td>
+                        <td><a class="button button-small" href="cad-colaborador.php?delete={{ colaborador.id }}">Deletar</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

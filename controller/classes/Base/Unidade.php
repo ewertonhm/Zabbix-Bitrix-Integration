@@ -2,13 +2,13 @@
 
 namespace Base;
 
-use \Colaborador as ChildColaborador;
-use \ColaboradorQuery as ChildColaboradorQuery;
+use \ColaboradorUnidade as ChildColaboradorUnidade;
+use \ColaboradorUnidadeQuery as ChildColaboradorUnidadeQuery;
 use \Unidade as ChildUnidade;
 use \UnidadeQuery as ChildUnidadeQuery;
 use \Exception;
 use \PDO;
-use Map\ColaboradorTableMap;
+use Map\ColaboradorUnidadeTableMap;
 use Map\UnidadeTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
@@ -86,11 +86,18 @@ abstract class Unidade implements ActiveRecordInterface
     protected $sigla;
 
     /**
-     * @var        ObjectCollection|ChildColaborador[] Collection to store aggregation of ChildColaborador objects.
-     * @phpstan-var ObjectCollection&\Traversable<ChildColaborador> Collection to store aggregation of ChildColaborador objects.
+     * @var        ObjectCollection|ChildColaboradorUnidade[] Collection to store aggregation of ChildColaboradorUnidade objects.
+     * @phpstan-var ObjectCollection&\Traversable<ChildColaboradorUnidade> Collection to store aggregation of ChildColaboradorUnidade objects.
      */
-    protected $collColaboradors;
-    protected $collColaboradorsPartial;
+    protected $collColaboradorUnidadesRelatedByColaboradorId;
+    protected $collColaboradorUnidadesRelatedByColaboradorIdPartial;
+
+    /**
+     * @var        ObjectCollection|ChildColaboradorUnidade[] Collection to store aggregation of ChildColaboradorUnidade objects.
+     * @phpstan-var ObjectCollection&\Traversable<ChildColaboradorUnidade> Collection to store aggregation of ChildColaboradorUnidade objects.
+     */
+    protected $collColaboradorUnidadesRelatedByUnidadeId;
+    protected $collColaboradorUnidadesRelatedByUnidadeIdPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -102,10 +109,17 @@ abstract class Unidade implements ActiveRecordInterface
 
     /**
      * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildColaborador[]
-     * @phpstan-var ObjectCollection&\Traversable<ChildColaborador>
+     * @var ObjectCollection|ChildColaboradorUnidade[]
+     * @phpstan-var ObjectCollection&\Traversable<ChildColaboradorUnidade>
      */
-    protected $colaboradorsScheduledForDeletion = null;
+    protected $colaboradorUnidadesRelatedByColaboradorIdScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildColaboradorUnidade[]
+     * @phpstan-var ObjectCollection&\Traversable<ChildColaboradorUnidade>
+     */
+    protected $colaboradorUnidadesRelatedByUnidadeIdScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Base\Unidade object.
@@ -534,7 +548,9 @@ abstract class Unidade implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collColaboradors = null;
+            $this->collColaboradorUnidadesRelatedByColaboradorId = null;
+
+            $this->collColaboradorUnidadesRelatedByUnidadeId = null;
 
         } // if (deep)
     }
@@ -650,18 +666,36 @@ abstract class Unidade implements ActiveRecordInterface
                 $this->resetModified();
             }
 
-            if ($this->colaboradorsScheduledForDeletion !== null) {
-                if (!$this->colaboradorsScheduledForDeletion->isEmpty()) {
-                    foreach ($this->colaboradorsScheduledForDeletion as $colaborador) {
+            if ($this->colaboradorUnidadesRelatedByColaboradorIdScheduledForDeletion !== null) {
+                if (!$this->colaboradorUnidadesRelatedByColaboradorIdScheduledForDeletion->isEmpty()) {
+                    foreach ($this->colaboradorUnidadesRelatedByColaboradorIdScheduledForDeletion as $colaboradorUnidadeRelatedByColaboradorId) {
                         // need to save related object because we set the relation to null
-                        $colaborador->save($con);
+                        $colaboradorUnidadeRelatedByColaboradorId->save($con);
                     }
-                    $this->colaboradorsScheduledForDeletion = null;
+                    $this->colaboradorUnidadesRelatedByColaboradorIdScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collColaboradors !== null) {
-                foreach ($this->collColaboradors as $referrerFK) {
+            if ($this->collColaboradorUnidadesRelatedByColaboradorId !== null) {
+                foreach ($this->collColaboradorUnidadesRelatedByColaboradorId as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->colaboradorUnidadesRelatedByUnidadeIdScheduledForDeletion !== null) {
+                if (!$this->colaboradorUnidadesRelatedByUnidadeIdScheduledForDeletion->isEmpty()) {
+                    foreach ($this->colaboradorUnidadesRelatedByUnidadeIdScheduledForDeletion as $colaboradorUnidadeRelatedByUnidadeId) {
+                        // need to save related object because we set the relation to null
+                        $colaboradorUnidadeRelatedByUnidadeId->save($con);
+                    }
+                    $this->colaboradorUnidadesRelatedByUnidadeIdScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collColaboradorUnidadesRelatedByUnidadeId !== null) {
+                foreach ($this->collColaboradorUnidadesRelatedByUnidadeId as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -836,20 +870,35 @@ abstract class Unidade implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->collColaboradors) {
+            if (null !== $this->collColaboradorUnidadesRelatedByColaboradorId) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'colaboradors';
+                        $key = 'colaboradorUnidades';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'colaboradors';
+                        $key = 'colaborador_unidades';
                         break;
                     default:
-                        $key = 'Colaboradors';
+                        $key = 'ColaboradorUnidades';
                 }
 
-                $result[$key] = $this->collColaboradors->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+                $result[$key] = $this->collColaboradorUnidadesRelatedByColaboradorId->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collColaboradorUnidadesRelatedByUnidadeId) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'colaboradorUnidades';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'colaborador_unidades';
+                        break;
+                    default:
+                        $key = 'ColaboradorUnidades';
+                }
+
+                $result[$key] = $this->collColaboradorUnidadesRelatedByUnidadeId->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1075,9 +1124,15 @@ abstract class Unidade implements ActiveRecordInterface
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
 
-            foreach ($this->getColaboradors() as $relObj) {
+            foreach ($this->getColaboradorUnidadesRelatedByColaboradorId() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addColaborador($relObj->copy($deepCopy));
+                    $copyObj->addColaboradorUnidadeRelatedByColaboradorId($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getColaboradorUnidadesRelatedByUnidadeId() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addColaboradorUnidadeRelatedByUnidadeId($relObj->copy($deepCopy));
                 }
             }
 
@@ -1122,38 +1177,42 @@ abstract class Unidade implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
-        if ('Colaborador' === $relationName) {
-            $this->initColaboradors();
+        if ('ColaboradorUnidadeRelatedByColaboradorId' === $relationName) {
+            $this->initColaboradorUnidadesRelatedByColaboradorId();
+            return;
+        }
+        if ('ColaboradorUnidadeRelatedByUnidadeId' === $relationName) {
+            $this->initColaboradorUnidadesRelatedByUnidadeId();
             return;
         }
     }
 
     /**
-     * Clears out the collColaboradors collection
+     * Clears out the collColaboradorUnidadesRelatedByColaboradorId collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addColaboradors()
+     * @see        addColaboradorUnidadesRelatedByColaboradorId()
      */
-    public function clearColaboradors()
+    public function clearColaboradorUnidadesRelatedByColaboradorId()
     {
-        $this->collColaboradors = null; // important to set this to NULL since that means it is uninitialized
+        $this->collColaboradorUnidadesRelatedByColaboradorId = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collColaboradors collection loaded partially.
+     * Reset is the collColaboradorUnidadesRelatedByColaboradorId collection loaded partially.
      */
-    public function resetPartialColaboradors($v = true)
+    public function resetPartialColaboradorUnidadesRelatedByColaboradorId($v = true)
     {
-        $this->collColaboradorsPartial = $v;
+        $this->collColaboradorUnidadesRelatedByColaboradorIdPartial = $v;
     }
 
     /**
-     * Initializes the collColaboradors collection.
+     * Initializes the collColaboradorUnidadesRelatedByColaboradorId collection.
      *
-     * By default this just sets the collColaboradors collection to an empty array (like clearcollColaboradors());
+     * By default this just sets the collColaboradorUnidadesRelatedByColaboradorId collection to an empty array (like clearcollColaboradorUnidadesRelatedByColaboradorId());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1162,20 +1221,20 @@ abstract class Unidade implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initColaboradors($overrideExisting = true)
+    public function initColaboradorUnidadesRelatedByColaboradorId($overrideExisting = true)
     {
-        if (null !== $this->collColaboradors && !$overrideExisting) {
+        if (null !== $this->collColaboradorUnidadesRelatedByColaboradorId && !$overrideExisting) {
             return;
         }
 
-        $collectionClassName = ColaboradorTableMap::getTableMap()->getCollectionClassName();
+        $collectionClassName = ColaboradorUnidadeTableMap::getTableMap()->getCollectionClassName();
 
-        $this->collColaboradors = new $collectionClassName;
-        $this->collColaboradors->setModel('\Colaborador');
+        $this->collColaboradorUnidadesRelatedByColaboradorId = new $collectionClassName;
+        $this->collColaboradorUnidadesRelatedByColaboradorId->setModel('\ColaboradorUnidade');
     }
 
     /**
-     * Gets an array of ChildColaborador objects which contain a foreign key that references this object.
+     * Gets an array of ChildColaboradorUnidade objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -1185,149 +1244,149 @@ abstract class Unidade implements ActiveRecordInterface
      *
      * @param      Criteria $criteria optional Criteria object to narrow the query
      * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildColaborador[] List of ChildColaborador objects
-     * @phpstan-return ObjectCollection&\Traversable<ChildColaborador> List of ChildColaborador objects
+     * @return ObjectCollection|ChildColaboradorUnidade[] List of ChildColaboradorUnidade objects
+     * @phpstan-return ObjectCollection&\Traversable<ChildColaboradorUnidade> List of ChildColaboradorUnidade objects
      * @throws PropelException
      */
-    public function getColaboradors(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getColaboradorUnidadesRelatedByColaboradorId(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collColaboradorsPartial && !$this->isNew();
-        if (null === $this->collColaboradors || null !== $criteria || $partial) {
+        $partial = $this->collColaboradorUnidadesRelatedByColaboradorIdPartial && !$this->isNew();
+        if (null === $this->collColaboradorUnidadesRelatedByColaboradorId || null !== $criteria || $partial) {
             if ($this->isNew()) {
                 // return empty collection
-                if (null === $this->collColaboradors) {
-                    $this->initColaboradors();
+                if (null === $this->collColaboradorUnidadesRelatedByColaboradorId) {
+                    $this->initColaboradorUnidadesRelatedByColaboradorId();
                 } else {
-                    $collectionClassName = ColaboradorTableMap::getTableMap()->getCollectionClassName();
+                    $collectionClassName = ColaboradorUnidadeTableMap::getTableMap()->getCollectionClassName();
 
-                    $collColaboradors = new $collectionClassName;
-                    $collColaboradors->setModel('\Colaborador');
+                    $collColaboradorUnidadesRelatedByColaboradorId = new $collectionClassName;
+                    $collColaboradorUnidadesRelatedByColaboradorId->setModel('\ColaboradorUnidade');
 
-                    return $collColaboradors;
+                    return $collColaboradorUnidadesRelatedByColaboradorId;
                 }
             } else {
-                $collColaboradors = ChildColaboradorQuery::create(null, $criteria)
-                    ->filterByUnidade($this)
+                $collColaboradorUnidadesRelatedByColaboradorId = ChildColaboradorUnidadeQuery::create(null, $criteria)
+                    ->filterByUnidadeRelatedByColaboradorId($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collColaboradorsPartial && count($collColaboradors)) {
-                        $this->initColaboradors(false);
+                    if (false !== $this->collColaboradorUnidadesRelatedByColaboradorIdPartial && count($collColaboradorUnidadesRelatedByColaboradorId)) {
+                        $this->initColaboradorUnidadesRelatedByColaboradorId(false);
 
-                        foreach ($collColaboradors as $obj) {
-                            if (false == $this->collColaboradors->contains($obj)) {
-                                $this->collColaboradors->append($obj);
+                        foreach ($collColaboradorUnidadesRelatedByColaboradorId as $obj) {
+                            if (false == $this->collColaboradorUnidadesRelatedByColaboradorId->contains($obj)) {
+                                $this->collColaboradorUnidadesRelatedByColaboradorId->append($obj);
                             }
                         }
 
-                        $this->collColaboradorsPartial = true;
+                        $this->collColaboradorUnidadesRelatedByColaboradorIdPartial = true;
                     }
 
-                    return $collColaboradors;
+                    return $collColaboradorUnidadesRelatedByColaboradorId;
                 }
 
-                if ($partial && $this->collColaboradors) {
-                    foreach ($this->collColaboradors as $obj) {
+                if ($partial && $this->collColaboradorUnidadesRelatedByColaboradorId) {
+                    foreach ($this->collColaboradorUnidadesRelatedByColaboradorId as $obj) {
                         if ($obj->isNew()) {
-                            $collColaboradors[] = $obj;
+                            $collColaboradorUnidadesRelatedByColaboradorId[] = $obj;
                         }
                     }
                 }
 
-                $this->collColaboradors = $collColaboradors;
-                $this->collColaboradorsPartial = false;
+                $this->collColaboradorUnidadesRelatedByColaboradorId = $collColaboradorUnidadesRelatedByColaboradorId;
+                $this->collColaboradorUnidadesRelatedByColaboradorIdPartial = false;
             }
         }
 
-        return $this->collColaboradors;
+        return $this->collColaboradorUnidadesRelatedByColaboradorId;
     }
 
     /**
-     * Sets a collection of ChildColaborador objects related by a one-to-many relationship
+     * Sets a collection of ChildColaboradorUnidade objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $colaboradors A Propel collection.
+     * @param      Collection $colaboradorUnidadesRelatedByColaboradorId A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
      * @return $this|ChildUnidade The current object (for fluent API support)
      */
-    public function setColaboradors(Collection $colaboradors, ConnectionInterface $con = null)
+    public function setColaboradorUnidadesRelatedByColaboradorId(Collection $colaboradorUnidadesRelatedByColaboradorId, ConnectionInterface $con = null)
     {
-        /** @var ChildColaborador[] $colaboradorsToDelete */
-        $colaboradorsToDelete = $this->getColaboradors(new Criteria(), $con)->diff($colaboradors);
+        /** @var ChildColaboradorUnidade[] $colaboradorUnidadesRelatedByColaboradorIdToDelete */
+        $colaboradorUnidadesRelatedByColaboradorIdToDelete = $this->getColaboradorUnidadesRelatedByColaboradorId(new Criteria(), $con)->diff($colaboradorUnidadesRelatedByColaboradorId);
 
 
-        $this->colaboradorsScheduledForDeletion = $colaboradorsToDelete;
+        $this->colaboradorUnidadesRelatedByColaboradorIdScheduledForDeletion = $colaboradorUnidadesRelatedByColaboradorIdToDelete;
 
-        foreach ($colaboradorsToDelete as $colaboradorRemoved) {
-            $colaboradorRemoved->setUnidade(null);
+        foreach ($colaboradorUnidadesRelatedByColaboradorIdToDelete as $colaboradorUnidadeRelatedByColaboradorIdRemoved) {
+            $colaboradorUnidadeRelatedByColaboradorIdRemoved->setUnidadeRelatedByColaboradorId(null);
         }
 
-        $this->collColaboradors = null;
-        foreach ($colaboradors as $colaborador) {
-            $this->addColaborador($colaborador);
+        $this->collColaboradorUnidadesRelatedByColaboradorId = null;
+        foreach ($colaboradorUnidadesRelatedByColaboradorId as $colaboradorUnidadeRelatedByColaboradorId) {
+            $this->addColaboradorUnidadeRelatedByColaboradorId($colaboradorUnidadeRelatedByColaboradorId);
         }
 
-        $this->collColaboradors = $colaboradors;
-        $this->collColaboradorsPartial = false;
+        $this->collColaboradorUnidadesRelatedByColaboradorId = $colaboradorUnidadesRelatedByColaboradorId;
+        $this->collColaboradorUnidadesRelatedByColaboradorIdPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related Colaborador objects.
+     * Returns the number of related ColaboradorUnidade objects.
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct
      * @param      ConnectionInterface $con
-     * @return int             Count of related Colaborador objects.
+     * @return int             Count of related ColaboradorUnidade objects.
      * @throws PropelException
      */
-    public function countColaboradors(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countColaboradorUnidadesRelatedByColaboradorId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collColaboradorsPartial && !$this->isNew();
-        if (null === $this->collColaboradors || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collColaboradors) {
+        $partial = $this->collColaboradorUnidadesRelatedByColaboradorIdPartial && !$this->isNew();
+        if (null === $this->collColaboradorUnidadesRelatedByColaboradorId || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collColaboradorUnidadesRelatedByColaboradorId) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getColaboradors());
+                return count($this->getColaboradorUnidadesRelatedByColaboradorId());
             }
 
-            $query = ChildColaboradorQuery::create(null, $criteria);
+            $query = ChildColaboradorUnidadeQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
 
             return $query
-                ->filterByUnidade($this)
+                ->filterByUnidadeRelatedByColaboradorId($this)
                 ->count($con);
         }
 
-        return count($this->collColaboradors);
+        return count($this->collColaboradorUnidadesRelatedByColaboradorId);
     }
 
     /**
-     * Method called to associate a ChildColaborador object to this object
-     * through the ChildColaborador foreign key attribute.
+     * Method called to associate a ChildColaboradorUnidade object to this object
+     * through the ChildColaboradorUnidade foreign key attribute.
      *
-     * @param  ChildColaborador $l ChildColaborador
+     * @param  ChildColaboradorUnidade $l ChildColaboradorUnidade
      * @return $this|\Unidade The current object (for fluent API support)
      */
-    public function addColaborador(ChildColaborador $l)
+    public function addColaboradorUnidadeRelatedByColaboradorId(ChildColaboradorUnidade $l)
     {
-        if ($this->collColaboradors === null) {
-            $this->initColaboradors();
-            $this->collColaboradorsPartial = true;
+        if ($this->collColaboradorUnidadesRelatedByColaboradorId === null) {
+            $this->initColaboradorUnidadesRelatedByColaboradorId();
+            $this->collColaboradorUnidadesRelatedByColaboradorIdPartial = true;
         }
 
-        if (!$this->collColaboradors->contains($l)) {
-            $this->doAddColaborador($l);
+        if (!$this->collColaboradorUnidadesRelatedByColaboradorId->contains($l)) {
+            $this->doAddColaboradorUnidadeRelatedByColaboradorId($l);
 
-            if ($this->colaboradorsScheduledForDeletion and $this->colaboradorsScheduledForDeletion->contains($l)) {
-                $this->colaboradorsScheduledForDeletion->remove($this->colaboradorsScheduledForDeletion->search($l));
+            if ($this->colaboradorUnidadesRelatedByColaboradorIdScheduledForDeletion and $this->colaboradorUnidadesRelatedByColaboradorIdScheduledForDeletion->contains($l)) {
+                $this->colaboradorUnidadesRelatedByColaboradorIdScheduledForDeletion->remove($this->colaboradorUnidadesRelatedByColaboradorIdScheduledForDeletion->search($l));
             }
         }
 
@@ -1335,58 +1394,267 @@ abstract class Unidade implements ActiveRecordInterface
     }
 
     /**
-     * @param ChildColaborador $colaborador The ChildColaborador object to add.
+     * @param ChildColaboradorUnidade $colaboradorUnidadeRelatedByColaboradorId The ChildColaboradorUnidade object to add.
      */
-    protected function doAddColaborador(ChildColaborador $colaborador)
+    protected function doAddColaboradorUnidadeRelatedByColaboradorId(ChildColaboradorUnidade $colaboradorUnidadeRelatedByColaboradorId)
     {
-        $this->collColaboradors[]= $colaborador;
-        $colaborador->setUnidade($this);
+        $this->collColaboradorUnidadesRelatedByColaboradorId[]= $colaboradorUnidadeRelatedByColaboradorId;
+        $colaboradorUnidadeRelatedByColaboradorId->setUnidadeRelatedByColaboradorId($this);
     }
 
     /**
-     * @param  ChildColaborador $colaborador The ChildColaborador object to remove.
+     * @param  ChildColaboradorUnidade $colaboradorUnidadeRelatedByColaboradorId The ChildColaboradorUnidade object to remove.
      * @return $this|ChildUnidade The current object (for fluent API support)
      */
-    public function removeColaborador(ChildColaborador $colaborador)
+    public function removeColaboradorUnidadeRelatedByColaboradorId(ChildColaboradorUnidade $colaboradorUnidadeRelatedByColaboradorId)
     {
-        if ($this->getColaboradors()->contains($colaborador)) {
-            $pos = $this->collColaboradors->search($colaborador);
-            $this->collColaboradors->remove($pos);
-            if (null === $this->colaboradorsScheduledForDeletion) {
-                $this->colaboradorsScheduledForDeletion = clone $this->collColaboradors;
-                $this->colaboradorsScheduledForDeletion->clear();
+        if ($this->getColaboradorUnidadesRelatedByColaboradorId()->contains($colaboradorUnidadeRelatedByColaboradorId)) {
+            $pos = $this->collColaboradorUnidadesRelatedByColaboradorId->search($colaboradorUnidadeRelatedByColaboradorId);
+            $this->collColaboradorUnidadesRelatedByColaboradorId->remove($pos);
+            if (null === $this->colaboradorUnidadesRelatedByColaboradorIdScheduledForDeletion) {
+                $this->colaboradorUnidadesRelatedByColaboradorIdScheduledForDeletion = clone $this->collColaboradorUnidadesRelatedByColaboradorId;
+                $this->colaboradorUnidadesRelatedByColaboradorIdScheduledForDeletion->clear();
             }
-            $this->colaboradorsScheduledForDeletion[]= $colaborador;
-            $colaborador->setUnidade(null);
+            $this->colaboradorUnidadesRelatedByColaboradorIdScheduledForDeletion[]= $colaboradorUnidadeRelatedByColaboradorId;
+            $colaboradorUnidadeRelatedByColaboradorId->setUnidadeRelatedByColaboradorId(null);
         }
 
         return $this;
     }
 
+    /**
+     * Clears out the collColaboradorUnidadesRelatedByUnidadeId collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addColaboradorUnidadesRelatedByUnidadeId()
+     */
+    public function clearColaboradorUnidadesRelatedByUnidadeId()
+    {
+        $this->collColaboradorUnidadesRelatedByUnidadeId = null; // important to set this to NULL since that means it is uninitialized
+    }
 
     /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Unidade is new, it will return
-     * an empty collection; or if this Unidade has previously
-     * been saved, it will retrieve related Colaboradors from storage.
+     * Reset is the collColaboradorUnidadesRelatedByUnidadeId collection loaded partially.
+     */
+    public function resetPartialColaboradorUnidadesRelatedByUnidadeId($v = true)
+    {
+        $this->collColaboradorUnidadesRelatedByUnidadeIdPartial = $v;
+    }
+
+    /**
+     * Initializes the collColaboradorUnidadesRelatedByUnidadeId collection.
      *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Unidade.
+     * By default this just sets the collColaboradorUnidadesRelatedByUnidadeId collection to an empty array (like clearcollColaboradorUnidadesRelatedByUnidadeId());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initColaboradorUnidadesRelatedByUnidadeId($overrideExisting = true)
+    {
+        if (null !== $this->collColaboradorUnidadesRelatedByUnidadeId && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = ColaboradorUnidadeTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collColaboradorUnidadesRelatedByUnidadeId = new $collectionClassName;
+        $this->collColaboradorUnidadesRelatedByUnidadeId->setModel('\ColaboradorUnidade');
+    }
+
+    /**
+     * Gets an array of ChildColaboradorUnidade objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildUnidade is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param      Criteria $criteria optional Criteria object to narrow the query
      * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildColaborador[] List of ChildColaborador objects
-     * @phpstan-return ObjectCollection&\Traversable<ChildColaborador}> List of ChildColaborador objects
+     * @return ObjectCollection|ChildColaboradorUnidade[] List of ChildColaboradorUnidade objects
+     * @phpstan-return ObjectCollection&\Traversable<ChildColaboradorUnidade> List of ChildColaboradorUnidade objects
+     * @throws PropelException
      */
-    public function getColaboradorsJoinTecnologia(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    public function getColaboradorUnidadesRelatedByUnidadeId(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $query = ChildColaboradorQuery::create(null, $criteria);
-        $query->joinWith('Tecnologia', $joinBehavior);
+        $partial = $this->collColaboradorUnidadesRelatedByUnidadeIdPartial && !$this->isNew();
+        if (null === $this->collColaboradorUnidadesRelatedByUnidadeId || null !== $criteria || $partial) {
+            if ($this->isNew()) {
+                // return empty collection
+                if (null === $this->collColaboradorUnidadesRelatedByUnidadeId) {
+                    $this->initColaboradorUnidadesRelatedByUnidadeId();
+                } else {
+                    $collectionClassName = ColaboradorUnidadeTableMap::getTableMap()->getCollectionClassName();
 
-        return $this->getColaboradors($query, $con);
+                    $collColaboradorUnidadesRelatedByUnidadeId = new $collectionClassName;
+                    $collColaboradorUnidadesRelatedByUnidadeId->setModel('\ColaboradorUnidade');
+
+                    return $collColaboradorUnidadesRelatedByUnidadeId;
+                }
+            } else {
+                $collColaboradorUnidadesRelatedByUnidadeId = ChildColaboradorUnidadeQuery::create(null, $criteria)
+                    ->filterByUnidadeRelatedByUnidadeId($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collColaboradorUnidadesRelatedByUnidadeIdPartial && count($collColaboradorUnidadesRelatedByUnidadeId)) {
+                        $this->initColaboradorUnidadesRelatedByUnidadeId(false);
+
+                        foreach ($collColaboradorUnidadesRelatedByUnidadeId as $obj) {
+                            if (false == $this->collColaboradorUnidadesRelatedByUnidadeId->contains($obj)) {
+                                $this->collColaboradorUnidadesRelatedByUnidadeId->append($obj);
+                            }
+                        }
+
+                        $this->collColaboradorUnidadesRelatedByUnidadeIdPartial = true;
+                    }
+
+                    return $collColaboradorUnidadesRelatedByUnidadeId;
+                }
+
+                if ($partial && $this->collColaboradorUnidadesRelatedByUnidadeId) {
+                    foreach ($this->collColaboradorUnidadesRelatedByUnidadeId as $obj) {
+                        if ($obj->isNew()) {
+                            $collColaboradorUnidadesRelatedByUnidadeId[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collColaboradorUnidadesRelatedByUnidadeId = $collColaboradorUnidadesRelatedByUnidadeId;
+                $this->collColaboradorUnidadesRelatedByUnidadeIdPartial = false;
+            }
+        }
+
+        return $this->collColaboradorUnidadesRelatedByUnidadeId;
+    }
+
+    /**
+     * Sets a collection of ChildColaboradorUnidade objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $colaboradorUnidadesRelatedByUnidadeId A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildUnidade The current object (for fluent API support)
+     */
+    public function setColaboradorUnidadesRelatedByUnidadeId(Collection $colaboradorUnidadesRelatedByUnidadeId, ConnectionInterface $con = null)
+    {
+        /** @var ChildColaboradorUnidade[] $colaboradorUnidadesRelatedByUnidadeIdToDelete */
+        $colaboradorUnidadesRelatedByUnidadeIdToDelete = $this->getColaboradorUnidadesRelatedByUnidadeId(new Criteria(), $con)->diff($colaboradorUnidadesRelatedByUnidadeId);
+
+
+        $this->colaboradorUnidadesRelatedByUnidadeIdScheduledForDeletion = $colaboradorUnidadesRelatedByUnidadeIdToDelete;
+
+        foreach ($colaboradorUnidadesRelatedByUnidadeIdToDelete as $colaboradorUnidadeRelatedByUnidadeIdRemoved) {
+            $colaboradorUnidadeRelatedByUnidadeIdRemoved->setUnidadeRelatedByUnidadeId(null);
+        }
+
+        $this->collColaboradorUnidadesRelatedByUnidadeId = null;
+        foreach ($colaboradorUnidadesRelatedByUnidadeId as $colaboradorUnidadeRelatedByUnidadeId) {
+            $this->addColaboradorUnidadeRelatedByUnidadeId($colaboradorUnidadeRelatedByUnidadeId);
+        }
+
+        $this->collColaboradorUnidadesRelatedByUnidadeId = $colaboradorUnidadesRelatedByUnidadeId;
+        $this->collColaboradorUnidadesRelatedByUnidadeIdPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related ColaboradorUnidade objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related ColaboradorUnidade objects.
+     * @throws PropelException
+     */
+    public function countColaboradorUnidadesRelatedByUnidadeId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collColaboradorUnidadesRelatedByUnidadeIdPartial && !$this->isNew();
+        if (null === $this->collColaboradorUnidadesRelatedByUnidadeId || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collColaboradorUnidadesRelatedByUnidadeId) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getColaboradorUnidadesRelatedByUnidadeId());
+            }
+
+            $query = ChildColaboradorUnidadeQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByUnidadeRelatedByUnidadeId($this)
+                ->count($con);
+        }
+
+        return count($this->collColaboradorUnidadesRelatedByUnidadeId);
+    }
+
+    /**
+     * Method called to associate a ChildColaboradorUnidade object to this object
+     * through the ChildColaboradorUnidade foreign key attribute.
+     *
+     * @param  ChildColaboradorUnidade $l ChildColaboradorUnidade
+     * @return $this|\Unidade The current object (for fluent API support)
+     */
+    public function addColaboradorUnidadeRelatedByUnidadeId(ChildColaboradorUnidade $l)
+    {
+        if ($this->collColaboradorUnidadesRelatedByUnidadeId === null) {
+            $this->initColaboradorUnidadesRelatedByUnidadeId();
+            $this->collColaboradorUnidadesRelatedByUnidadeIdPartial = true;
+        }
+
+        if (!$this->collColaboradorUnidadesRelatedByUnidadeId->contains($l)) {
+            $this->doAddColaboradorUnidadeRelatedByUnidadeId($l);
+
+            if ($this->colaboradorUnidadesRelatedByUnidadeIdScheduledForDeletion and $this->colaboradorUnidadesRelatedByUnidadeIdScheduledForDeletion->contains($l)) {
+                $this->colaboradorUnidadesRelatedByUnidadeIdScheduledForDeletion->remove($this->colaboradorUnidadesRelatedByUnidadeIdScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildColaboradorUnidade $colaboradorUnidadeRelatedByUnidadeId The ChildColaboradorUnidade object to add.
+     */
+    protected function doAddColaboradorUnidadeRelatedByUnidadeId(ChildColaboradorUnidade $colaboradorUnidadeRelatedByUnidadeId)
+    {
+        $this->collColaboradorUnidadesRelatedByUnidadeId[]= $colaboradorUnidadeRelatedByUnidadeId;
+        $colaboradorUnidadeRelatedByUnidadeId->setUnidadeRelatedByUnidadeId($this);
+    }
+
+    /**
+     * @param  ChildColaboradorUnidade $colaboradorUnidadeRelatedByUnidadeId The ChildColaboradorUnidade object to remove.
+     * @return $this|ChildUnidade The current object (for fluent API support)
+     */
+    public function removeColaboradorUnidadeRelatedByUnidadeId(ChildColaboradorUnidade $colaboradorUnidadeRelatedByUnidadeId)
+    {
+        if ($this->getColaboradorUnidadesRelatedByUnidadeId()->contains($colaboradorUnidadeRelatedByUnidadeId)) {
+            $pos = $this->collColaboradorUnidadesRelatedByUnidadeId->search($colaboradorUnidadeRelatedByUnidadeId);
+            $this->collColaboradorUnidadesRelatedByUnidadeId->remove($pos);
+            if (null === $this->colaboradorUnidadesRelatedByUnidadeIdScheduledForDeletion) {
+                $this->colaboradorUnidadesRelatedByUnidadeIdScheduledForDeletion = clone $this->collColaboradorUnidadesRelatedByUnidadeId;
+                $this->colaboradorUnidadesRelatedByUnidadeIdScheduledForDeletion->clear();
+            }
+            $this->colaboradorUnidadesRelatedByUnidadeIdScheduledForDeletion[]= $colaboradorUnidadeRelatedByUnidadeId;
+            $colaboradorUnidadeRelatedByUnidadeId->setUnidadeRelatedByUnidadeId(null);
+        }
+
+        return $this;
     }
 
     /**
@@ -1417,14 +1685,20 @@ abstract class Unidade implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collColaboradors) {
-                foreach ($this->collColaboradors as $o) {
+            if ($this->collColaboradorUnidadesRelatedByColaboradorId) {
+                foreach ($this->collColaboradorUnidadesRelatedByColaboradorId as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collColaboradorUnidadesRelatedByUnidadeId) {
+                foreach ($this->collColaboradorUnidadesRelatedByUnidadeId as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
         } // if ($deep)
 
-        $this->collColaboradors = null;
+        $this->collColaboradorUnidadesRelatedByColaboradorId = null;
+        $this->collColaboradorUnidadesRelatedByUnidadeId = null;
     }
 
     /**

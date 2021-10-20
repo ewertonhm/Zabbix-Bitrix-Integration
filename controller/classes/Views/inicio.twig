@@ -1,0 +1,22 @@
+{% extends "base.twig" %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="row"><br><br><br></div>
+    <div class="row">
+        <div class="column"></div>
+        <div class="column">
+            <a class="button" href="cad-unidade.php">Unidades</a>
+            <a class="button" href="cad-tecnologia.php">Tecnologias</a>
+            <a class="button" href="cad-colaborador.php">Colaboradores</a>
+            <a class="button" href="cad-task.php">Tasks</a>
+            <a class="button" href="cad-usuario.php">Usuários</a>
+        </div>
+        <div class="column"></div>
+    </div>
+    <div class="row"></div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.twig" %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block content %}
+    <form method="post" action="cad-task.php">
+        <fieldset>
+            <label for="nameField">Cadastrar Task</label>
+            {% if editar %}
+
+            {% else %}
+                <input type="text" name="title" placeholder="Nome para o modelo"></input>
+                <label>Responsável</label>
+                <select name="responsible">
+                {% for colaborador in colaboradores %}
+                    <option value="{{ colaborador.id }}">{{ colaborador.nome }}</option>
+                {% endfor %}
+                </select>
+                <label>Participantes</label>
+                {% for colaborador in colaboradores %}
+                    <input type="checkbox" name="auditor[]" id="{{ colaborador.id }}" value="{{ colaborador.id }}">
+                    <label class="label-inline" for="{{ colaborador.id }}">{{ colaborador.nome }}</label><br>
+                {% endfor %}
+                <label>Observadores</label>
+                {% for colaborador in colaboradores %}
+                    <input type="checkbox" name="accomplice[]" id="{{ colaborador.id }}" value="{{ colaborador.id }}">
+                    <label class="label-inline" for="{{ colaborador.id }}">{{ colaborador.nome }}</label><br>
+                {% endfor %}
+            {% endif %}
+            <input class="button-primary" type="submit" {% if editar %} value="Editar" name='editar' {% else %} value="Cadastrar" name='cadastrar'{% endif %}>
+        </fieldset>
+    </form>
+    {% if tasks %}
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titulo</th>
+                <th>Resonsável</th>
+                <th>Editar</th>
+                <th>Deletar</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.id }}</td>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.responsible }}</td>
+                        <td><a class="button button-small" href="cad-task.php?edite={{  task.id }}">Editar</a></td>
+                        <td><a class="button button-small" href="cad-task.php?delete={{ task.id }}">Deletar</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

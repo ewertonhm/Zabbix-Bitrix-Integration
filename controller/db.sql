@@ -1,60 +1,75 @@
 --CREATE DATABASE taskcontroller
+DROP TABLE IF EXISTS "colaborador_tecnologia";
+DROP TABLE IF EXISTS "colaborador_unidade";
+DROP TABLE IF EXISTS "task_auditor";
+DROP TABLE IF EXISTS "task_accomplice";
+DROP TABLE IF EXISTS "task";
+DROP TABLE IF EXISTS "colaborador";
+DROP TABLE IF EXISTS "usuario";
+DROP TABLE IF EXISTS "unidade";
+DROP TABLE IF EXISTS "tecnologia";
 
-DROP TABLE IF EXISTS "usuario" CASCADE;
+
 CREATE TABLE usuario (
                          id SERIAL PRIMARY KEY,
                          email VARCHAR(90) NOT NULL,
                          senha VARCHAR(32) NOT NULL,
                          nome VARCHAR(90) NOT NULL,
-                         api_key VARCHAR(32) NOT NULL,
-                         bitrix_id VARCHAR(10) NOT NULL,
                          admin INTEGER
 );
 
-DROP TABLE IF EXISTS "unidade" CASCADE;
+
 CREATE TABLE unidade (
                         id SERIAL PRIMARY KEY,
                         nome VARCHAR(50),
                         sigla VARCHAR(10)
 );
 
-DROP TABLE IF EXISTS "tecnologia" CASCADE;
 CREATE TABLE tecnologia (
                         id SERIAL PRIMARY KEY,
                         tecnologia VARCHAR(50)
 );
 
-DROP TABLE IF EXISTS "colaborador" CASCADE;
+
 CREATE TABLE colaborador (
                         id SERIAL PRIMARY KEY,
                         nome VARCHAR(90) NOT NULL,
-                        bitrix_id VARCHAR(10) NOT NULL,
-                        unidade_id INTEGER REFERENCES unidade(id),
-                        tecnologia_id INTEGER REFERENCES tecnologia(id)
+                        bitrix_id VARCHAR(10) NOT NULL
 );
 
-DROP TABLE IF EXISTS "task" CASCADE;
+CREATE TABLE colaborador_unidade (
+                        id SERIAL PRIMARY KEY,
+                        unidade_id INTEGER REFERENCES unidade(id),
+                        colaborador_id INTEGER REFERENCES colaborador(id)
+);
+
+
+CREATE TABLE colaborador_tecnologia (
+                        id SERIAL PRIMARY KEY,
+                        tecnologia_id INTEGER REFERENCES tecnologia(id),
+                        colaborador_id INTEGER REFERENCES colaborador(id)
+);
+
 CREATE TABLE task (
                         id SERIAL PRIMARY KEY,
-                        usuario_id INTEGER REFERENCES usuario(id),
                         title VARCHAR(90) NOT NULL,
-                        descript VARCHAR(500) NOT NULL,
-                        deadline VARCHAR(50),
                         responsible_id INTEGER REFERENCES colaborador(id), 
-                        group_id VARCHAR(10) -- 523 = Zabbix Alarmes                    
+                        group_id VARCHAR(10) -- 523 = Zabbix Alarmes, campo adicionado para caso seja utilizado futuramente                   
 );
 
-DROP TABLE IF EXISTS "task_auditor" CASCADE;
 CREATE TABLE task_auditor (
                         id SERIAL PRIMARY KEY,
                         task_id INTEGER REFERENCES task(id),
-                        auditor_id INTEGER REFERENCES colaborador_id(id)
+                        auditor_id INTEGER REFERENCES colaborador(id)
 );
 
-DROP TABLE IF EXISTS "task_accomplice" CASCADE;
 CREATE TABLE task_accomplice (
                         id SERIAL PRIMARY KEY,
                         task_id INTEGER REFERENCES task(id),
-                        accomplice_id INTEGER REFERENCES colaborador_id(id)
+                        accomplice_id INTEGER REFERENCES colaborador(id)
 );
 
+CREATE TABLE n3_accomplice (
+                        id SERIAL PRIMARY KEY,
+                        bitrix_id VARCHAR(10) NOT NULL
+)

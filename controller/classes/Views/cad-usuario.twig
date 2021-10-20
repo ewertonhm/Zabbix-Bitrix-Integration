@@ -1,0 +1,60 @@
+{% extends "base.twig" %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block content %}
+    <form method="post" action="cad-usuario.php">
+        <fieldset>
+            <label for="nameField">Cadastrar Usuário</label>
+            {% if editar %}
+            <input type="text" name="nome" value="{{editar.nome}}">
+            <input type="email" name="email" value="{{editar.email}}">  
+            <!--<input type="text" name="api" placeholder="API Key">-->                      
+            <input type="text" name="bitrix" value="{{editar.bitrix}}">                        
+            <input type="hidden" name="id" value="{{editar.id}}">
+
+            {% else %}
+            <input type="text" name="nome" placeholder="Nome do Usuário">
+            <input type="email" name="email" placeholder="Email do Usuário">  
+            <input type="password" name="senha" placeholder="Senha do Usuário">
+            <!--<input type="text" name="api" placeholder="API Key">-->                      
+            <input type="text" name="bitrix" placeholder="Bitrix ID">
+            <select name="admin">
+                <option value="0">user</option>
+                <option value="1">admin</option>
+            </select>
+            {% endif %}
+            <input class="button-primary" type="submit" {% if editar %} value="Editar" name='editar' {% else %} value="Cadastrar" name='cadastrar'{% endif %}>
+        </fieldset>
+    </form>
+    {% if usuarios %}
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Bitrix ID</th>
+                <td>Admin</th>
+                <th>Editar</th>
+                <th>Deletar</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.id }}</td>
+                        <td>{{ usuario.nome }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>{{ usuario.bitrix }}</td>
+                        <td>{{ usuario.admin }}</td>
+                        <td><a class="button button-small" href="cad-usuario.php?edite={{  usuario.id }}">Editar</a></td>
+                        <td><a class="button button-small" href="cad-usuario.php?delete={{ usuario.id }}">Deletar</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

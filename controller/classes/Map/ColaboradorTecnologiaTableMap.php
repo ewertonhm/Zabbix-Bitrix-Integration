@@ -2,8 +2,8 @@
 
 namespace Map;
 
-use \Tecnologia;
-use \TecnologiaQuery;
+use \ColaboradorTecnologia;
+use \ColaboradorTecnologiaQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'tecnologia' table.
+ * This class defines the structure of the 'colaborador_tecnologia' table.
  *
  *
  *
@@ -25,7 +25,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * ORDER BY clause to know whether it needs to apply SQL to make the ORDER BY case-insensitive
  * (i.e. if it's a text column type).
  */
-class TecnologiaTableMap extends TableMap
+class ColaboradorTecnologiaTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -33,7 +33,7 @@ class TecnologiaTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.TecnologiaTableMap';
+    const CLASS_NAME = '.Map.ColaboradorTecnologiaTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class TecnologiaTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'tecnologia';
+    const TABLE_NAME = 'colaborador_tecnologia';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Tecnologia';
+    const OM_CLASS = '\\ColaboradorTecnologia';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Tecnologia';
+    const CLASS_DEFAULT = 'ColaboradorTecnologia';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -68,17 +68,22 @@ class TecnologiaTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
      * the column name for the id field
      */
-    const COL_ID = 'tecnologia.id';
+    const COL_ID = 'colaborador_tecnologia.id';
 
     /**
-     * the column name for the tecnologia field
+     * the column name for the tecnologia_id field
      */
-    const COL_TECNOLOGIA = 'tecnologia.tecnologia';
+    const COL_TECNOLOGIA_ID = 'colaborador_tecnologia.tecnologia_id';
+
+    /**
+     * the column name for the colaborador_id field
+     */
+    const COL_COLABORADOR_ID = 'colaborador_tecnologia.colaborador_id';
 
     /**
      * The default string format for model objects of the related table
@@ -92,11 +97,11 @@ class TecnologiaTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Tecnologia', ),
-        self::TYPE_CAMELNAME     => array('id', 'tecnologia', ),
-        self::TYPE_COLNAME       => array(TecnologiaTableMap::COL_ID, TecnologiaTableMap::COL_TECNOLOGIA, ),
-        self::TYPE_FIELDNAME     => array('id', 'tecnologia', ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id', 'TecnologiaId', 'ColaboradorId', ),
+        self::TYPE_CAMELNAME     => array('id', 'tecnologiaId', 'colaboradorId', ),
+        self::TYPE_COLNAME       => array(ColaboradorTecnologiaTableMap::COL_ID, ColaboradorTecnologiaTableMap::COL_TECNOLOGIA_ID, ColaboradorTecnologiaTableMap::COL_COLABORADOR_ID, ),
+        self::TYPE_FIELDNAME     => array('id', 'tecnologia_id', 'colaborador_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -106,11 +111,11 @@ class TecnologiaTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Tecnologia' => 1, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'tecnologia' => 1, ),
-        self::TYPE_COLNAME       => array(TecnologiaTableMap::COL_ID => 0, TecnologiaTableMap::COL_TECNOLOGIA => 1, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'tecnologia' => 1, ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'TecnologiaId' => 1, 'ColaboradorId' => 2, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'tecnologiaId' => 1, 'colaboradorId' => 2, ),
+        self::TYPE_COLNAME       => array(ColaboradorTecnologiaTableMap::COL_ID => 0, ColaboradorTecnologiaTableMap::COL_TECNOLOGIA_ID => 1, ColaboradorTecnologiaTableMap::COL_COLABORADOR_ID => 2, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'tecnologia_id' => 1, 'colaborador_id' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -120,17 +125,28 @@ class TecnologiaTableMap extends TableMap
      */
     protected $normalizedColumnNameMap = [
         'Id' => 'ID',
-        'Tecnologia.Id' => 'ID',
+        'ColaboradorTecnologia.Id' => 'ID',
         'id' => 'ID',
-        'tecnologia.id' => 'ID',
-        'TecnologiaTableMap::COL_ID' => 'ID',
+        'colaboradorTecnologia.id' => 'ID',
+        'ColaboradorTecnologiaTableMap::COL_ID' => 'ID',
         'COL_ID' => 'ID',
-        'Tecnologia' => 'TECNOLOGIA',
-        'Tecnologia.Tecnologia' => 'TECNOLOGIA',
-        'tecnologia' => 'TECNOLOGIA',
-        'tecnologia.tecnologia' => 'TECNOLOGIA',
-        'TecnologiaTableMap::COL_TECNOLOGIA' => 'TECNOLOGIA',
-        'COL_TECNOLOGIA' => 'TECNOLOGIA',
+        'colaborador_tecnologia.id' => 'ID',
+        'TecnologiaId' => 'TECNOLOGIA_ID',
+        'ColaboradorTecnologia.TecnologiaId' => 'TECNOLOGIA_ID',
+        'tecnologiaId' => 'TECNOLOGIA_ID',
+        'colaboradorTecnologia.tecnologiaId' => 'TECNOLOGIA_ID',
+        'ColaboradorTecnologiaTableMap::COL_TECNOLOGIA_ID' => 'TECNOLOGIA_ID',
+        'COL_TECNOLOGIA_ID' => 'TECNOLOGIA_ID',
+        'tecnologia_id' => 'TECNOLOGIA_ID',
+        'colaborador_tecnologia.tecnologia_id' => 'TECNOLOGIA_ID',
+        'ColaboradorId' => 'COLABORADOR_ID',
+        'ColaboradorTecnologia.ColaboradorId' => 'COLABORADOR_ID',
+        'colaboradorId' => 'COLABORADOR_ID',
+        'colaboradorTecnologia.colaboradorId' => 'COLABORADOR_ID',
+        'ColaboradorTecnologiaTableMap::COL_COLABORADOR_ID' => 'COLABORADOR_ID',
+        'COL_COLABORADOR_ID' => 'COLABORADOR_ID',
+        'colaborador_id' => 'COLABORADOR_ID',
+        'colaborador_tecnologia.colaborador_id' => 'COLABORADOR_ID',
     ];
 
     /**
@@ -143,16 +159,17 @@ class TecnologiaTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('tecnologia');
-        $this->setPhpName('Tecnologia');
+        $this->setName('colaborador_tecnologia');
+        $this->setPhpName('ColaboradorTecnologia');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Tecnologia');
+        $this->setClassName('\\ColaboradorTecnologia');
         $this->setPackage('');
         $this->setUseIdGenerator(true);
-        $this->setPrimaryKeyMethodInfo('tecnologia_id_seq');
+        $this->setPrimaryKeyMethodInfo('colaborador_tecnologia_id_seq');
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('tecnologia', 'Tecnologia', 'VARCHAR', false, 50, null);
+        $this->addForeignKey('tecnologia_id', 'TecnologiaId', 'INTEGER', 'tecnologia', 'id', false, null, null);
+        $this->addForeignKey('colaborador_id', 'ColaboradorId', 'INTEGER', 'colaborador', 'id', false, null, null);
     } // initialize()
 
     /**
@@ -160,13 +177,20 @@ class TecnologiaTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('ColaboradorTecnologia', '\\ColaboradorTecnologia', RelationMap::ONE_TO_MANY, array (
+        $this->addRelation('Colaborador', '\\Colaborador', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':colaborador_id',
+    1 => ':id',
+  ),
+), null, null, null, false);
+        $this->addRelation('Tecnologia', '\\Tecnologia', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
     0 => ':tecnologia_id',
     1 => ':id',
   ),
-), null, null, 'ColaboradorTecnologias', false);
+), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -226,7 +250,7 @@ class TecnologiaTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? TecnologiaTableMap::CLASS_DEFAULT : TecnologiaTableMap::OM_CLASS;
+        return $withPrefix ? ColaboradorTecnologiaTableMap::CLASS_DEFAULT : ColaboradorTecnologiaTableMap::OM_CLASS;
     }
 
     /**
@@ -240,22 +264,22 @@ class TecnologiaTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Tecnologia object, last column rank)
+     * @return array           (ColaboradorTecnologia object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = TecnologiaTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = TecnologiaTableMap::getInstanceFromPool($key))) {
+        $key = ColaboradorTecnologiaTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = ColaboradorTecnologiaTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + TecnologiaTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + ColaboradorTecnologiaTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = TecnologiaTableMap::OM_CLASS;
-            /** @var Tecnologia $obj */
+            $cls = ColaboradorTecnologiaTableMap::OM_CLASS;
+            /** @var ColaboradorTecnologia $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            TecnologiaTableMap::addInstanceToPool($obj, $key);
+            ColaboradorTecnologiaTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -278,18 +302,18 @@ class TecnologiaTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = TecnologiaTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = TecnologiaTableMap::getInstanceFromPool($key))) {
+            $key = ColaboradorTecnologiaTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = ColaboradorTecnologiaTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Tecnologia $obj */
+                /** @var ColaboradorTecnologia $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                TecnologiaTableMap::addInstanceToPool($obj, $key);
+                ColaboradorTecnologiaTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -310,11 +334,13 @@ class TecnologiaTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(TecnologiaTableMap::COL_ID);
-            $criteria->addSelectColumn(TecnologiaTableMap::COL_TECNOLOGIA);
+            $criteria->addSelectColumn(ColaboradorTecnologiaTableMap::COL_ID);
+            $criteria->addSelectColumn(ColaboradorTecnologiaTableMap::COL_TECNOLOGIA_ID);
+            $criteria->addSelectColumn(ColaboradorTecnologiaTableMap::COL_COLABORADOR_ID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.tecnologia');
+            $criteria->addSelectColumn($alias . '.tecnologia_id');
+            $criteria->addSelectColumn($alias . '.colaborador_id');
         }
     }
 
@@ -332,11 +358,13 @@ class TecnologiaTableMap extends TableMap
     public static function removeSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->removeSelectColumn(TecnologiaTableMap::COL_ID);
-            $criteria->removeSelectColumn(TecnologiaTableMap::COL_TECNOLOGIA);
+            $criteria->removeSelectColumn(ColaboradorTecnologiaTableMap::COL_ID);
+            $criteria->removeSelectColumn(ColaboradorTecnologiaTableMap::COL_TECNOLOGIA_ID);
+            $criteria->removeSelectColumn(ColaboradorTecnologiaTableMap::COL_COLABORADOR_ID);
         } else {
             $criteria->removeSelectColumn($alias . '.id');
-            $criteria->removeSelectColumn($alias . '.tecnologia');
+            $criteria->removeSelectColumn($alias . '.tecnologia_id');
+            $criteria->removeSelectColumn($alias . '.colaborador_id');
         }
     }
 
@@ -349,13 +377,13 @@ class TecnologiaTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(TecnologiaTableMap::DATABASE_NAME)->getTable(TecnologiaTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(ColaboradorTecnologiaTableMap::DATABASE_NAME)->getTable(ColaboradorTecnologiaTableMap::TABLE_NAME);
     }
 
     /**
-     * Performs a DELETE on the database, given a Tecnologia or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a ColaboradorTecnologia or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Tecnologia object or primary key or array of primary keys
+     * @param mixed               $values Criteria or ColaboradorTecnologia object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -366,27 +394,27 @@ class TecnologiaTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(TecnologiaTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(ColaboradorTecnologiaTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Tecnologia) { // it's a model object
+        } elseif ($values instanceof \ColaboradorTecnologia) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(TecnologiaTableMap::DATABASE_NAME);
-            $criteria->add(TecnologiaTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(ColaboradorTecnologiaTableMap::DATABASE_NAME);
+            $criteria->add(ColaboradorTecnologiaTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
-        $query = TecnologiaQuery::create()->mergeWith($criteria);
+        $query = ColaboradorTecnologiaQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            TecnologiaTableMap::clearInstancePool();
+            ColaboradorTecnologiaTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                TecnologiaTableMap::removeInstanceFromPool($singleval);
+                ColaboradorTecnologiaTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -394,20 +422,20 @@ class TecnologiaTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the tecnologia table.
+     * Deletes all rows from the colaborador_tecnologia table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return TecnologiaQuery::create()->doDeleteAll($con);
+        return ColaboradorTecnologiaQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Tecnologia or Criteria object.
+     * Performs an INSERT on the database, given a ColaboradorTecnologia or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Tecnologia object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or ColaboradorTecnologia object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -416,22 +444,22 @@ class TecnologiaTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(TecnologiaTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(ColaboradorTecnologiaTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Tecnologia object
+            $criteria = $criteria->buildCriteria(); // build Criteria from ColaboradorTecnologia object
         }
 
-        if ($criteria->containsKey(TecnologiaTableMap::COL_ID) && $criteria->keyContainsValue(TecnologiaTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.TecnologiaTableMap::COL_ID.')');
+        if ($criteria->containsKey(ColaboradorTecnologiaTableMap::COL_ID) && $criteria->keyContainsValue(ColaboradorTecnologiaTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ColaboradorTecnologiaTableMap::COL_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = TecnologiaQuery::create()->mergeWith($criteria);
+        $query = ColaboradorTecnologiaQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -440,4 +468,4 @@ class TecnologiaTableMap extends TableMap
         });
     }
 
-} // TecnologiaTableMap
+} // ColaboradorTecnologiaTableMap

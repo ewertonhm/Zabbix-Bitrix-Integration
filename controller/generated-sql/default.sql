@@ -12,8 +12,34 @@ CREATE TABLE "colaborador"
     "id" serial NOT NULL,
     "nome" VARCHAR(90) NOT NULL,
     "bitrix_id" VARCHAR(10) NOT NULL,
-    "unidade_id" INTEGER,
+    PRIMARY KEY ("id")
+);
+
+-----------------------------------------------------------------------
+-- colaborador_tecnologia
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS "colaborador_tecnologia" CASCADE;
+
+CREATE TABLE "colaborador_tecnologia"
+(
+    "id" serial NOT NULL,
     "tecnologia_id" INTEGER,
+    "colaborador_id" INTEGER,
+    PRIMARY KEY ("id")
+);
+
+-----------------------------------------------------------------------
+-- colaborador_unidade
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS "colaborador_unidade" CASCADE;
+
+CREATE TABLE "colaborador_unidade"
+(
+    "id" serial NOT NULL,
+    "unidade_id" INTEGER,
+    "colaborador_id" INTEGER,
     PRIMARY KEY ("id")
 );
 
@@ -108,11 +134,19 @@ CREATE TABLE "usuario"
     PRIMARY KEY ("id")
 );
 
-ALTER TABLE "colaborador" ADD CONSTRAINT "colaborador_tecnologia_id_fkey"
+ALTER TABLE "colaborador_tecnologia" ADD CONSTRAINT "colaborador_tecnologia_colaborador_id_fkey"
+    FOREIGN KEY ("colaborador_id")
+    REFERENCES "colaborador" ("id");
+
+ALTER TABLE "colaborador_tecnologia" ADD CONSTRAINT "colaborador_tecnologia_tecnologia_id_fkey"
     FOREIGN KEY ("tecnologia_id")
     REFERENCES "tecnologia" ("id");
 
-ALTER TABLE "colaborador" ADD CONSTRAINT "colaborador_unidade_id_fkey"
+ALTER TABLE "colaborador_unidade" ADD CONSTRAINT "colaborador_unidade_colaborador_id_fkey"
+    FOREIGN KEY ("colaborador_id")
+    REFERENCES "unidade" ("id");
+
+ALTER TABLE "colaborador_unidade" ADD CONSTRAINT "colaborador_unidade_unidade_id_fkey"
     FOREIGN KEY ("unidade_id")
     REFERENCES "unidade" ("id");
 

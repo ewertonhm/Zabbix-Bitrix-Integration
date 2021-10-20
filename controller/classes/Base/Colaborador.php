@@ -4,19 +4,18 @@ namespace Base;
 
 use \Colaborador as ChildColaborador;
 use \ColaboradorQuery as ChildColaboradorQuery;
+use \ColaboradorTecnologia as ChildColaboradorTecnologia;
+use \ColaboradorTecnologiaQuery as ChildColaboradorTecnologiaQuery;
 use \Task as ChildTask;
 use \TaskAccomplice as ChildTaskAccomplice;
 use \TaskAccompliceQuery as ChildTaskAccompliceQuery;
 use \TaskAuditor as ChildTaskAuditor;
 use \TaskAuditorQuery as ChildTaskAuditorQuery;
 use \TaskQuery as ChildTaskQuery;
-use \Tecnologia as ChildTecnologia;
-use \TecnologiaQuery as ChildTecnologiaQuery;
-use \Unidade as ChildUnidade;
-use \UnidadeQuery as ChildUnidadeQuery;
 use \Exception;
 use \PDO;
 use Map\ColaboradorTableMap;
+use Map\ColaboradorTecnologiaTableMap;
 use Map\TaskAccompliceTableMap;
 use Map\TaskAuditorTableMap;
 use Map\TaskTableMap;
@@ -96,28 +95,11 @@ abstract class Colaborador implements ActiveRecordInterface
     protected $bitrix_id;
 
     /**
-     * The value for the unidade_id field.
-     *
-     * @var        int|null
+     * @var        ObjectCollection|ChildColaboradorTecnologia[] Collection to store aggregation of ChildColaboradorTecnologia objects.
+     * @phpstan-var ObjectCollection&\Traversable<ChildColaboradorTecnologia> Collection to store aggregation of ChildColaboradorTecnologia objects.
      */
-    protected $unidade_id;
-
-    /**
-     * The value for the tecnologia_id field.
-     *
-     * @var        int|null
-     */
-    protected $tecnologia_id;
-
-    /**
-     * @var        ChildTecnologia
-     */
-    protected $aTecnologia;
-
-    /**
-     * @var        ChildUnidade
-     */
-    protected $aUnidade;
+    protected $collColaboradorTecnologias;
+    protected $collColaboradorTecnologiasPartial;
 
     /**
      * @var        ObjectCollection|ChildTask[] Collection to store aggregation of ChildTask objects.
@@ -147,6 +129,13 @@ abstract class Colaborador implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildColaboradorTecnologia[]
+     * @phpstan-var ObjectCollection&\Traversable<ChildColaboradorTecnologia>
+     */
+    protected $colaboradorTecnologiasScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -424,26 +413,6 @@ abstract class Colaborador implements ActiveRecordInterface
     }
 
     /**
-     * Get the [unidade_id] column value.
-     *
-     * @return int|null
-     */
-    public function getUnidadeId()
-    {
-        return $this->unidade_id;
-    }
-
-    /**
-     * Get the [tecnologia_id] column value.
-     *
-     * @return int|null
-     */
-    public function getTecnologiaId()
-    {
-        return $this->tecnologia_id;
-    }
-
-    /**
      * Set the value of [id] column.
      *
      * @param int $v New value
@@ -504,54 +473,6 @@ abstract class Colaborador implements ActiveRecordInterface
     } // setBitrixId()
 
     /**
-     * Set the value of [unidade_id] column.
-     *
-     * @param int|null $v New value
-     * @return $this|\Colaborador The current object (for fluent API support)
-     */
-    public function setUnidadeId($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->unidade_id !== $v) {
-            $this->unidade_id = $v;
-            $this->modifiedColumns[ColaboradorTableMap::COL_UNIDADE_ID] = true;
-        }
-
-        if ($this->aUnidade !== null && $this->aUnidade->getId() !== $v) {
-            $this->aUnidade = null;
-        }
-
-        return $this;
-    } // setUnidadeId()
-
-    /**
-     * Set the value of [tecnologia_id] column.
-     *
-     * @param int|null $v New value
-     * @return $this|\Colaborador The current object (for fluent API support)
-     */
-    public function setTecnologiaId($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->tecnologia_id !== $v) {
-            $this->tecnologia_id = $v;
-            $this->modifiedColumns[ColaboradorTableMap::COL_TECNOLOGIA_ID] = true;
-        }
-
-        if ($this->aTecnologia !== null && $this->aTecnologia->getId() !== $v) {
-            $this->aTecnologia = null;
-        }
-
-        return $this;
-    } // setTecnologiaId()
-
-    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -595,12 +516,6 @@ abstract class Colaborador implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ColaboradorTableMap::translateFieldName('BitrixId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->bitrix_id = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ColaboradorTableMap::translateFieldName('UnidadeId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->unidade_id = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ColaboradorTableMap::translateFieldName('TecnologiaId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->tecnologia_id = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -609,7 +524,7 @@ abstract class Colaborador implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = ColaboradorTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = ColaboradorTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Colaborador'), 0, $e);
@@ -631,12 +546,6 @@ abstract class Colaborador implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aUnidade !== null && $this->unidade_id !== $this->aUnidade->getId()) {
-            $this->aUnidade = null;
-        }
-        if ($this->aTecnologia !== null && $this->tecnologia_id !== $this->aTecnologia->getId()) {
-            $this->aTecnologia = null;
-        }
     } // ensureConsistency
 
     /**
@@ -676,8 +585,8 @@ abstract class Colaborador implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aTecnologia = null;
-            $this->aUnidade = null;
+            $this->collColaboradorTecnologias = null;
+
             $this->collTasks = null;
 
             $this->collTaskAccomplices = null;
@@ -787,25 +696,6 @@ abstract class Colaborador implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aTecnologia !== null) {
-                if ($this->aTecnologia->isModified() || $this->aTecnologia->isNew()) {
-                    $affectedRows += $this->aTecnologia->save($con);
-                }
-                $this->setTecnologia($this->aTecnologia);
-            }
-
-            if ($this->aUnidade !== null) {
-                if ($this->aUnidade->isModified() || $this->aUnidade->isNew()) {
-                    $affectedRows += $this->aUnidade->save($con);
-                }
-                $this->setUnidade($this->aUnidade);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -815,6 +705,24 @@ abstract class Colaborador implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
+            }
+
+            if ($this->colaboradorTecnologiasScheduledForDeletion !== null) {
+                if (!$this->colaboradorTecnologiasScheduledForDeletion->isEmpty()) {
+                    foreach ($this->colaboradorTecnologiasScheduledForDeletion as $colaboradorTecnologia) {
+                        // need to save related object because we set the relation to null
+                        $colaboradorTecnologia->save($con);
+                    }
+                    $this->colaboradorTecnologiasScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collColaboradorTecnologias !== null) {
+                foreach ($this->collColaboradorTecnologias as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             if ($this->tasksScheduledForDeletion !== null) {
@@ -915,12 +823,6 @@ abstract class Colaborador implements ActiveRecordInterface
         if ($this->isColumnModified(ColaboradorTableMap::COL_BITRIX_ID)) {
             $modifiedColumns[':p' . $index++]  = 'bitrix_id';
         }
-        if ($this->isColumnModified(ColaboradorTableMap::COL_UNIDADE_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'unidade_id';
-        }
-        if ($this->isColumnModified(ColaboradorTableMap::COL_TECNOLOGIA_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'tecnologia_id';
-        }
 
         $sql = sprintf(
             'INSERT INTO colaborador (%s) VALUES (%s)',
@@ -940,12 +842,6 @@ abstract class Colaborador implements ActiveRecordInterface
                         break;
                     case 'bitrix_id':
                         $stmt->bindValue($identifier, $this->bitrix_id, PDO::PARAM_STR);
-                        break;
-                    case 'unidade_id':
-                        $stmt->bindValue($identifier, $this->unidade_id, PDO::PARAM_INT);
-                        break;
-                    case 'tecnologia_id':
-                        $stmt->bindValue($identifier, $this->tecnologia_id, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1011,12 +907,6 @@ abstract class Colaborador implements ActiveRecordInterface
             case 2:
                 return $this->getBitrixId();
                 break;
-            case 3:
-                return $this->getUnidadeId();
-                break;
-            case 4:
-                return $this->getTecnologiaId();
-                break;
             default:
                 return null;
                 break;
@@ -1050,8 +940,6 @@ abstract class Colaborador implements ActiveRecordInterface
             $keys[0] => $this->getId(),
             $keys[1] => $this->getNome(),
             $keys[2] => $this->getBitrixId(),
-            $keys[3] => $this->getUnidadeId(),
-            $keys[4] => $this->getTecnologiaId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1059,35 +947,20 @@ abstract class Colaborador implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aTecnologia) {
+            if (null !== $this->collColaboradorTecnologias) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'tecnologia';
+                        $key = 'colaboradorTecnologias';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'tecnologia';
+                        $key = 'colaborador_tecnologias';
                         break;
                     default:
-                        $key = 'Tecnologia';
+                        $key = 'ColaboradorTecnologias';
                 }
 
-                $result[$key] = $this->aTecnologia->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aUnidade) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'unidade';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'unidade';
-                        break;
-                    default:
-                        $key = 'Unidade';
-                }
-
-                $result[$key] = $this->aUnidade->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->collColaboradorTecnologias->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collTasks) {
 
@@ -1177,12 +1050,6 @@ abstract class Colaborador implements ActiveRecordInterface
             case 2:
                 $this->setBitrixId($value);
                 break;
-            case 3:
-                $this->setUnidadeId($value);
-                break;
-            case 4:
-                $this->setTecnologiaId($value);
-                break;
         } // switch()
 
         return $this;
@@ -1217,12 +1084,6 @@ abstract class Colaborador implements ActiveRecordInterface
         }
         if (array_key_exists($keys[2], $arr)) {
             $this->setBitrixId($arr[$keys[2]]);
-        }
-        if (array_key_exists($keys[3], $arr)) {
-            $this->setUnidadeId($arr[$keys[3]]);
-        }
-        if (array_key_exists($keys[4], $arr)) {
-            $this->setTecnologiaId($arr[$keys[4]]);
         }
 
         return $this;
@@ -1275,12 +1136,6 @@ abstract class Colaborador implements ActiveRecordInterface
         }
         if ($this->isColumnModified(ColaboradorTableMap::COL_BITRIX_ID)) {
             $criteria->add(ColaboradorTableMap::COL_BITRIX_ID, $this->bitrix_id);
-        }
-        if ($this->isColumnModified(ColaboradorTableMap::COL_UNIDADE_ID)) {
-            $criteria->add(ColaboradorTableMap::COL_UNIDADE_ID, $this->unidade_id);
-        }
-        if ($this->isColumnModified(ColaboradorTableMap::COL_TECNOLOGIA_ID)) {
-            $criteria->add(ColaboradorTableMap::COL_TECNOLOGIA_ID, $this->tecnologia_id);
         }
 
         return $criteria;
@@ -1370,13 +1225,17 @@ abstract class Colaborador implements ActiveRecordInterface
     {
         $copyObj->setNome($this->getNome());
         $copyObj->setBitrixId($this->getBitrixId());
-        $copyObj->setUnidadeId($this->getUnidadeId());
-        $copyObj->setTecnologiaId($this->getTecnologiaId());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
+
+            foreach ($this->getColaboradorTecnologias() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addColaboradorTecnologia($relObj->copy($deepCopy));
+                }
+            }
 
             foreach ($this->getTasks() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
@@ -1426,108 +1285,6 @@ abstract class Colaborador implements ActiveRecordInterface
         return $copyObj;
     }
 
-    /**
-     * Declares an association between this object and a ChildTecnologia object.
-     *
-     * @param  ChildTecnologia|null $v
-     * @return $this|\Colaborador The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setTecnologia(ChildTecnologia $v = null)
-    {
-        if ($v === null) {
-            $this->setTecnologiaId(NULL);
-        } else {
-            $this->setTecnologiaId($v->getId());
-        }
-
-        $this->aTecnologia = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildTecnologia object, it will not be re-added.
-        if ($v !== null) {
-            $v->addColaborador($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildTecnologia object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildTecnologia|null The associated ChildTecnologia object.
-     * @throws PropelException
-     */
-    public function getTecnologia(ConnectionInterface $con = null)
-    {
-        if ($this->aTecnologia === null && ($this->tecnologia_id != 0)) {
-            $this->aTecnologia = ChildTecnologiaQuery::create()->findPk($this->tecnologia_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aTecnologia->addColaboradors($this);
-             */
-        }
-
-        return $this->aTecnologia;
-    }
-
-    /**
-     * Declares an association between this object and a ChildUnidade object.
-     *
-     * @param  ChildUnidade|null $v
-     * @return $this|\Colaborador The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setUnidade(ChildUnidade $v = null)
-    {
-        if ($v === null) {
-            $this->setUnidadeId(NULL);
-        } else {
-            $this->setUnidadeId($v->getId());
-        }
-
-        $this->aUnidade = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildUnidade object, it will not be re-added.
-        if ($v !== null) {
-            $v->addColaborador($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildUnidade object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildUnidade|null The associated ChildUnidade object.
-     * @throws PropelException
-     */
-    public function getUnidade(ConnectionInterface $con = null)
-    {
-        if ($this->aUnidade === null && ($this->unidade_id != 0)) {
-            $this->aUnidade = ChildUnidadeQuery::create()->findPk($this->unidade_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aUnidade->addColaboradors($this);
-             */
-        }
-
-        return $this->aUnidade;
-    }
-
 
     /**
      * Initializes a collection based on the name of a relation.
@@ -1539,6 +1296,10 @@ abstract class Colaborador implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
+        if ('ColaboradorTecnologia' === $relationName) {
+            $this->initColaboradorTecnologias();
+            return;
+        }
         if ('Task' === $relationName) {
             $this->initTasks();
             return;
@@ -1551,6 +1312,267 @@ abstract class Colaborador implements ActiveRecordInterface
             $this->initTaskAuditors();
             return;
         }
+    }
+
+    /**
+     * Clears out the collColaboradorTecnologias collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addColaboradorTecnologias()
+     */
+    public function clearColaboradorTecnologias()
+    {
+        $this->collColaboradorTecnologias = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collColaboradorTecnologias collection loaded partially.
+     */
+    public function resetPartialColaboradorTecnologias($v = true)
+    {
+        $this->collColaboradorTecnologiasPartial = $v;
+    }
+
+    /**
+     * Initializes the collColaboradorTecnologias collection.
+     *
+     * By default this just sets the collColaboradorTecnologias collection to an empty array (like clearcollColaboradorTecnologias());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initColaboradorTecnologias($overrideExisting = true)
+    {
+        if (null !== $this->collColaboradorTecnologias && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = ColaboradorTecnologiaTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collColaboradorTecnologias = new $collectionClassName;
+        $this->collColaboradorTecnologias->setModel('\ColaboradorTecnologia');
+    }
+
+    /**
+     * Gets an array of ChildColaboradorTecnologia objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildColaborador is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildColaboradorTecnologia[] List of ChildColaboradorTecnologia objects
+     * @phpstan-return ObjectCollection&\Traversable<ChildColaboradorTecnologia> List of ChildColaboradorTecnologia objects
+     * @throws PropelException
+     */
+    public function getColaboradorTecnologias(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collColaboradorTecnologiasPartial && !$this->isNew();
+        if (null === $this->collColaboradorTecnologias || null !== $criteria || $partial) {
+            if ($this->isNew()) {
+                // return empty collection
+                if (null === $this->collColaboradorTecnologias) {
+                    $this->initColaboradorTecnologias();
+                } else {
+                    $collectionClassName = ColaboradorTecnologiaTableMap::getTableMap()->getCollectionClassName();
+
+                    $collColaboradorTecnologias = new $collectionClassName;
+                    $collColaboradorTecnologias->setModel('\ColaboradorTecnologia');
+
+                    return $collColaboradorTecnologias;
+                }
+            } else {
+                $collColaboradorTecnologias = ChildColaboradorTecnologiaQuery::create(null, $criteria)
+                    ->filterByColaborador($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collColaboradorTecnologiasPartial && count($collColaboradorTecnologias)) {
+                        $this->initColaboradorTecnologias(false);
+
+                        foreach ($collColaboradorTecnologias as $obj) {
+                            if (false == $this->collColaboradorTecnologias->contains($obj)) {
+                                $this->collColaboradorTecnologias->append($obj);
+                            }
+                        }
+
+                        $this->collColaboradorTecnologiasPartial = true;
+                    }
+
+                    return $collColaboradorTecnologias;
+                }
+
+                if ($partial && $this->collColaboradorTecnologias) {
+                    foreach ($this->collColaboradorTecnologias as $obj) {
+                        if ($obj->isNew()) {
+                            $collColaboradorTecnologias[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collColaboradorTecnologias = $collColaboradorTecnologias;
+                $this->collColaboradorTecnologiasPartial = false;
+            }
+        }
+
+        return $this->collColaboradorTecnologias;
+    }
+
+    /**
+     * Sets a collection of ChildColaboradorTecnologia objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $colaboradorTecnologias A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildColaborador The current object (for fluent API support)
+     */
+    public function setColaboradorTecnologias(Collection $colaboradorTecnologias, ConnectionInterface $con = null)
+    {
+        /** @var ChildColaboradorTecnologia[] $colaboradorTecnologiasToDelete */
+        $colaboradorTecnologiasToDelete = $this->getColaboradorTecnologias(new Criteria(), $con)->diff($colaboradorTecnologias);
+
+
+        $this->colaboradorTecnologiasScheduledForDeletion = $colaboradorTecnologiasToDelete;
+
+        foreach ($colaboradorTecnologiasToDelete as $colaboradorTecnologiaRemoved) {
+            $colaboradorTecnologiaRemoved->setColaborador(null);
+        }
+
+        $this->collColaboradorTecnologias = null;
+        foreach ($colaboradorTecnologias as $colaboradorTecnologia) {
+            $this->addColaboradorTecnologia($colaboradorTecnologia);
+        }
+
+        $this->collColaboradorTecnologias = $colaboradorTecnologias;
+        $this->collColaboradorTecnologiasPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related ColaboradorTecnologia objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related ColaboradorTecnologia objects.
+     * @throws PropelException
+     */
+    public function countColaboradorTecnologias(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collColaboradorTecnologiasPartial && !$this->isNew();
+        if (null === $this->collColaboradorTecnologias || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collColaboradorTecnologias) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getColaboradorTecnologias());
+            }
+
+            $query = ChildColaboradorTecnologiaQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByColaborador($this)
+                ->count($con);
+        }
+
+        return count($this->collColaboradorTecnologias);
+    }
+
+    /**
+     * Method called to associate a ChildColaboradorTecnologia object to this object
+     * through the ChildColaboradorTecnologia foreign key attribute.
+     *
+     * @param  ChildColaboradorTecnologia $l ChildColaboradorTecnologia
+     * @return $this|\Colaborador The current object (for fluent API support)
+     */
+    public function addColaboradorTecnologia(ChildColaboradorTecnologia $l)
+    {
+        if ($this->collColaboradorTecnologias === null) {
+            $this->initColaboradorTecnologias();
+            $this->collColaboradorTecnologiasPartial = true;
+        }
+
+        if (!$this->collColaboradorTecnologias->contains($l)) {
+            $this->doAddColaboradorTecnologia($l);
+
+            if ($this->colaboradorTecnologiasScheduledForDeletion and $this->colaboradorTecnologiasScheduledForDeletion->contains($l)) {
+                $this->colaboradorTecnologiasScheduledForDeletion->remove($this->colaboradorTecnologiasScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildColaboradorTecnologia $colaboradorTecnologia The ChildColaboradorTecnologia object to add.
+     */
+    protected function doAddColaboradorTecnologia(ChildColaboradorTecnologia $colaboradorTecnologia)
+    {
+        $this->collColaboradorTecnologias[]= $colaboradorTecnologia;
+        $colaboradorTecnologia->setColaborador($this);
+    }
+
+    /**
+     * @param  ChildColaboradorTecnologia $colaboradorTecnologia The ChildColaboradorTecnologia object to remove.
+     * @return $this|ChildColaborador The current object (for fluent API support)
+     */
+    public function removeColaboradorTecnologia(ChildColaboradorTecnologia $colaboradorTecnologia)
+    {
+        if ($this->getColaboradorTecnologias()->contains($colaboradorTecnologia)) {
+            $pos = $this->collColaboradorTecnologias->search($colaboradorTecnologia);
+            $this->collColaboradorTecnologias->remove($pos);
+            if (null === $this->colaboradorTecnologiasScheduledForDeletion) {
+                $this->colaboradorTecnologiasScheduledForDeletion = clone $this->collColaboradorTecnologias;
+                $this->colaboradorTecnologiasScheduledForDeletion->clear();
+            }
+            $this->colaboradorTecnologiasScheduledForDeletion[]= $colaboradorTecnologia;
+            $colaboradorTecnologia->setColaborador(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Colaborador is new, it will return
+     * an empty collection; or if this Colaborador has previously
+     * been saved, it will retrieve related ColaboradorTecnologias from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Colaborador.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildColaboradorTecnologia[] List of ChildColaboradorTecnologia objects
+     * @phpstan-return ObjectCollection&\Traversable<ChildColaboradorTecnologia}> List of ChildColaboradorTecnologia objects
+     */
+    public function getColaboradorTecnologiasJoinTecnologia(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildColaboradorTecnologiaQuery::create(null, $criteria);
+        $query->joinWith('Tecnologia', $joinBehavior);
+
+        return $this->getColaboradorTecnologias($query, $con);
     }
 
     /**
@@ -2343,17 +2365,9 @@ abstract class Colaborador implements ActiveRecordInterface
      */
     public function clear()
     {
-        if (null !== $this->aTecnologia) {
-            $this->aTecnologia->removeColaborador($this);
-        }
-        if (null !== $this->aUnidade) {
-            $this->aUnidade->removeColaborador($this);
-        }
         $this->id = null;
         $this->nome = null;
         $this->bitrix_id = null;
-        $this->unidade_id = null;
-        $this->tecnologia_id = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -2372,6 +2386,11 @@ abstract class Colaborador implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collColaboradorTecnologias) {
+                foreach ($this->collColaboradorTecnologias as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collTasks) {
                 foreach ($this->collTasks as $o) {
                     $o->clearAllReferences($deep);
@@ -2389,11 +2408,10 @@ abstract class Colaborador implements ActiveRecordInterface
             }
         } // if ($deep)
 
+        $this->collColaboradorTecnologias = null;
         $this->collTasks = null;
         $this->collTaskAccomplices = null;
         $this->collTaskAuditors = null;
-        $this->aTecnologia = null;
-        $this->aUnidade = null;
     }
 
     /**

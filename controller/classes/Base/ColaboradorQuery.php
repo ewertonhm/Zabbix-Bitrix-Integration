@@ -23,14 +23,10 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildColaboradorQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildColaboradorQuery orderByNome($order = Criteria::ASC) Order by the nome column
  * @method     ChildColaboradorQuery orderByBitrixId($order = Criteria::ASC) Order by the bitrix_id column
- * @method     ChildColaboradorQuery orderByUnidadeId($order = Criteria::ASC) Order by the unidade_id column
- * @method     ChildColaboradorQuery orderByTecnologiaId($order = Criteria::ASC) Order by the tecnologia_id column
  *
  * @method     ChildColaboradorQuery groupById() Group by the id column
  * @method     ChildColaboradorQuery groupByNome() Group by the nome column
  * @method     ChildColaboradorQuery groupByBitrixId() Group by the bitrix_id column
- * @method     ChildColaboradorQuery groupByUnidadeId() Group by the unidade_id column
- * @method     ChildColaboradorQuery groupByTecnologiaId() Group by the tecnologia_id column
  *
  * @method     ChildColaboradorQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildColaboradorQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -40,25 +36,15 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildColaboradorQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildColaboradorQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildColaboradorQuery leftJoinTecnologia($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tecnologia relation
- * @method     ChildColaboradorQuery rightJoinTecnologia($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tecnologia relation
- * @method     ChildColaboradorQuery innerJoinTecnologia($relationAlias = null) Adds a INNER JOIN clause to the query using the Tecnologia relation
+ * @method     ChildColaboradorQuery leftJoinColaboradorTecnologia($relationAlias = null) Adds a LEFT JOIN clause to the query using the ColaboradorTecnologia relation
+ * @method     ChildColaboradorQuery rightJoinColaboradorTecnologia($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ColaboradorTecnologia relation
+ * @method     ChildColaboradorQuery innerJoinColaboradorTecnologia($relationAlias = null) Adds a INNER JOIN clause to the query using the ColaboradorTecnologia relation
  *
- * @method     ChildColaboradorQuery joinWithTecnologia($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Tecnologia relation
+ * @method     ChildColaboradorQuery joinWithColaboradorTecnologia($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the ColaboradorTecnologia relation
  *
- * @method     ChildColaboradorQuery leftJoinWithTecnologia() Adds a LEFT JOIN clause and with to the query using the Tecnologia relation
- * @method     ChildColaboradorQuery rightJoinWithTecnologia() Adds a RIGHT JOIN clause and with to the query using the Tecnologia relation
- * @method     ChildColaboradorQuery innerJoinWithTecnologia() Adds a INNER JOIN clause and with to the query using the Tecnologia relation
- *
- * @method     ChildColaboradorQuery leftJoinUnidade($relationAlias = null) Adds a LEFT JOIN clause to the query using the Unidade relation
- * @method     ChildColaboradorQuery rightJoinUnidade($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Unidade relation
- * @method     ChildColaboradorQuery innerJoinUnidade($relationAlias = null) Adds a INNER JOIN clause to the query using the Unidade relation
- *
- * @method     ChildColaboradorQuery joinWithUnidade($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Unidade relation
- *
- * @method     ChildColaboradorQuery leftJoinWithUnidade() Adds a LEFT JOIN clause and with to the query using the Unidade relation
- * @method     ChildColaboradorQuery rightJoinWithUnidade() Adds a RIGHT JOIN clause and with to the query using the Unidade relation
- * @method     ChildColaboradorQuery innerJoinWithUnidade() Adds a INNER JOIN clause and with to the query using the Unidade relation
+ * @method     ChildColaboradorQuery leftJoinWithColaboradorTecnologia() Adds a LEFT JOIN clause and with to the query using the ColaboradorTecnologia relation
+ * @method     ChildColaboradorQuery rightJoinWithColaboradorTecnologia() Adds a RIGHT JOIN clause and with to the query using the ColaboradorTecnologia relation
+ * @method     ChildColaboradorQuery innerJoinWithColaboradorTecnologia() Adds a INNER JOIN clause and with to the query using the ColaboradorTecnologia relation
  *
  * @method     ChildColaboradorQuery leftJoinTask($relationAlias = null) Adds a LEFT JOIN clause to the query using the Task relation
  * @method     ChildColaboradorQuery rightJoinTask($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Task relation
@@ -90,16 +76,14 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildColaboradorQuery rightJoinWithTaskAuditor() Adds a RIGHT JOIN clause and with to the query using the TaskAuditor relation
  * @method     ChildColaboradorQuery innerJoinWithTaskAuditor() Adds a INNER JOIN clause and with to the query using the TaskAuditor relation
  *
- * @method     \TecnologiaQuery|\UnidadeQuery|\TaskQuery|\TaskAccompliceQuery|\TaskAuditorQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \ColaboradorTecnologiaQuery|\TaskQuery|\TaskAccompliceQuery|\TaskAuditorQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildColaborador|null findOne(ConnectionInterface $con = null) Return the first ChildColaborador matching the query
  * @method     ChildColaborador findOneOrCreate(ConnectionInterface $con = null) Return the first ChildColaborador matching the query, or a new ChildColaborador object populated from the query conditions when no match is found
  *
  * @method     ChildColaborador|null findOneById(int $id) Return the first ChildColaborador filtered by the id column
  * @method     ChildColaborador|null findOneByNome(string $nome) Return the first ChildColaborador filtered by the nome column
- * @method     ChildColaborador|null findOneByBitrixId(string $bitrix_id) Return the first ChildColaborador filtered by the bitrix_id column
- * @method     ChildColaborador|null findOneByUnidadeId(int $unidade_id) Return the first ChildColaborador filtered by the unidade_id column
- * @method     ChildColaborador|null findOneByTecnologiaId(int $tecnologia_id) Return the first ChildColaborador filtered by the tecnologia_id column *
+ * @method     ChildColaborador|null findOneByBitrixId(string $bitrix_id) Return the first ChildColaborador filtered by the bitrix_id column *
 
  * @method     ChildColaborador requirePk($key, ConnectionInterface $con = null) Return the ChildColaborador by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildColaborador requireOne(ConnectionInterface $con = null) Return the first ChildColaborador matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -107,8 +91,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildColaborador requireOneById(int $id) Return the first ChildColaborador filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildColaborador requireOneByNome(string $nome) Return the first ChildColaborador filtered by the nome column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildColaborador requireOneByBitrixId(string $bitrix_id) Return the first ChildColaborador filtered by the bitrix_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildColaborador requireOneByUnidadeId(int $unidade_id) Return the first ChildColaborador filtered by the unidade_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildColaborador requireOneByTecnologiaId(int $tecnologia_id) Return the first ChildColaborador filtered by the tecnologia_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildColaborador[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildColaborador objects based on current ModelCriteria
  * @psalm-method ObjectCollection&\Traversable<ChildColaborador> find(ConnectionInterface $con = null) Return ChildColaborador objects based on current ModelCriteria
@@ -118,10 +100,6 @@ use Propel\Runtime\Exception\PropelException;
  * @psalm-method ObjectCollection&\Traversable<ChildColaborador> findByNome(string $nome) Return ChildColaborador objects filtered by the nome column
  * @method     ChildColaborador[]|ObjectCollection findByBitrixId(string $bitrix_id) Return ChildColaborador objects filtered by the bitrix_id column
  * @psalm-method ObjectCollection&\Traversable<ChildColaborador> findByBitrixId(string $bitrix_id) Return ChildColaborador objects filtered by the bitrix_id column
- * @method     ChildColaborador[]|ObjectCollection findByUnidadeId(int $unidade_id) Return ChildColaborador objects filtered by the unidade_id column
- * @psalm-method ObjectCollection&\Traversable<ChildColaborador> findByUnidadeId(int $unidade_id) Return ChildColaborador objects filtered by the unidade_id column
- * @method     ChildColaborador[]|ObjectCollection findByTecnologiaId(int $tecnologia_id) Return ChildColaborador objects filtered by the tecnologia_id column
- * @psalm-method ObjectCollection&\Traversable<ChildColaborador> findByTecnologiaId(int $tecnologia_id) Return ChildColaborador objects filtered by the tecnologia_id column
  * @method     ChildColaborador[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildColaborador> paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
@@ -221,7 +199,7 @@ abstract class ColaboradorQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, nome, bitrix_id, unidade_id, tecnologia_id FROM colaborador WHERE id = :p0';
+        $sql = 'SELECT id, nome, bitrix_id FROM colaborador WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -403,130 +381,40 @@ abstract class ColaboradorQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the unidade_id column
+     * Filter the query by a related \ColaboradorTecnologia object
      *
-     * Example usage:
-     * <code>
-     * $query->filterByUnidadeId(1234); // WHERE unidade_id = 1234
-     * $query->filterByUnidadeId(array(12, 34)); // WHERE unidade_id IN (12, 34)
-     * $query->filterByUnidadeId(array('min' => 12)); // WHERE unidade_id > 12
-     * </code>
-     *
-     * @see       filterByUnidade()
-     *
-     * @param     mixed $unidadeId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildColaboradorQuery The current query, for fluid interface
-     */
-    public function filterByUnidadeId($unidadeId = null, $comparison = null)
-    {
-        if (is_array($unidadeId)) {
-            $useMinMax = false;
-            if (isset($unidadeId['min'])) {
-                $this->addUsingAlias(ColaboradorTableMap::COL_UNIDADE_ID, $unidadeId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($unidadeId['max'])) {
-                $this->addUsingAlias(ColaboradorTableMap::COL_UNIDADE_ID, $unidadeId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(ColaboradorTableMap::COL_UNIDADE_ID, $unidadeId, $comparison);
-    }
-
-    /**
-     * Filter the query on the tecnologia_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByTecnologiaId(1234); // WHERE tecnologia_id = 1234
-     * $query->filterByTecnologiaId(array(12, 34)); // WHERE tecnologia_id IN (12, 34)
-     * $query->filterByTecnologiaId(array('min' => 12)); // WHERE tecnologia_id > 12
-     * </code>
-     *
-     * @see       filterByTecnologia()
-     *
-     * @param     mixed $tecnologiaId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildColaboradorQuery The current query, for fluid interface
-     */
-    public function filterByTecnologiaId($tecnologiaId = null, $comparison = null)
-    {
-        if (is_array($tecnologiaId)) {
-            $useMinMax = false;
-            if (isset($tecnologiaId['min'])) {
-                $this->addUsingAlias(ColaboradorTableMap::COL_TECNOLOGIA_ID, $tecnologiaId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($tecnologiaId['max'])) {
-                $this->addUsingAlias(ColaboradorTableMap::COL_TECNOLOGIA_ID, $tecnologiaId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(ColaboradorTableMap::COL_TECNOLOGIA_ID, $tecnologiaId, $comparison);
-    }
-
-    /**
-     * Filter the query by a related \Tecnologia object
-     *
-     * @param \Tecnologia|ObjectCollection $tecnologia The related object(s) to use as filter
+     * @param \ColaboradorTecnologia|ObjectCollection $colaboradorTecnologia the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @throws \Propel\Runtime\Exception\PropelException
      *
      * @return ChildColaboradorQuery The current query, for fluid interface
      */
-    public function filterByTecnologia($tecnologia, $comparison = null)
+    public function filterByColaboradorTecnologia($colaboradorTecnologia, $comparison = null)
     {
-        if ($tecnologia instanceof \Tecnologia) {
+        if ($colaboradorTecnologia instanceof \ColaboradorTecnologia) {
             return $this
-                ->addUsingAlias(ColaboradorTableMap::COL_TECNOLOGIA_ID, $tecnologia->getId(), $comparison);
-        } elseif ($tecnologia instanceof ObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
+                ->addUsingAlias(ColaboradorTableMap::COL_ID, $colaboradorTecnologia->getColaboradorId(), $comparison);
+        } elseif ($colaboradorTecnologia instanceof ObjectCollection) {
             return $this
-                ->addUsingAlias(ColaboradorTableMap::COL_TECNOLOGIA_ID, $tecnologia->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->useColaboradorTecnologiaQuery()
+                ->filterByPrimaryKeys($colaboradorTecnologia->getPrimaryKeys())
+                ->endUse();
         } else {
-            throw new PropelException('filterByTecnologia() only accepts arguments of type \Tecnologia or Collection');
+            throw new PropelException('filterByColaboradorTecnologia() only accepts arguments of type \ColaboradorTecnologia or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Tecnologia relation
+     * Adds a JOIN clause to the query using the ColaboradorTecnologia relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildColaboradorQuery The current query, for fluid interface
      */
-    public function joinTecnologia($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinColaboradorTecnologia($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Tecnologia');
+        $relationMap = $tableMap->getRelation('ColaboradorTecnologia');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -541,14 +429,14 @@ abstract class ColaboradorQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Tecnologia');
+            $this->addJoinObject($join, 'ColaboradorTecnologia');
         }
 
         return $this;
     }
 
     /**
-     * Use the Tecnologia relation Tecnologia object
+     * Use the ColaboradorTecnologia relation ColaboradorTecnologia object
      *
      * @see useQuery()
      *
@@ -556,19 +444,19 @@ abstract class ColaboradorQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return \TecnologiaQuery A secondary query class using the current class as primary query
+     * @return \ColaboradorTecnologiaQuery A secondary query class using the current class as primary query
      */
-    public function useTecnologiaQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useColaboradorTecnologiaQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinTecnologia($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Tecnologia', '\TecnologiaQuery');
+            ->joinColaboradorTecnologia($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'ColaboradorTecnologia', '\ColaboradorTecnologiaQuery');
     }
 
     /**
-     * Use the Tecnologia relation Tecnologia object
+     * Use the ColaboradorTecnologia relation ColaboradorTecnologia object
      *
-     * @param callable(\TecnologiaQuery):\TecnologiaQuery $callable A function working on the related query
+     * @param callable(\ColaboradorTecnologiaQuery):\ColaboradorTecnologiaQuery $callable A function working on the related query
      *
      * @param string|null $relationAlias optional alias for the relation
      *
@@ -576,12 +464,12 @@ abstract class ColaboradorQuery extends ModelCriteria
      *
      * @return $this
      */
-    public function withTecnologiaQuery(
+    public function withColaboradorTecnologiaQuery(
         callable $callable,
         string $relationAlias = null,
         ?string $joinType = Criteria::LEFT_JOIN
     ) {
-        $relatedQuery = $this->useTecnologiaQuery(
+        $relatedQuery = $this->useColaboradorTecnologiaQuery(
             $relationAlias,
             $joinType
         );
@@ -591,7 +479,7 @@ abstract class ColaboradorQuery extends ModelCriteria
         return $this;
     }
     /**
-     * Use the relation to Tecnologia table for an EXISTS query.
+     * Use the relation to ColaboradorTecnologia table for an EXISTS query.
      *
      * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
      *
@@ -599,158 +487,26 @@ abstract class ColaboradorQuery extends ModelCriteria
      * @param string|null $modelAlias sets an alias for the nested query
      * @param string $typeOfExists Either ExistsCriterion::TYPE_EXISTS or ExistsCriterion::TYPE_NOT_EXISTS
      *
-     * @return \TecnologiaQuery The inner query object of the EXISTS statement
+     * @return \ColaboradorTecnologiaQuery The inner query object of the EXISTS statement
      */
-    public function useTecnologiaExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    public function useColaboradorTecnologiaExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
     {
-        return $this->useExistsQuery('Tecnologia', $modelAlias, $queryClass, $typeOfExists);
+        return $this->useExistsQuery('ColaboradorTecnologia', $modelAlias, $queryClass, $typeOfExists);
     }
 
     /**
-     * Use the relation to Tecnologia table for a NOT EXISTS query.
+     * Use the relation to ColaboradorTecnologia table for a NOT EXISTS query.
      *
-     * @see useTecnologiaExistsQuery()
+     * @see useColaboradorTecnologiaExistsQuery()
      *
      * @param string|null $modelAlias sets an alias for the nested query
      * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
      *
-     * @return \TecnologiaQuery The inner query object of the NOT EXISTS statement
+     * @return \ColaboradorTecnologiaQuery The inner query object of the NOT EXISTS statement
      */
-    public function useTecnologiaNotExistsQuery($modelAlias = null, $queryClass = null)
+    public function useColaboradorTecnologiaNotExistsQuery($modelAlias = null, $queryClass = null)
     {
-        return $this->useExistsQuery('Tecnologia', $modelAlias, $queryClass, 'NOT EXISTS');
-    }
-    /**
-     * Filter the query by a related \Unidade object
-     *
-     * @param \Unidade|ObjectCollection $unidade The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @throws \Propel\Runtime\Exception\PropelException
-     *
-     * @return ChildColaboradorQuery The current query, for fluid interface
-     */
-    public function filterByUnidade($unidade, $comparison = null)
-    {
-        if ($unidade instanceof \Unidade) {
-            return $this
-                ->addUsingAlias(ColaboradorTableMap::COL_UNIDADE_ID, $unidade->getId(), $comparison);
-        } elseif ($unidade instanceof ObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(ColaboradorTableMap::COL_UNIDADE_ID, $unidade->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByUnidade() only accepts arguments of type \Unidade or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Unidade relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildColaboradorQuery The current query, for fluid interface
-     */
-    public function joinUnidade($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Unidade');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Unidade');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Unidade relation Unidade object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \UnidadeQuery A secondary query class using the current class as primary query
-     */
-    public function useUnidadeQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinUnidade($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Unidade', '\UnidadeQuery');
-    }
-
-    /**
-     * Use the Unidade relation Unidade object
-     *
-     * @param callable(\UnidadeQuery):\UnidadeQuery $callable A function working on the related query
-     *
-     * @param string|null $relationAlias optional alias for the relation
-     *
-     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this
-     */
-    public function withUnidadeQuery(
-        callable $callable,
-        string $relationAlias = null,
-        ?string $joinType = Criteria::LEFT_JOIN
-    ) {
-        $relatedQuery = $this->useUnidadeQuery(
-            $relationAlias,
-            $joinType
-        );
-        $callable($relatedQuery);
-        $relatedQuery->endUse();
-
-        return $this;
-    }
-    /**
-     * Use the relation to Unidade table for an EXISTS query.
-     *
-     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
-     *
-     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
-     * @param string|null $modelAlias sets an alias for the nested query
-     * @param string $typeOfExists Either ExistsCriterion::TYPE_EXISTS or ExistsCriterion::TYPE_NOT_EXISTS
-     *
-     * @return \UnidadeQuery The inner query object of the EXISTS statement
-     */
-    public function useUnidadeExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
-    {
-        return $this->useExistsQuery('Unidade', $modelAlias, $queryClass, $typeOfExists);
-    }
-
-    /**
-     * Use the relation to Unidade table for a NOT EXISTS query.
-     *
-     * @see useUnidadeExistsQuery()
-     *
-     * @param string|null $modelAlias sets an alias for the nested query
-     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
-     *
-     * @return \UnidadeQuery The inner query object of the NOT EXISTS statement
-     */
-    public function useUnidadeNotExistsQuery($modelAlias = null, $queryClass = null)
-    {
-        return $this->useExistsQuery('Unidade', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $this->useExistsQuery('ColaboradorTecnologia', $modelAlias, $queryClass, 'NOT EXISTS');
     }
     /**
      * Filter the query by a related \Task object

@@ -1,0 +1,41 @@
+
+{% extends "base.twig" %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block content %}
+    <form method="post" action="cad-tecnologia.php">
+        <fieldset>
+            <label for="nameField">Cadastrar Tecnologia</label>
+            <input type="text" {% if editar %}name="editar" value="{{ editar['tecnologia'] }}"{% else %}name="cadastrar" placeholder="Nome da Tecnologia" {% endif %}>
+            {% if editar %}
+            <input type="hidden" name="id" value="{{ editar['id'] }}">
+            {% endif %}
+            <input class="button-primary" type="submit" {% if editar %} value="Editar" {% else %} value="Cadastrar" {% endif %}>
+        </fieldset>
+    </form>
+    {% if tecnologias %}
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tecnologia</th>
+                <th>Editar</th>
+                <th>Deletar</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for tecnologia in tecnologias %}
+                    <tr>
+                        <td>{{ tecnologia.id }}</td>
+                        <td>{{ tecnologia.tecnologia }}</td>
+                        <td><a class="button button-small" href="cad-tecnologia.php?edite={{ tecnologia.id }}">Editar</a></td>
+                        <td><a class="button button-small" href="cad-tecnologia.php?delete={{ tecnologia.id }}">Deletar</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

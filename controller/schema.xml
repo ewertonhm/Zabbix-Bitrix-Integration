@@ -4,12 +4,26 @@
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="nome" phpName="Nome" type="VARCHAR" size="90" required="true"/>
     <column name="bitrix_id" phpName="BitrixId" type="VARCHAR" size="10" required="true"/>
-    <column name="unidade_id" phpName="UnidadeId" type="INTEGER"/>
+  </table>
+  <table name="colaborador_tecnologia" idMethod="native" phpName="ColaboradorTecnologia">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="tecnologia_id" phpName="TecnologiaId" type="INTEGER"/>
-    <foreign-key foreignTable="tecnologia" name="colaborador_tecnologia_id_fkey">
+    <column name="colaborador_id" phpName="ColaboradorId" type="INTEGER"/>
+    <foreign-key foreignTable="colaborador" name="colaborador_tecnologia_colaborador_id_fkey">
+      <reference local="colaborador_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="tecnologia" name="colaborador_tecnologia_tecnologia_id_fkey">
       <reference local="tecnologia_id" foreign="id"/>
     </foreign-key>
-    <foreign-key foreignTable="unidade" name="colaborador_unidade_id_fkey">
+  </table>
+  <table name="colaborador_unidade" idMethod="native" phpName="ColaboradorUnidade">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="unidade_id" phpName="UnidadeId" type="INTEGER"/>
+    <column name="colaborador_id" phpName="ColaboradorId" type="INTEGER"/>
+    <foreign-key foreignTable="unidade" name="colaborador_unidade_colaborador_id_fkey">
+      <reference local="colaborador_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="unidade" name="colaborador_unidade_unidade_id_fkey">
       <reference local="unidade_id" foreign="id"/>
     </foreign-key>
   </table>

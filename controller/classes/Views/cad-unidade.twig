@@ -1,0 +1,46 @@
+{% extends "base.twig" %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block content %}
+    <form method="post" action="cad-unidade.php">
+        <fieldset>
+            <label for="nameField">Cadastrar Unidade</label>
+            {% if editar %}
+            <input type="text" name="nome" value="{{ editar['nome'] }}">
+            <input type="text" name="sigla" value="{{ editar['sigla'] }}">
+            <input type="hidden" name="id" value="{{ editar['id'] }}">
+            {% else %}
+            <input type="text" name="nome" placeholder="Nome da Unidade">
+            <input type="text" name="sigla" placeholder="Sigla da Unidade">          
+            {% endif %}
+            <input class="button-primary" type="submit" {% if editar %} value="Editar" name='editar' {% else %} value="Cadastrar" name='cadastrar'{% endif %}>
+        </fieldset>
+    </form>
+    {% if unidades %}
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Sigla</th>
+                <th>Editar</th>
+                <th>Deletar</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for unidade in unidades %}
+                    <tr>
+                        <td>{{ unidade.id }}</td>
+                        <td>{{ unidade.nome }}</td>
+                        <td>{{ unidade.sigla }}</td>
+                        <td><a class="button button-small" href="cad-unidade.php?edite={{  unidade.id }}">Editar</a></td>
+                        <td><a class="button button-small" href="cad-unidade.php?delete={{ unidade.id }}">Deletar</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

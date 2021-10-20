@@ -36,17 +36,27 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUnidadeQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildUnidadeQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildUnidadeQuery leftJoinColaborador($relationAlias = null) Adds a LEFT JOIN clause to the query using the Colaborador relation
- * @method     ChildUnidadeQuery rightJoinColaborador($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Colaborador relation
- * @method     ChildUnidadeQuery innerJoinColaborador($relationAlias = null) Adds a INNER JOIN clause to the query using the Colaborador relation
+ * @method     ChildUnidadeQuery leftJoinColaboradorUnidadeRelatedByColaboradorId($relationAlias = null) Adds a LEFT JOIN clause to the query using the ColaboradorUnidadeRelatedByColaboradorId relation
+ * @method     ChildUnidadeQuery rightJoinColaboradorUnidadeRelatedByColaboradorId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ColaboradorUnidadeRelatedByColaboradorId relation
+ * @method     ChildUnidadeQuery innerJoinColaboradorUnidadeRelatedByColaboradorId($relationAlias = null) Adds a INNER JOIN clause to the query using the ColaboradorUnidadeRelatedByColaboradorId relation
  *
- * @method     ChildUnidadeQuery joinWithColaborador($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Colaborador relation
+ * @method     ChildUnidadeQuery joinWithColaboradorUnidadeRelatedByColaboradorId($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the ColaboradorUnidadeRelatedByColaboradorId relation
  *
- * @method     ChildUnidadeQuery leftJoinWithColaborador() Adds a LEFT JOIN clause and with to the query using the Colaborador relation
- * @method     ChildUnidadeQuery rightJoinWithColaborador() Adds a RIGHT JOIN clause and with to the query using the Colaborador relation
- * @method     ChildUnidadeQuery innerJoinWithColaborador() Adds a INNER JOIN clause and with to the query using the Colaborador relation
+ * @method     ChildUnidadeQuery leftJoinWithColaboradorUnidadeRelatedByColaboradorId() Adds a LEFT JOIN clause and with to the query using the ColaboradorUnidadeRelatedByColaboradorId relation
+ * @method     ChildUnidadeQuery rightJoinWithColaboradorUnidadeRelatedByColaboradorId() Adds a RIGHT JOIN clause and with to the query using the ColaboradorUnidadeRelatedByColaboradorId relation
+ * @method     ChildUnidadeQuery innerJoinWithColaboradorUnidadeRelatedByColaboradorId() Adds a INNER JOIN clause and with to the query using the ColaboradorUnidadeRelatedByColaboradorId relation
  *
- * @method     \ColaboradorQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     ChildUnidadeQuery leftJoinColaboradorUnidadeRelatedByUnidadeId($relationAlias = null) Adds a LEFT JOIN clause to the query using the ColaboradorUnidadeRelatedByUnidadeId relation
+ * @method     ChildUnidadeQuery rightJoinColaboradorUnidadeRelatedByUnidadeId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ColaboradorUnidadeRelatedByUnidadeId relation
+ * @method     ChildUnidadeQuery innerJoinColaboradorUnidadeRelatedByUnidadeId($relationAlias = null) Adds a INNER JOIN clause to the query using the ColaboradorUnidadeRelatedByUnidadeId relation
+ *
+ * @method     ChildUnidadeQuery joinWithColaboradorUnidadeRelatedByUnidadeId($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the ColaboradorUnidadeRelatedByUnidadeId relation
+ *
+ * @method     ChildUnidadeQuery leftJoinWithColaboradorUnidadeRelatedByUnidadeId() Adds a LEFT JOIN clause and with to the query using the ColaboradorUnidadeRelatedByUnidadeId relation
+ * @method     ChildUnidadeQuery rightJoinWithColaboradorUnidadeRelatedByUnidadeId() Adds a RIGHT JOIN clause and with to the query using the ColaboradorUnidadeRelatedByUnidadeId relation
+ * @method     ChildUnidadeQuery innerJoinWithColaboradorUnidadeRelatedByUnidadeId() Adds a INNER JOIN clause and with to the query using the ColaboradorUnidadeRelatedByUnidadeId relation
+ *
+ * @method     \ColaboradorUnidadeQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildUnidade|null findOne(ConnectionInterface $con = null) Return the first ChildUnidade matching the query
  * @method     ChildUnidade findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUnidade matching the query, or a new ChildUnidade object populated from the query conditions when no match is found
@@ -351,40 +361,40 @@ abstract class UnidadeQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \Colaborador object
+     * Filter the query by a related \ColaboradorUnidade object
      *
-     * @param \Colaborador|ObjectCollection $colaborador the related object to use as filter
+     * @param \ColaboradorUnidade|ObjectCollection $colaboradorUnidade the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildUnidadeQuery The current query, for fluid interface
      */
-    public function filterByColaborador($colaborador, $comparison = null)
+    public function filterByColaboradorUnidadeRelatedByColaboradorId($colaboradorUnidade, $comparison = null)
     {
-        if ($colaborador instanceof \Colaborador) {
+        if ($colaboradorUnidade instanceof \ColaboradorUnidade) {
             return $this
-                ->addUsingAlias(UnidadeTableMap::COL_ID, $colaborador->getUnidadeId(), $comparison);
-        } elseif ($colaborador instanceof ObjectCollection) {
+                ->addUsingAlias(UnidadeTableMap::COL_ID, $colaboradorUnidade->getColaboradorId(), $comparison);
+        } elseif ($colaboradorUnidade instanceof ObjectCollection) {
             return $this
-                ->useColaboradorQuery()
-                ->filterByPrimaryKeys($colaborador->getPrimaryKeys())
+                ->useColaboradorUnidadeRelatedByColaboradorIdQuery()
+                ->filterByPrimaryKeys($colaboradorUnidade->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByColaborador() only accepts arguments of type \Colaborador or Collection');
+            throw new PropelException('filterByColaboradorUnidadeRelatedByColaboradorId() only accepts arguments of type \ColaboradorUnidade or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Colaborador relation
+     * Adds a JOIN clause to the query using the ColaboradorUnidadeRelatedByColaboradorId relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildUnidadeQuery The current query, for fluid interface
      */
-    public function joinColaborador($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinColaboradorUnidadeRelatedByColaboradorId($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Colaborador');
+        $relationMap = $tableMap->getRelation('ColaboradorUnidadeRelatedByColaboradorId');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -399,14 +409,14 @@ abstract class UnidadeQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Colaborador');
+            $this->addJoinObject($join, 'ColaboradorUnidadeRelatedByColaboradorId');
         }
 
         return $this;
     }
 
     /**
-     * Use the Colaborador relation Colaborador object
+     * Use the ColaboradorUnidadeRelatedByColaboradorId relation ColaboradorUnidade object
      *
      * @see useQuery()
      *
@@ -414,19 +424,19 @@ abstract class UnidadeQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return \ColaboradorQuery A secondary query class using the current class as primary query
+     * @return \ColaboradorUnidadeQuery A secondary query class using the current class as primary query
      */
-    public function useColaboradorQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useColaboradorUnidadeRelatedByColaboradorIdQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinColaborador($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Colaborador', '\ColaboradorQuery');
+            ->joinColaboradorUnidadeRelatedByColaboradorId($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'ColaboradorUnidadeRelatedByColaboradorId', '\ColaboradorUnidadeQuery');
     }
 
     /**
-     * Use the Colaborador relation Colaborador object
+     * Use the ColaboradorUnidadeRelatedByColaboradorId relation ColaboradorUnidade object
      *
-     * @param callable(\ColaboradorQuery):\ColaboradorQuery $callable A function working on the related query
+     * @param callable(\ColaboradorUnidadeQuery):\ColaboradorUnidadeQuery $callable A function working on the related query
      *
      * @param string|null $relationAlias optional alias for the relation
      *
@@ -434,12 +444,12 @@ abstract class UnidadeQuery extends ModelCriteria
      *
      * @return $this
      */
-    public function withColaboradorQuery(
+    public function withColaboradorUnidadeRelatedByColaboradorIdQuery(
         callable $callable,
         string $relationAlias = null,
         ?string $joinType = Criteria::LEFT_JOIN
     ) {
-        $relatedQuery = $this->useColaboradorQuery(
+        $relatedQuery = $this->useColaboradorUnidadeRelatedByColaboradorIdQuery(
             $relationAlias,
             $joinType
         );
@@ -449,7 +459,7 @@ abstract class UnidadeQuery extends ModelCriteria
         return $this;
     }
     /**
-     * Use the relation to Colaborador table for an EXISTS query.
+     * Use the ColaboradorUnidadeRelatedByColaboradorId relation to the ColaboradorUnidade table for an EXISTS query.
      *
      * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
      *
@@ -457,26 +467,154 @@ abstract class UnidadeQuery extends ModelCriteria
      * @param string|null $modelAlias sets an alias for the nested query
      * @param string $typeOfExists Either ExistsCriterion::TYPE_EXISTS or ExistsCriterion::TYPE_NOT_EXISTS
      *
-     * @return \ColaboradorQuery The inner query object of the EXISTS statement
+     * @return \ColaboradorUnidadeQuery The inner query object of the EXISTS statement
      */
-    public function useColaboradorExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    public function useColaboradorUnidadeRelatedByColaboradorIdExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
     {
-        return $this->useExistsQuery('Colaborador', $modelAlias, $queryClass, $typeOfExists);
+        return $this->useExistsQuery('ColaboradorUnidadeRelatedByColaboradorId', $modelAlias, $queryClass, $typeOfExists);
     }
 
     /**
-     * Use the relation to Colaborador table for a NOT EXISTS query.
+     * Use the ColaboradorUnidadeRelatedByColaboradorId relation to the ColaboradorUnidade table for a NOT EXISTS query.
      *
-     * @see useColaboradorExistsQuery()
+     * @see useColaboradorUnidadeRelatedByColaboradorIdExistsQuery()
      *
      * @param string|null $modelAlias sets an alias for the nested query
      * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
      *
-     * @return \ColaboradorQuery The inner query object of the NOT EXISTS statement
+     * @return \ColaboradorUnidadeQuery The inner query object of the NOT EXISTS statement
      */
-    public function useColaboradorNotExistsQuery($modelAlias = null, $queryClass = null)
+    public function useColaboradorUnidadeRelatedByColaboradorIdNotExistsQuery($modelAlias = null, $queryClass = null)
     {
-        return $this->useExistsQuery('Colaborador', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $this->useExistsQuery('ColaboradorUnidadeRelatedByColaboradorId', $modelAlias, $queryClass, 'NOT EXISTS');
+    }
+    /**
+     * Filter the query by a related \ColaboradorUnidade object
+     *
+     * @param \ColaboradorUnidade|ObjectCollection $colaboradorUnidade the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildUnidadeQuery The current query, for fluid interface
+     */
+    public function filterByColaboradorUnidadeRelatedByUnidadeId($colaboradorUnidade, $comparison = null)
+    {
+        if ($colaboradorUnidade instanceof \ColaboradorUnidade) {
+            return $this
+                ->addUsingAlias(UnidadeTableMap::COL_ID, $colaboradorUnidade->getUnidadeId(), $comparison);
+        } elseif ($colaboradorUnidade instanceof ObjectCollection) {
+            return $this
+                ->useColaboradorUnidadeRelatedByUnidadeIdQuery()
+                ->filterByPrimaryKeys($colaboradorUnidade->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByColaboradorUnidadeRelatedByUnidadeId() only accepts arguments of type \ColaboradorUnidade or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the ColaboradorUnidadeRelatedByUnidadeId relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildUnidadeQuery The current query, for fluid interface
+     */
+    public function joinColaboradorUnidadeRelatedByUnidadeId($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('ColaboradorUnidadeRelatedByUnidadeId');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'ColaboradorUnidadeRelatedByUnidadeId');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the ColaboradorUnidadeRelatedByUnidadeId relation ColaboradorUnidade object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \ColaboradorUnidadeQuery A secondary query class using the current class as primary query
+     */
+    public function useColaboradorUnidadeRelatedByUnidadeIdQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinColaboradorUnidadeRelatedByUnidadeId($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'ColaboradorUnidadeRelatedByUnidadeId', '\ColaboradorUnidadeQuery');
+    }
+
+    /**
+     * Use the ColaboradorUnidadeRelatedByUnidadeId relation ColaboradorUnidade object
+     *
+     * @param callable(\ColaboradorUnidadeQuery):\ColaboradorUnidadeQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withColaboradorUnidadeRelatedByUnidadeIdQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::LEFT_JOIN
+    ) {
+        $relatedQuery = $this->useColaboradorUnidadeRelatedByUnidadeIdQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+    /**
+     * Use the ColaboradorUnidadeRelatedByUnidadeId relation to the ColaboradorUnidade table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string $typeOfExists Either ExistsCriterion::TYPE_EXISTS or ExistsCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \ColaboradorUnidadeQuery The inner query object of the EXISTS statement
+     */
+    public function useColaboradorUnidadeRelatedByUnidadeIdExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        return $this->useExistsQuery('ColaboradorUnidadeRelatedByUnidadeId', $modelAlias, $queryClass, $typeOfExists);
+    }
+
+    /**
+     * Use the ColaboradorUnidadeRelatedByUnidadeId relation to the ColaboradorUnidade table for a NOT EXISTS query.
+     *
+     * @see useColaboradorUnidadeRelatedByUnidadeIdExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \ColaboradorUnidadeQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useColaboradorUnidadeRelatedByUnidadeIdNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        return $this->useExistsQuery('ColaboradorUnidadeRelatedByUnidadeId', $modelAlias, $queryClass, 'NOT EXISTS');
     }
     /**
      * Exclude object from result

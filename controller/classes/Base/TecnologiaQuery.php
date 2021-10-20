@@ -34,17 +34,17 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTecnologiaQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildTecnologiaQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildTecnologiaQuery leftJoinColaborador($relationAlias = null) Adds a LEFT JOIN clause to the query using the Colaborador relation
- * @method     ChildTecnologiaQuery rightJoinColaborador($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Colaborador relation
- * @method     ChildTecnologiaQuery innerJoinColaborador($relationAlias = null) Adds a INNER JOIN clause to the query using the Colaborador relation
+ * @method     ChildTecnologiaQuery leftJoinColaboradorTecnologia($relationAlias = null) Adds a LEFT JOIN clause to the query using the ColaboradorTecnologia relation
+ * @method     ChildTecnologiaQuery rightJoinColaboradorTecnologia($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ColaboradorTecnologia relation
+ * @method     ChildTecnologiaQuery innerJoinColaboradorTecnologia($relationAlias = null) Adds a INNER JOIN clause to the query using the ColaboradorTecnologia relation
  *
- * @method     ChildTecnologiaQuery joinWithColaborador($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Colaborador relation
+ * @method     ChildTecnologiaQuery joinWithColaboradorTecnologia($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the ColaboradorTecnologia relation
  *
- * @method     ChildTecnologiaQuery leftJoinWithColaborador() Adds a LEFT JOIN clause and with to the query using the Colaborador relation
- * @method     ChildTecnologiaQuery rightJoinWithColaborador() Adds a RIGHT JOIN clause and with to the query using the Colaborador relation
- * @method     ChildTecnologiaQuery innerJoinWithColaborador() Adds a INNER JOIN clause and with to the query using the Colaborador relation
+ * @method     ChildTecnologiaQuery leftJoinWithColaboradorTecnologia() Adds a LEFT JOIN clause and with to the query using the ColaboradorTecnologia relation
+ * @method     ChildTecnologiaQuery rightJoinWithColaboradorTecnologia() Adds a RIGHT JOIN clause and with to the query using the ColaboradorTecnologia relation
+ * @method     ChildTecnologiaQuery innerJoinWithColaboradorTecnologia() Adds a INNER JOIN clause and with to the query using the ColaboradorTecnologia relation
  *
- * @method     \ColaboradorQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \ColaboradorTecnologiaQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildTecnologia|null findOne(ConnectionInterface $con = null) Return the first ChildTecnologia matching the query
  * @method     ChildTecnologia findOneOrCreate(ConnectionInterface $con = null) Return the first ChildTecnologia matching the query, or a new ChildTecnologia object populated from the query conditions when no match is found
@@ -320,40 +320,40 @@ abstract class TecnologiaQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \Colaborador object
+     * Filter the query by a related \ColaboradorTecnologia object
      *
-     * @param \Colaborador|ObjectCollection $colaborador the related object to use as filter
+     * @param \ColaboradorTecnologia|ObjectCollection $colaboradorTecnologia the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildTecnologiaQuery The current query, for fluid interface
      */
-    public function filterByColaborador($colaborador, $comparison = null)
+    public function filterByColaboradorTecnologia($colaboradorTecnologia, $comparison = null)
     {
-        if ($colaborador instanceof \Colaborador) {
+        if ($colaboradorTecnologia instanceof \ColaboradorTecnologia) {
             return $this
-                ->addUsingAlias(TecnologiaTableMap::COL_ID, $colaborador->getTecnologiaId(), $comparison);
-        } elseif ($colaborador instanceof ObjectCollection) {
+                ->addUsingAlias(TecnologiaTableMap::COL_ID, $colaboradorTecnologia->getTecnologiaId(), $comparison);
+        } elseif ($colaboradorTecnologia instanceof ObjectCollection) {
             return $this
-                ->useColaboradorQuery()
-                ->filterByPrimaryKeys($colaborador->getPrimaryKeys())
+                ->useColaboradorTecnologiaQuery()
+                ->filterByPrimaryKeys($colaboradorTecnologia->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByColaborador() only accepts arguments of type \Colaborador or Collection');
+            throw new PropelException('filterByColaboradorTecnologia() only accepts arguments of type \ColaboradorTecnologia or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Colaborador relation
+     * Adds a JOIN clause to the query using the ColaboradorTecnologia relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildTecnologiaQuery The current query, for fluid interface
      */
-    public function joinColaborador($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinColaboradorTecnologia($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Colaborador');
+        $relationMap = $tableMap->getRelation('ColaboradorTecnologia');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -368,14 +368,14 @@ abstract class TecnologiaQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Colaborador');
+            $this->addJoinObject($join, 'ColaboradorTecnologia');
         }
 
         return $this;
     }
 
     /**
-     * Use the Colaborador relation Colaborador object
+     * Use the ColaboradorTecnologia relation ColaboradorTecnologia object
      *
      * @see useQuery()
      *
@@ -383,19 +383,19 @@ abstract class TecnologiaQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return \ColaboradorQuery A secondary query class using the current class as primary query
+     * @return \ColaboradorTecnologiaQuery A secondary query class using the current class as primary query
      */
-    public function useColaboradorQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useColaboradorTecnologiaQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinColaborador($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Colaborador', '\ColaboradorQuery');
+            ->joinColaboradorTecnologia($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'ColaboradorTecnologia', '\ColaboradorTecnologiaQuery');
     }
 
     /**
-     * Use the Colaborador relation Colaborador object
+     * Use the ColaboradorTecnologia relation ColaboradorTecnologia object
      *
-     * @param callable(\ColaboradorQuery):\ColaboradorQuery $callable A function working on the related query
+     * @param callable(\ColaboradorTecnologiaQuery):\ColaboradorTecnologiaQuery $callable A function working on the related query
      *
      * @param string|null $relationAlias optional alias for the relation
      *
@@ -403,12 +403,12 @@ abstract class TecnologiaQuery extends ModelCriteria
      *
      * @return $this
      */
-    public function withColaboradorQuery(
+    public function withColaboradorTecnologiaQuery(
         callable $callable,
         string $relationAlias = null,
         ?string $joinType = Criteria::LEFT_JOIN
     ) {
-        $relatedQuery = $this->useColaboradorQuery(
+        $relatedQuery = $this->useColaboradorTecnologiaQuery(
             $relationAlias,
             $joinType
         );
@@ -418,7 +418,7 @@ abstract class TecnologiaQuery extends ModelCriteria
         return $this;
     }
     /**
-     * Use the relation to Colaborador table for an EXISTS query.
+     * Use the relation to ColaboradorTecnologia table for an EXISTS query.
      *
      * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
      *
@@ -426,26 +426,26 @@ abstract class TecnologiaQuery extends ModelCriteria
      * @param string|null $modelAlias sets an alias for the nested query
      * @param string $typeOfExists Either ExistsCriterion::TYPE_EXISTS or ExistsCriterion::TYPE_NOT_EXISTS
      *
-     * @return \ColaboradorQuery The inner query object of the EXISTS statement
+     * @return \ColaboradorTecnologiaQuery The inner query object of the EXISTS statement
      */
-    public function useColaboradorExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    public function useColaboradorTecnologiaExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
     {
-        return $this->useExistsQuery('Colaborador', $modelAlias, $queryClass, $typeOfExists);
+        return $this->useExistsQuery('ColaboradorTecnologia', $modelAlias, $queryClass, $typeOfExists);
     }
 
     /**
-     * Use the relation to Colaborador table for a NOT EXISTS query.
+     * Use the relation to ColaboradorTecnologia table for a NOT EXISTS query.
      *
-     * @see useColaboradorExistsQuery()
+     * @see useColaboradorTecnologiaExistsQuery()
      *
      * @param string|null $modelAlias sets an alias for the nested query
      * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
      *
-     * @return \ColaboradorQuery The inner query object of the NOT EXISTS statement
+     * @return \ColaboradorTecnologiaQuery The inner query object of the NOT EXISTS statement
      */
-    public function useColaboradorNotExistsQuery($modelAlias = null, $queryClass = null)
+    public function useColaboradorTecnologiaNotExistsQuery($modelAlias = null, $queryClass = null)
     {
-        return $this->useExistsQuery('Colaborador', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $this->useExistsQuery('ColaboradorTecnologia', $modelAlias, $queryClass, 'NOT EXISTS');
     }
     /**
      * Exclude object from result
