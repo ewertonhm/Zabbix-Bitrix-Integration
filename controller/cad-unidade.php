@@ -27,6 +27,8 @@ if(isset($_GET['delete']) and $_GET['delete'] != '' and $_GET['delete'] != NULL)
 }
 
 $vars = [];
+$vars['page_name'] = 'Cadastro de Unidades';
+
 
 if(isset($_GET['edite']) and $_GET['edite'] != '' and $_GET['edite'] != NULL){
     $unidade = UnidadeQuery::create()->findOneById($_GET['edite']);

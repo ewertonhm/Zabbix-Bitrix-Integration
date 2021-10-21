@@ -5,7 +5,7 @@
     {% include 'navbar.html' %}
 {% endblock %}
 
-{% block content %}
+{% block cadastro %}
     <form method="post" action="cad-tecnologia.php">
         <fieldset>
             <label for="nameField">Cadastrar Tecnologia</label>
@@ -16,6 +16,9 @@
             <input class="button-primary" type="submit" {% if editar %} value="Editar" {% else %} value="Cadastrar" {% endif %}>
         </fieldset>
     </form>
+{% endblock %}
+
+{% block lista %}
     {% if tecnologias %}
         <table>
             <thead>

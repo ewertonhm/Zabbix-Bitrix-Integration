@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS "colaborador";
 DROP TABLE IF EXISTS "usuario";
 DROP TABLE IF EXISTS "unidade";
 DROP TABLE IF EXISTS "tecnologia";
+DROP TABLE IF EXISTS "n3_accomplice";
 
 
 CREATE TABLE usuario (
@@ -54,6 +55,7 @@ CREATE TABLE task (
                         id SERIAL PRIMARY KEY,
                         title VARCHAR(90) NOT NULL,
                         responsible_id INTEGER REFERENCES colaborador(id), 
+                        unidade_id INTEGER REFERENCES unidade(id),
                         group_id VARCHAR(10) -- 523 = Zabbix Alarmes, campo adicionado para caso seja utilizado futuramente                   
 );
 
@@ -71,5 +73,6 @@ CREATE TABLE task_accomplice (
 
 CREATE TABLE n3_accomplice (
                         id SERIAL PRIMARY KEY,
+                        nome VARCHAR(100) NOT NULL,
                         bitrix_id VARCHAR(10) NOT NULL
-)
+);

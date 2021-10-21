@@ -2,6 +2,8 @@
 
 namespace Base;
 
+use \Colaborador as ChildColaborador;
+use \ColaboradorQuery as ChildColaboradorQuery;
 use \ColaboradorUnidadeQuery as ChildColaboradorUnidadeQuery;
 use \Unidade as ChildUnidade;
 use \UnidadeQuery as ChildUnidadeQuery;
@@ -83,14 +85,14 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
     protected $colaborador_id;
 
     /**
-     * @var        ChildUnidade
+     * @var        ChildColaborador
      */
-    protected $aUnidadeRelatedByColaboradorId;
+    protected $aColaborador;
 
     /**
      * @var        ChildUnidade
      */
-    protected $aUnidadeRelatedByUnidadeId;
+    protected $aUnidade;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -391,8 +393,8 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
             $this->modifiedColumns[ColaboradorUnidadeTableMap::COL_UNIDADE_ID] = true;
         }
 
-        if ($this->aUnidadeRelatedByUnidadeId !== null && $this->aUnidadeRelatedByUnidadeId->getId() !== $v) {
-            $this->aUnidadeRelatedByUnidadeId = null;
+        if ($this->aUnidade !== null && $this->aUnidade->getId() !== $v) {
+            $this->aUnidade = null;
         }
 
         return $this;
@@ -415,8 +417,8 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
             $this->modifiedColumns[ColaboradorUnidadeTableMap::COL_COLABORADOR_ID] = true;
         }
 
-        if ($this->aUnidadeRelatedByColaboradorId !== null && $this->aUnidadeRelatedByColaboradorId->getId() !== $v) {
-            $this->aUnidadeRelatedByColaboradorId = null;
+        if ($this->aColaborador !== null && $this->aColaborador->getId() !== $v) {
+            $this->aColaborador = null;
         }
 
         return $this;
@@ -496,11 +498,11 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aUnidadeRelatedByUnidadeId !== null && $this->unidade_id !== $this->aUnidadeRelatedByUnidadeId->getId()) {
-            $this->aUnidadeRelatedByUnidadeId = null;
+        if ($this->aUnidade !== null && $this->unidade_id !== $this->aUnidade->getId()) {
+            $this->aUnidade = null;
         }
-        if ($this->aUnidadeRelatedByColaboradorId !== null && $this->colaborador_id !== $this->aUnidadeRelatedByColaboradorId->getId()) {
-            $this->aUnidadeRelatedByColaboradorId = null;
+        if ($this->aColaborador !== null && $this->colaborador_id !== $this->aColaborador->getId()) {
+            $this->aColaborador = null;
         }
     } // ensureConsistency
 
@@ -541,8 +543,8 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aUnidadeRelatedByColaboradorId = null;
-            $this->aUnidadeRelatedByUnidadeId = null;
+            $this->aColaborador = null;
+            $this->aUnidade = null;
         } // if (deep)
     }
 
@@ -651,18 +653,18 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aUnidadeRelatedByColaboradorId !== null) {
-                if ($this->aUnidadeRelatedByColaboradorId->isModified() || $this->aUnidadeRelatedByColaboradorId->isNew()) {
-                    $affectedRows += $this->aUnidadeRelatedByColaboradorId->save($con);
+            if ($this->aColaborador !== null) {
+                if ($this->aColaborador->isModified() || $this->aColaborador->isNew()) {
+                    $affectedRows += $this->aColaborador->save($con);
                 }
-                $this->setUnidadeRelatedByColaboradorId($this->aUnidadeRelatedByColaboradorId);
+                $this->setColaborador($this->aColaborador);
             }
 
-            if ($this->aUnidadeRelatedByUnidadeId !== null) {
-                if ($this->aUnidadeRelatedByUnidadeId->isModified() || $this->aUnidadeRelatedByUnidadeId->isNew()) {
-                    $affectedRows += $this->aUnidadeRelatedByUnidadeId->save($con);
+            if ($this->aUnidade !== null) {
+                if ($this->aUnidade->isModified() || $this->aUnidade->isNew()) {
+                    $affectedRows += $this->aUnidade->save($con);
                 }
-                $this->setUnidadeRelatedByUnidadeId($this->aUnidadeRelatedByUnidadeId);
+                $this->setUnidade($this->aUnidade);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -844,22 +846,22 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aUnidadeRelatedByColaboradorId) {
+            if (null !== $this->aColaborador) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'unidade';
+                        $key = 'colaborador';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'unidade';
+                        $key = 'colaborador';
                         break;
                     default:
-                        $key = 'Unidade';
+                        $key = 'Colaborador';
                 }
 
-                $result[$key] = $this->aUnidadeRelatedByColaboradorId->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->aColaborador->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aUnidadeRelatedByUnidadeId) {
+            if (null !== $this->aUnidade) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -872,7 +874,7 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
                         $key = 'Unidade';
                 }
 
-                $result[$key] = $this->aUnidadeRelatedByUnidadeId->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->aUnidade->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -1121,13 +1123,13 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildUnidade object.
+     * Declares an association between this object and a ChildColaborador object.
      *
-     * @param  ChildUnidade|null $v
+     * @param  ChildColaborador|null $v
      * @return $this|\ColaboradorUnidade The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setUnidadeRelatedByColaboradorId(ChildUnidade $v = null)
+    public function setColaborador(ChildColaborador $v = null)
     {
         if ($v === null) {
             $this->setColaboradorId(NULL);
@@ -1135,12 +1137,12 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
             $this->setColaboradorId($v->getId());
         }
 
-        $this->aUnidadeRelatedByColaboradorId = $v;
+        $this->aColaborador = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildUnidade object, it will not be re-added.
+        // If this object has already been added to the ChildColaborador object, it will not be re-added.
         if ($v !== null) {
-            $v->addColaboradorUnidadeRelatedByColaboradorId($this);
+            $v->addColaboradorUnidade($this);
         }
 
 
@@ -1149,26 +1151,26 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
 
 
     /**
-     * Get the associated ChildUnidade object
+     * Get the associated ChildColaborador object
      *
      * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildUnidade|null The associated ChildUnidade object.
+     * @return ChildColaborador|null The associated ChildColaborador object.
      * @throws PropelException
      */
-    public function getUnidadeRelatedByColaboradorId(ConnectionInterface $con = null)
+    public function getColaborador(ConnectionInterface $con = null)
     {
-        if ($this->aUnidadeRelatedByColaboradorId === null && ($this->colaborador_id != 0)) {
-            $this->aUnidadeRelatedByColaboradorId = ChildUnidadeQuery::create()->findPk($this->colaborador_id, $con);
+        if ($this->aColaborador === null && ($this->colaborador_id != 0)) {
+            $this->aColaborador = ChildColaboradorQuery::create()->findPk($this->colaborador_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aUnidadeRelatedByColaboradorId->addColaboradorUnidadesRelatedByColaboradorId($this);
+                $this->aColaborador->addColaboradorUnidades($this);
              */
         }
 
-        return $this->aUnidadeRelatedByColaboradorId;
+        return $this->aColaborador;
     }
 
     /**
@@ -1178,7 +1180,7 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
      * @return $this|\ColaboradorUnidade The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setUnidadeRelatedByUnidadeId(ChildUnidade $v = null)
+    public function setUnidade(ChildUnidade $v = null)
     {
         if ($v === null) {
             $this->setUnidadeId(NULL);
@@ -1186,12 +1188,12 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
             $this->setUnidadeId($v->getId());
         }
 
-        $this->aUnidadeRelatedByUnidadeId = $v;
+        $this->aUnidade = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildUnidade object, it will not be re-added.
         if ($v !== null) {
-            $v->addColaboradorUnidadeRelatedByUnidadeId($this);
+            $v->addColaboradorUnidade($this);
         }
 
 
@@ -1206,20 +1208,20 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
      * @return ChildUnidade|null The associated ChildUnidade object.
      * @throws PropelException
      */
-    public function getUnidadeRelatedByUnidadeId(ConnectionInterface $con = null)
+    public function getUnidade(ConnectionInterface $con = null)
     {
-        if ($this->aUnidadeRelatedByUnidadeId === null && ($this->unidade_id != 0)) {
-            $this->aUnidadeRelatedByUnidadeId = ChildUnidadeQuery::create()->findPk($this->unidade_id, $con);
+        if ($this->aUnidade === null && ($this->unidade_id != 0)) {
+            $this->aUnidade = ChildUnidadeQuery::create()->findPk($this->unidade_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aUnidadeRelatedByUnidadeId->addColaboradorUnidadesRelatedByUnidadeId($this);
+                $this->aUnidade->addColaboradorUnidades($this);
              */
         }
 
-        return $this->aUnidadeRelatedByUnidadeId;
+        return $this->aUnidade;
     }
 
     /**
@@ -1229,11 +1231,11 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
      */
     public function clear()
     {
-        if (null !== $this->aUnidadeRelatedByColaboradorId) {
-            $this->aUnidadeRelatedByColaboradorId->removeColaboradorUnidadeRelatedByColaboradorId($this);
+        if (null !== $this->aColaborador) {
+            $this->aColaborador->removeColaboradorUnidade($this);
         }
-        if (null !== $this->aUnidadeRelatedByUnidadeId) {
-            $this->aUnidadeRelatedByUnidadeId->removeColaboradorUnidadeRelatedByUnidadeId($this);
+        if (null !== $this->aUnidade) {
+            $this->aUnidade->removeColaboradorUnidade($this);
         }
         $this->id = null;
         $this->unidade_id = null;
@@ -1258,8 +1260,8 @@ abstract class ColaboradorUnidade implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aUnidadeRelatedByColaboradorId = null;
-        $this->aUnidadeRelatedByUnidadeId = null;
+        $this->aColaborador = null;
+        $this->aUnidade = null;
     }
 
     /**

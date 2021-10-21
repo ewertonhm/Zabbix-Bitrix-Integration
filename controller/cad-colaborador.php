@@ -13,7 +13,7 @@ if(isset($_POST['cadastrar']) and $_POST['nome'] != '' and $_POST['nome'] != NUL
     $colaborador->setBitrixId($_POST['bitrix']);
     $colaborador->save();
 
-    if(isset($_POST['unide']) and $_POST['unidade'] != ''){
+    if(isset($_POST['unidade']) and $_POST['unidade'] != ''){
         foreach($_POST['unidade'] as $unidade_id){
             $unidade = UnidadeQuery::create()->findOneById($unidade_id);
     
@@ -52,7 +52,7 @@ if(isset($_POST['editar']) and $_POST['nome'] != '' and $_POST['nome'] != NULL){
     foreach($colaborador_tecnologia as $c){
         $c->delete();
     }
-    if(isset($_POST['unide']) and $_POST['unidade'] != ''){
+    if(isset($_POST['unidade']) and $_POST['unidade'] != ''){
         foreach($_POST['unidade'] as $unidade_id){
             $unidade = UnidadeQuery::create()->findOneById($unidade_id);
     
@@ -79,11 +79,22 @@ if(isset($_POST['editar']) and $_POST['nome'] != '' and $_POST['nome'] != NULL){
 
 if(isset($_GET['delete']) and $_GET['delete'] != '' and $_GET['delete'] != NULL){
     $colaborador = ColaboradorQuery::create()->findOneById( $_GET['delete']);
+
+    $colaborador_unidades = ColaboradorUnidadeQuery::create()->findByColaboradorId($colaborador->getId());
+    foreach($colaborador_unidades as $c){
+        $c->delete();
+    }
+    $colaborador_tecnologia = ColaboradorTecnologiaQuery::create()->findByColaboradorId($colaborador->getId());
+    foreach($colaborador_tecnologia as $c){
+        $c->delete();
+    }
+
     echo('Colaborador='.$colaborador->getNome().', ID='.$colaborador->getId().', Sucessful Deleted');
     $colaborador->delete();
 }
 
 $vars = [];
+$vars['page_name'] = 'Cadastro de Responsáveis e Participantes';
 
 if(isset($_GET['edite']) and $_GET['edite'] != '' and $_GET['edite'] != NULL){
     $colaborador = ColaboradorQuery::create()->findOneById($_GET['edite']);

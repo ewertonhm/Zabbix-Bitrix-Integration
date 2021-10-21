@@ -2,8 +2,8 @@
 
 namespace Map;
 
-use \Usuario;
-use \UsuarioQuery;
+use \N3Accomplice;
+use \N3AccompliceQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'usuario' table.
+ * This class defines the structure of the 'n3_accomplice' table.
  *
  *
  *
@@ -25,7 +25,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * ORDER BY clause to know whether it needs to apply SQL to make the ORDER BY case-insensitive
  * (i.e. if it's a text column type).
  */
-class UsuarioTableMap extends TableMap
+class N3AccompliceTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -33,7 +33,7 @@ class UsuarioTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.UsuarioTableMap';
+    const CLASS_NAME = '.Map.N3AccompliceTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class UsuarioTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'usuario';
+    const TABLE_NAME = 'n3_accomplice';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Usuario';
+    const OM_CLASS = '\\N3Accomplice';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Usuario';
+    const CLASS_DEFAULT = 'N3Accomplice';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -68,32 +68,22 @@ class UsuarioTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
      * the column name for the id field
      */
-    const COL_ID = 'usuario.id';
-
-    /**
-     * the column name for the email field
-     */
-    const COL_EMAIL = 'usuario.email';
-
-    /**
-     * the column name for the senha field
-     */
-    const COL_SENHA = 'usuario.senha';
+    const COL_ID = 'n3_accomplice.id';
 
     /**
      * the column name for the nome field
      */
-    const COL_NOME = 'usuario.nome';
+    const COL_NOME = 'n3_accomplice.nome';
 
     /**
-     * the column name for the admin field
+     * the column name for the bitrix_id field
      */
-    const COL_ADMIN = 'usuario.admin';
+    const COL_BITRIX_ID = 'n3_accomplice.bitrix_id';
 
     /**
      * The default string format for model objects of the related table
@@ -107,11 +97,11 @@ class UsuarioTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Email', 'Senha', 'Nome', 'Admin', ),
-        self::TYPE_CAMELNAME     => array('id', 'email', 'senha', 'nome', 'admin', ),
-        self::TYPE_COLNAME       => array(UsuarioTableMap::COL_ID, UsuarioTableMap::COL_EMAIL, UsuarioTableMap::COL_SENHA, UsuarioTableMap::COL_NOME, UsuarioTableMap::COL_ADMIN, ),
-        self::TYPE_FIELDNAME     => array('id', 'email', 'senha', 'nome', 'admin', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id', 'Nome', 'BitrixId', ),
+        self::TYPE_CAMELNAME     => array('id', 'nome', 'bitrixId', ),
+        self::TYPE_COLNAME       => array(N3AccompliceTableMap::COL_ID, N3AccompliceTableMap::COL_NOME, N3AccompliceTableMap::COL_BITRIX_ID, ),
+        self::TYPE_FIELDNAME     => array('id', 'nome', 'bitrix_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -121,11 +111,11 @@ class UsuarioTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Email' => 1, 'Senha' => 2, 'Nome' => 3, 'Admin' => 4, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'email' => 1, 'senha' => 2, 'nome' => 3, 'admin' => 4, ),
-        self::TYPE_COLNAME       => array(UsuarioTableMap::COL_ID => 0, UsuarioTableMap::COL_EMAIL => 1, UsuarioTableMap::COL_SENHA => 2, UsuarioTableMap::COL_NOME => 3, UsuarioTableMap::COL_ADMIN => 4, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'email' => 1, 'senha' => 2, 'nome' => 3, 'admin' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Nome' => 1, 'BitrixId' => 2, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'nome' => 1, 'bitrixId' => 2, ),
+        self::TYPE_COLNAME       => array(N3AccompliceTableMap::COL_ID => 0, N3AccompliceTableMap::COL_NOME => 1, N3AccompliceTableMap::COL_BITRIX_ID => 2, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'nome' => 1, 'bitrix_id' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -135,35 +125,27 @@ class UsuarioTableMap extends TableMap
      */
     protected $normalizedColumnNameMap = [
         'Id' => 'ID',
-        'Usuario.Id' => 'ID',
+        'N3Accomplice.Id' => 'ID',
         'id' => 'ID',
-        'usuario.id' => 'ID',
-        'UsuarioTableMap::COL_ID' => 'ID',
+        'n3Accomplice.id' => 'ID',
+        'N3AccompliceTableMap::COL_ID' => 'ID',
         'COL_ID' => 'ID',
-        'Email' => 'EMAIL',
-        'Usuario.Email' => 'EMAIL',
-        'email' => 'EMAIL',
-        'usuario.email' => 'EMAIL',
-        'UsuarioTableMap::COL_EMAIL' => 'EMAIL',
-        'COL_EMAIL' => 'EMAIL',
-        'Senha' => 'SENHA',
-        'Usuario.Senha' => 'SENHA',
-        'senha' => 'SENHA',
-        'usuario.senha' => 'SENHA',
-        'UsuarioTableMap::COL_SENHA' => 'SENHA',
-        'COL_SENHA' => 'SENHA',
+        'n3_accomplice.id' => 'ID',
         'Nome' => 'NOME',
-        'Usuario.Nome' => 'NOME',
+        'N3Accomplice.Nome' => 'NOME',
         'nome' => 'NOME',
-        'usuario.nome' => 'NOME',
-        'UsuarioTableMap::COL_NOME' => 'NOME',
+        'n3Accomplice.nome' => 'NOME',
+        'N3AccompliceTableMap::COL_NOME' => 'NOME',
         'COL_NOME' => 'NOME',
-        'Admin' => 'ADMIN',
-        'Usuario.Admin' => 'ADMIN',
-        'admin' => 'ADMIN',
-        'usuario.admin' => 'ADMIN',
-        'UsuarioTableMap::COL_ADMIN' => 'ADMIN',
-        'COL_ADMIN' => 'ADMIN',
+        'n3_accomplice.nome' => 'NOME',
+        'BitrixId' => 'BITRIX_ID',
+        'N3Accomplice.BitrixId' => 'BITRIX_ID',
+        'bitrixId' => 'BITRIX_ID',
+        'n3Accomplice.bitrixId' => 'BITRIX_ID',
+        'N3AccompliceTableMap::COL_BITRIX_ID' => 'BITRIX_ID',
+        'COL_BITRIX_ID' => 'BITRIX_ID',
+        'bitrix_id' => 'BITRIX_ID',
+        'n3_accomplice.bitrix_id' => 'BITRIX_ID',
     ];
 
     /**
@@ -176,19 +158,17 @@ class UsuarioTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('usuario');
-        $this->setPhpName('Usuario');
+        $this->setName('n3_accomplice');
+        $this->setPhpName('N3Accomplice');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Usuario');
+        $this->setClassName('\\N3Accomplice');
         $this->setPackage('');
         $this->setUseIdGenerator(true);
-        $this->setPrimaryKeyMethodInfo('usuario_id_seq');
+        $this->setPrimaryKeyMethodInfo('n3_accomplice_id_seq');
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('email', 'Email', 'VARCHAR', true, 90, null);
-        $this->addColumn('senha', 'Senha', 'VARCHAR', true, 32, null);
-        $this->addColumn('nome', 'Nome', 'VARCHAR', true, 90, null);
-        $this->addColumn('admin', 'Admin', 'INTEGER', false, null, null);
+        $this->addColumn('nome', 'Nome', 'VARCHAR', true, 100, null);
+        $this->addColumn('bitrix_id', 'BitrixId', 'VARCHAR', true, 10, null);
     } // initialize()
 
     /**
@@ -255,7 +235,7 @@ class UsuarioTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? UsuarioTableMap::CLASS_DEFAULT : UsuarioTableMap::OM_CLASS;
+        return $withPrefix ? N3AccompliceTableMap::CLASS_DEFAULT : N3AccompliceTableMap::OM_CLASS;
     }
 
     /**
@@ -269,22 +249,22 @@ class UsuarioTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Usuario object, last column rank)
+     * @return array           (N3Accomplice object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = UsuarioTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = UsuarioTableMap::getInstanceFromPool($key))) {
+        $key = N3AccompliceTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = N3AccompliceTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + UsuarioTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + N3AccompliceTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = UsuarioTableMap::OM_CLASS;
-            /** @var Usuario $obj */
+            $cls = N3AccompliceTableMap::OM_CLASS;
+            /** @var N3Accomplice $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            UsuarioTableMap::addInstanceToPool($obj, $key);
+            N3AccompliceTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -307,18 +287,18 @@ class UsuarioTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = UsuarioTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = UsuarioTableMap::getInstanceFromPool($key))) {
+            $key = N3AccompliceTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = N3AccompliceTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Usuario $obj */
+                /** @var N3Accomplice $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                UsuarioTableMap::addInstanceToPool($obj, $key);
+                N3AccompliceTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -339,17 +319,13 @@ class UsuarioTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(UsuarioTableMap::COL_ID);
-            $criteria->addSelectColumn(UsuarioTableMap::COL_EMAIL);
-            $criteria->addSelectColumn(UsuarioTableMap::COL_SENHA);
-            $criteria->addSelectColumn(UsuarioTableMap::COL_NOME);
-            $criteria->addSelectColumn(UsuarioTableMap::COL_ADMIN);
+            $criteria->addSelectColumn(N3AccompliceTableMap::COL_ID);
+            $criteria->addSelectColumn(N3AccompliceTableMap::COL_NOME);
+            $criteria->addSelectColumn(N3AccompliceTableMap::COL_BITRIX_ID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.email');
-            $criteria->addSelectColumn($alias . '.senha');
             $criteria->addSelectColumn($alias . '.nome');
-            $criteria->addSelectColumn($alias . '.admin');
+            $criteria->addSelectColumn($alias . '.bitrix_id');
         }
     }
 
@@ -367,17 +343,13 @@ class UsuarioTableMap extends TableMap
     public static function removeSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->removeSelectColumn(UsuarioTableMap::COL_ID);
-            $criteria->removeSelectColumn(UsuarioTableMap::COL_EMAIL);
-            $criteria->removeSelectColumn(UsuarioTableMap::COL_SENHA);
-            $criteria->removeSelectColumn(UsuarioTableMap::COL_NOME);
-            $criteria->removeSelectColumn(UsuarioTableMap::COL_ADMIN);
+            $criteria->removeSelectColumn(N3AccompliceTableMap::COL_ID);
+            $criteria->removeSelectColumn(N3AccompliceTableMap::COL_NOME);
+            $criteria->removeSelectColumn(N3AccompliceTableMap::COL_BITRIX_ID);
         } else {
             $criteria->removeSelectColumn($alias . '.id');
-            $criteria->removeSelectColumn($alias . '.email');
-            $criteria->removeSelectColumn($alias . '.senha');
             $criteria->removeSelectColumn($alias . '.nome');
-            $criteria->removeSelectColumn($alias . '.admin');
+            $criteria->removeSelectColumn($alias . '.bitrix_id');
         }
     }
 
@@ -390,13 +362,13 @@ class UsuarioTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(UsuarioTableMap::DATABASE_NAME)->getTable(UsuarioTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(N3AccompliceTableMap::DATABASE_NAME)->getTable(N3AccompliceTableMap::TABLE_NAME);
     }
 
     /**
-     * Performs a DELETE on the database, given a Usuario or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a N3Accomplice or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Usuario object or primary key or array of primary keys
+     * @param mixed               $values Criteria or N3Accomplice object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -407,27 +379,27 @@ class UsuarioTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(UsuarioTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(N3AccompliceTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Usuario) { // it's a model object
+        } elseif ($values instanceof \N3Accomplice) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(UsuarioTableMap::DATABASE_NAME);
-            $criteria->add(UsuarioTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(N3AccompliceTableMap::DATABASE_NAME);
+            $criteria->add(N3AccompliceTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
-        $query = UsuarioQuery::create()->mergeWith($criteria);
+        $query = N3AccompliceQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            UsuarioTableMap::clearInstancePool();
+            N3AccompliceTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                UsuarioTableMap::removeInstanceFromPool($singleval);
+                N3AccompliceTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -435,20 +407,20 @@ class UsuarioTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the usuario table.
+     * Deletes all rows from the n3_accomplice table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return UsuarioQuery::create()->doDeleteAll($con);
+        return N3AccompliceQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Usuario or Criteria object.
+     * Performs an INSERT on the database, given a N3Accomplice or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Usuario object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or N3Accomplice object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -457,22 +429,22 @@ class UsuarioTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(UsuarioTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(N3AccompliceTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Usuario object
+            $criteria = $criteria->buildCriteria(); // build Criteria from N3Accomplice object
         }
 
-        if ($criteria->containsKey(UsuarioTableMap::COL_ID) && $criteria->keyContainsValue(UsuarioTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.UsuarioTableMap::COL_ID.')');
+        if ($criteria->containsKey(N3AccompliceTableMap::COL_ID) && $criteria->keyContainsValue(N3AccompliceTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.N3AccompliceTableMap::COL_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = UsuarioQuery::create()->mergeWith($criteria);
+        $query = N3AccompliceQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -481,4 +453,4 @@ class UsuarioTableMap extends TableMap
         });
     }
 
-} // UsuarioTableMap
+} // N3AccompliceTableMap

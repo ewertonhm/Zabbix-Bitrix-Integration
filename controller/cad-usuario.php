@@ -12,16 +12,13 @@ if(isset($_POST['cadastrar']) and $_POST['nome'] != '' and $_POST['nome'] != NUL
     $usuario->setNome($_POST['nome']);
     $usuario->setEmail($_POST['email']);
     $usuario->setSenha(md5($_POST['senha']));
-    $usuario->setApiKey('none');
-    $usuario->setBitrixId($_POST['bitrix']);
-    $usuario->setAdmin($_POST['admin']);
+    $usuario->setAdmin('1');
     $usuario->save();
 }
 if(isset($_POST['editar']) and $_POST['nome'] != '' and $_POST['nome'] != NULL){
     $usuario = UsuarioQuery::create()->findOneById($_POST['id']);
     $usuario->setNome($_POST['nome']);
     $usuario->setEmail($_POST['email']);
-    $usuario->setBitrixId($_POST['bitrix']);
     $usuario->save();
 }
 
@@ -32,12 +29,13 @@ if(isset($_GET['delete']) and $_GET['delete'] != '' and $_GET['delete'] != NULL)
 }
 
 $vars = [];
+$vars['page_name'] = 'Cadastro de Usuários';
+
 
 if(isset($_GET['edite']) and $_GET['edite'] != '' and $_GET['edite'] != NULL){
     $usuario = UsuarioQuery::create()->findOneById($_GET['edite']);
     $vars['editar']['nome'] = $usuario->getNome();
     $vars['editar']['email'] = $usuario->getEmail();
-    $vars['editar']['bitrix'] = $usuario->getBitrixId();
     $vars['editar']['id'] = $usuario->getId();
 }
 
@@ -48,8 +46,6 @@ foreach ($usuarios as $usuario){
     $vars['usuarios'][$counter]['id'] = $usuario->getId();
     $vars['usuarios'][$counter]['nome'] = $usuario->getNome();
     $vars['usuarios'][$counter]['email'] = $usuario->getEmail();
-    $vars['usuarios'][$counter]['bitrix'] = $usuario->getBitrixId();
-    $vars['usuarios'][$counter]['admin'] = $usuario->getAdmin();
 
     $counter++;
 }

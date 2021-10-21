@@ -169,7 +169,7 @@ class ColaboradorUnidadeTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('unidade_id', 'UnidadeId', 'INTEGER', 'unidade', 'id', false, null, null);
-        $this->addForeignKey('colaborador_id', 'ColaboradorId', 'INTEGER', 'unidade', 'id', false, null, null);
+        $this->addForeignKey('colaborador_id', 'ColaboradorId', 'INTEGER', 'colaborador', 'id', false, null, null);
     } // initialize()
 
     /**
@@ -177,14 +177,14 @@ class ColaboradorUnidadeTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('UnidadeRelatedByColaboradorId', '\\Unidade', RelationMap::MANY_TO_ONE, array (
+        $this->addRelation('Colaborador', '\\Colaborador', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
     0 => ':colaborador_id',
     1 => ':id',
   ),
 ), null, null, null, false);
-        $this->addRelation('UnidadeRelatedByUnidadeId', '\\Unidade', RelationMap::MANY_TO_ONE, array (
+        $this->addRelation('Unidade', '\\Unidade', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
     0 => ':unidade_id',

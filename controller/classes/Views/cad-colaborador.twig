@@ -4,7 +4,7 @@
     {% include 'navbar.html' %}
 {% endblock %}
 
-{% block content %}
+{% block cadastro %}
     <form method="post" action="cad-colaborador.php">
         <fieldset>
             <label for="nameField">Cadastrar Colaborador</label>
@@ -72,6 +72,9 @@
             <input class="button-primary" type="submit" {% if editar %} value="Editar" name='editar' {% else %} value="Cadastrar" name='cadastrar'{% endif %}>
         </fieldset>
     </form>
+{% endblock %}
+
+{% block lista %}
     {% if colaboradores %}
         <table>
             <thead>

@@ -44,6 +44,20 @@ CREATE TABLE "colaborador_unidade"
 );
 
 -----------------------------------------------------------------------
+-- n3_accomplice
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS "n3_accomplice" CASCADE;
+
+CREATE TABLE "n3_accomplice"
+(
+    "id" serial NOT NULL,
+    "nome" VARCHAR(100) NOT NULL,
+    "bitrix_id" VARCHAR(10) NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+-----------------------------------------------------------------------
 -- task
 -----------------------------------------------------------------------
 
@@ -52,11 +66,9 @@ DROP TABLE IF EXISTS "task" CASCADE;
 CREATE TABLE "task"
 (
     "id" serial NOT NULL,
-    "usuario_id" INTEGER,
     "title" VARCHAR(90) NOT NULL,
-    "descript" VARCHAR(500) NOT NULL,
-    "deadline" VARCHAR(50),
     "responsible_id" INTEGER,
+    "unidade_id" INTEGER,
     "group_id" VARCHAR(10),
     PRIMARY KEY ("id")
 );
@@ -128,8 +140,6 @@ CREATE TABLE "usuario"
     "email" VARCHAR(90) NOT NULL,
     "senha" VARCHAR(32) NOT NULL,
     "nome" VARCHAR(90) NOT NULL,
-    "api_key" VARCHAR(32) NOT NULL,
-    "bitrix_id" VARCHAR(10) NOT NULL,
     "admin" INTEGER,
     PRIMARY KEY ("id")
 );
@@ -144,7 +154,7 @@ ALTER TABLE "colaborador_tecnologia" ADD CONSTRAINT "colaborador_tecnologia_tecn
 
 ALTER TABLE "colaborador_unidade" ADD CONSTRAINT "colaborador_unidade_colaborador_id_fkey"
     FOREIGN KEY ("colaborador_id")
-    REFERENCES "unidade" ("id");
+    REFERENCES "colaborador" ("id");
 
 ALTER TABLE "colaborador_unidade" ADD CONSTRAINT "colaborador_unidade_unidade_id_fkey"
     FOREIGN KEY ("unidade_id")
@@ -154,9 +164,9 @@ ALTER TABLE "task" ADD CONSTRAINT "task_responsible_id_fkey"
     FOREIGN KEY ("responsible_id")
     REFERENCES "colaborador" ("id");
 
-ALTER TABLE "task" ADD CONSTRAINT "task_usuario_id_fkey"
-    FOREIGN KEY ("usuario_id")
-    REFERENCES "usuario" ("id");
+ALTER TABLE "task" ADD CONSTRAINT "task_unidade_id_fkey"
+    FOREIGN KEY ("unidade_id")
+    REFERENCES "unidade" ("id");
 
 ALTER TABLE "task_accomplice" ADD CONSTRAINT "task_accomplice_accomplice_id_fkey"
     FOREIGN KEY ("accomplice_id")

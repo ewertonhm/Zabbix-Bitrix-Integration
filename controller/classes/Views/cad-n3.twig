@@ -1,0 +1,49 @@
+{% extends "base.twig" %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block cadastro %}
+    <form method="post" action="cad-n3.php">
+        <fieldset>
+            <label for="nameField">Cadastrar Colaborador N3</label>
+            {% if editar %}
+                <input type="text" name="nome" value="{{ editar['nome'] }}">
+                <input type="text" name="bitrix" value="{{ editar['bitrix'] }}">
+                <input type="hidden" name="id" value="{{ editar['id'] }}">
+            {% else %}
+                <input type="text" name="nome" placeholder="Nome do Colaborador">
+                <input type="text" name="bitrix" placeholder="Bitrix ID">          
+            {% endif %}
+            <input class="button-primary" type="submit" {% if editar %} value="Editar" name='editar' {% else %} value="Cadastrar" name='cadastrar'{% endif %}>
+        </fieldset>
+    </form>
+{% endblock %}
+
+{% block lista %}
+    {% if n3 %}
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Bitrix ID</th>
+                <th>Editar</th>
+                <th>Deletar</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for n in n3 %}
+                    <tr>
+                        <td>{{ n.id }}</td>
+                        <td>{{ n.nome }}</td>
+                        <td>{{ n.bitrix }}</td>
+                        <td><a class="button button-small" href="cad-n3.php?edite={{ n.id }}">Editar</a></td>
+                        <td><a class="button button-small" href="cad-n3.php?delete={{ n.id }}">Deletar</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

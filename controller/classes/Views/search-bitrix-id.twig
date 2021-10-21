@@ -1,0 +1,41 @@
+{% extends "base.twig" %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block cadastro %}
+    <form method="get" action="search-bitrix-id.php">
+        <fieldset>
+            <label for="nameField">Pesquisar Bitrix Id</label>
+            <input type="text" name="nome" placeholder="Nome do Colaborador">      
+            <input class="button-primary" type="submit">
+        </fieldset>
+    </form>
+{% endblock %}
+
+{% block lista %}
+    {% if resultados %}
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Cargo</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for r in resultados %}
+                    <tr>
+                        <td>{{ r.id }}</td>
+                        <td>{{ r.nome }}</td>
+                        <td>{{ r.email }}</td>
+                        <td>{{ r.cargo }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+{% endblock %}

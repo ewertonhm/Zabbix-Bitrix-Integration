@@ -2,10 +2,10 @@
 
 namespace Base;
 
-use \UsuarioQuery as ChildUsuarioQuery;
+use \N3AccompliceQuery as ChildN3AccompliceQuery;
 use \Exception;
 use \PDO;
-use Map\UsuarioTableMap;
+use Map\N3AccompliceTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -19,18 +19,18 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 
 /**
- * Base class that represents a row from the 'usuario' table.
+ * Base class that represents a row from the 'n3_accomplice' table.
  *
  *
  *
  * @package    propel.generator..Base
  */
-abstract class Usuario implements ActiveRecordInterface
+abstract class N3Accomplice implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Map\\UsuarioTableMap';
+    const TABLE_MAP = '\\Map\\N3AccompliceTableMap';
 
 
     /**
@@ -67,20 +67,6 @@ abstract class Usuario implements ActiveRecordInterface
     protected $id;
 
     /**
-     * The value for the email field.
-     *
-     * @var        string
-     */
-    protected $email;
-
-    /**
-     * The value for the senha field.
-     *
-     * @var        string
-     */
-    protected $senha;
-
-    /**
      * The value for the nome field.
      *
      * @var        string
@@ -88,11 +74,11 @@ abstract class Usuario implements ActiveRecordInterface
     protected $nome;
 
     /**
-     * The value for the admin field.
+     * The value for the bitrix_id field.
      *
-     * @var        int|null
+     * @var        string
      */
-    protected $admin;
+    protected $bitrix_id;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -103,7 +89,7 @@ abstract class Usuario implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of Base\Usuario object.
+     * Initializes internal state of Base\N3Accomplice object.
      */
     public function __construct()
     {
@@ -196,9 +182,9 @@ abstract class Usuario implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Usuario</code> instance.  If
-     * <code>obj</code> is an instance of <code>Usuario</code>, delegates to
-     * <code>equals(Usuario)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>N3Accomplice</code> instance.  If
+     * <code>obj</code> is an instance of <code>N3Accomplice</code>, delegates to
+     * <code>equals(N3Accomplice)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -337,26 +323,6 @@ abstract class Usuario implements ActiveRecordInterface
     }
 
     /**
-     * Get the [email] column value.
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Get the [senha] column value.
-     *
-     * @return string
-     */
-    public function getSenha()
-    {
-        return $this->senha;
-    }
-
-    /**
      * Get the [nome] column value.
      *
      * @return string
@@ -367,20 +333,20 @@ abstract class Usuario implements ActiveRecordInterface
     }
 
     /**
-     * Get the [admin] column value.
+     * Get the [bitrix_id] column value.
      *
-     * @return int|null
+     * @return string
      */
-    public function getAdmin()
+    public function getBitrixId()
     {
-        return $this->admin;
+        return $this->bitrix_id;
     }
 
     /**
      * Set the value of [id] column.
      *
      * @param int $v New value
-     * @return $this|\Usuario The current object (for fluent API support)
+     * @return $this|\N3Accomplice The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -390,57 +356,17 @@ abstract class Usuario implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[UsuarioTableMap::COL_ID] = true;
+            $this->modifiedColumns[N3AccompliceTableMap::COL_ID] = true;
         }
 
         return $this;
     } // setId()
 
     /**
-     * Set the value of [email] column.
-     *
-     * @param string $v New value
-     * @return $this|\Usuario The current object (for fluent API support)
-     */
-    public function setEmail($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->email !== $v) {
-            $this->email = $v;
-            $this->modifiedColumns[UsuarioTableMap::COL_EMAIL] = true;
-        }
-
-        return $this;
-    } // setEmail()
-
-    /**
-     * Set the value of [senha] column.
-     *
-     * @param string $v New value
-     * @return $this|\Usuario The current object (for fluent API support)
-     */
-    public function setSenha($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->senha !== $v) {
-            $this->senha = $v;
-            $this->modifiedColumns[UsuarioTableMap::COL_SENHA] = true;
-        }
-
-        return $this;
-    } // setSenha()
-
-    /**
      * Set the value of [nome] column.
      *
      * @param string $v New value
-     * @return $this|\Usuario The current object (for fluent API support)
+     * @return $this|\N3Accomplice The current object (for fluent API support)
      */
     public function setNome($v)
     {
@@ -450,31 +376,31 @@ abstract class Usuario implements ActiveRecordInterface
 
         if ($this->nome !== $v) {
             $this->nome = $v;
-            $this->modifiedColumns[UsuarioTableMap::COL_NOME] = true;
+            $this->modifiedColumns[N3AccompliceTableMap::COL_NOME] = true;
         }
 
         return $this;
     } // setNome()
 
     /**
-     * Set the value of [admin] column.
+     * Set the value of [bitrix_id] column.
      *
-     * @param int|null $v New value
-     * @return $this|\Usuario The current object (for fluent API support)
+     * @param string $v New value
+     * @return $this|\N3Accomplice The current object (for fluent API support)
      */
-    public function setAdmin($v)
+    public function setBitrixId($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
-        if ($this->admin !== $v) {
-            $this->admin = $v;
-            $this->modifiedColumns[UsuarioTableMap::COL_ADMIN] = true;
+        if ($this->bitrix_id !== $v) {
+            $this->bitrix_id = $v;
+            $this->modifiedColumns[N3AccompliceTableMap::COL_BITRIX_ID] = true;
         }
 
         return $this;
-    } // setAdmin()
+    } // setBitrixId()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -512,20 +438,14 @@ abstract class Usuario implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : UsuarioTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : N3AccompliceTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : UsuarioTableMap::translateFieldName('Email', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->email = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : UsuarioTableMap::translateFieldName('Senha', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->senha = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : UsuarioTableMap::translateFieldName('Nome', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : N3AccompliceTableMap::translateFieldName('Nome', TableMap::TYPE_PHPNAME, $indexType)];
             $this->nome = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : UsuarioTableMap::translateFieldName('Admin', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->admin = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : N3AccompliceTableMap::translateFieldName('BitrixId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->bitrix_id = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -534,10 +454,10 @@ abstract class Usuario implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = UsuarioTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = N3AccompliceTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\Usuario'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\N3Accomplice'), 0, $e);
         }
     }
 
@@ -579,13 +499,13 @@ abstract class Usuario implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(UsuarioTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(N3AccompliceTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildUsuarioQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildN3AccompliceQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -604,8 +524,8 @@ abstract class Usuario implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Usuario::setDeleted()
-     * @see Usuario::isDeleted()
+     * @see N3Accomplice::setDeleted()
+     * @see N3Accomplice::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -614,11 +534,11 @@ abstract class Usuario implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(UsuarioTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(N3AccompliceTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildUsuarioQuery::create()
+            $deleteQuery = ChildN3AccompliceQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -653,7 +573,7 @@ abstract class Usuario implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(UsuarioTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(N3AccompliceTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -672,7 +592,7 @@ abstract class Usuario implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                UsuarioTableMap::addInstanceToPool($this);
+                N3AccompliceTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -729,13 +649,13 @@ abstract class Usuario implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[UsuarioTableMap::COL_ID] = true;
+        $this->modifiedColumns[N3AccompliceTableMap::COL_ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . UsuarioTableMap::COL_ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . N3AccompliceTableMap::COL_ID . ')');
         }
         if (null === $this->id) {
             try {
-                $dataFetcher = $con->query("SELECT nextval('usuario_id_seq')");
+                $dataFetcher = $con->query("SELECT nextval('n3_accomplice_id_seq')");
                 $this->id = (int) $dataFetcher->fetchColumn();
             } catch (Exception $e) {
                 throw new PropelException('Unable to get sequence id.', 0, $e);
@@ -744,24 +664,18 @@ abstract class Usuario implements ActiveRecordInterface
 
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(UsuarioTableMap::COL_ID)) {
+        if ($this->isColumnModified(N3AccompliceTableMap::COL_ID)) {
             $modifiedColumns[':p' . $index++]  = 'id';
         }
-        if ($this->isColumnModified(UsuarioTableMap::COL_EMAIL)) {
-            $modifiedColumns[':p' . $index++]  = 'email';
-        }
-        if ($this->isColumnModified(UsuarioTableMap::COL_SENHA)) {
-            $modifiedColumns[':p' . $index++]  = 'senha';
-        }
-        if ($this->isColumnModified(UsuarioTableMap::COL_NOME)) {
+        if ($this->isColumnModified(N3AccompliceTableMap::COL_NOME)) {
             $modifiedColumns[':p' . $index++]  = 'nome';
         }
-        if ($this->isColumnModified(UsuarioTableMap::COL_ADMIN)) {
-            $modifiedColumns[':p' . $index++]  = 'admin';
+        if ($this->isColumnModified(N3AccompliceTableMap::COL_BITRIX_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'bitrix_id';
         }
 
         $sql = sprintf(
-            'INSERT INTO usuario (%s) VALUES (%s)',
+            'INSERT INTO n3_accomplice (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -773,17 +687,11 @@ abstract class Usuario implements ActiveRecordInterface
                     case 'id':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'email':
-                        $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
-                        break;
-                    case 'senha':
-                        $stmt->bindValue($identifier, $this->senha, PDO::PARAM_STR);
-                        break;
                     case 'nome':
                         $stmt->bindValue($identifier, $this->nome, PDO::PARAM_STR);
                         break;
-                    case 'admin':
-                        $stmt->bindValue($identifier, $this->admin, PDO::PARAM_INT);
+                    case 'bitrix_id':
+                        $stmt->bindValue($identifier, $this->bitrix_id, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -824,7 +732,7 @@ abstract class Usuario implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = UsuarioTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = N3AccompliceTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -844,16 +752,10 @@ abstract class Usuario implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getEmail();
-                break;
-            case 2:
-                return $this->getSenha();
-                break;
-            case 3:
                 return $this->getNome();
                 break;
-            case 4:
-                return $this->getAdmin();
+            case 2:
+                return $this->getBitrixId();
                 break;
             default:
                 return null;
@@ -878,17 +780,15 @@ abstract class Usuario implements ActiveRecordInterface
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
-        if (isset($alreadyDumpedObjects['Usuario'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['N3Accomplice'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Usuario'][$this->hashCode()] = true;
-        $keys = UsuarioTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['N3Accomplice'][$this->hashCode()] = true;
+        $keys = N3AccompliceTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getEmail(),
-            $keys[2] => $this->getSenha(),
-            $keys[3] => $this->getNome(),
-            $keys[4] => $this->getAdmin(),
+            $keys[1] => $this->getNome(),
+            $keys[2] => $this->getBitrixId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -908,11 +808,11 @@ abstract class Usuario implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\Usuario
+     * @return $this|\N3Accomplice
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = UsuarioTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = N3AccompliceTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -923,7 +823,7 @@ abstract class Usuario implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\Usuario
+     * @return $this|\N3Accomplice
      */
     public function setByPosition($pos, $value)
     {
@@ -932,16 +832,10 @@ abstract class Usuario implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setEmail($value);
-                break;
-            case 2:
-                $this->setSenha($value);
-                break;
-            case 3:
                 $this->setNome($value);
                 break;
-            case 4:
-                $this->setAdmin($value);
+            case 2:
+                $this->setBitrixId($value);
                 break;
         } // switch()
 
@@ -963,26 +857,20 @@ abstract class Usuario implements ActiveRecordInterface
      *
      * @param      array  $arr     An array to populate the object from.
      * @param      string $keyType The type of keys the array uses.
-     * @return     $this|\Usuario
+     * @return     $this|\N3Accomplice
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = UsuarioTableMap::getFieldNames($keyType);
+        $keys = N3AccompliceTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
             $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setEmail($arr[$keys[1]]);
+            $this->setNome($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setSenha($arr[$keys[2]]);
-        }
-        if (array_key_exists($keys[3], $arr)) {
-            $this->setNome($arr[$keys[3]]);
-        }
-        if (array_key_exists($keys[4], $arr)) {
-            $this->setAdmin($arr[$keys[4]]);
+            $this->setBitrixId($arr[$keys[2]]);
         }
 
         return $this;
@@ -1005,7 +893,7 @@ abstract class Usuario implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\Usuario The current object, for fluid interface
+     * @return $this|\N3Accomplice The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -1025,22 +913,16 @@ abstract class Usuario implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(UsuarioTableMap::DATABASE_NAME);
+        $criteria = new Criteria(N3AccompliceTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(UsuarioTableMap::COL_ID)) {
-            $criteria->add(UsuarioTableMap::COL_ID, $this->id);
+        if ($this->isColumnModified(N3AccompliceTableMap::COL_ID)) {
+            $criteria->add(N3AccompliceTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(UsuarioTableMap::COL_EMAIL)) {
-            $criteria->add(UsuarioTableMap::COL_EMAIL, $this->email);
+        if ($this->isColumnModified(N3AccompliceTableMap::COL_NOME)) {
+            $criteria->add(N3AccompliceTableMap::COL_NOME, $this->nome);
         }
-        if ($this->isColumnModified(UsuarioTableMap::COL_SENHA)) {
-            $criteria->add(UsuarioTableMap::COL_SENHA, $this->senha);
-        }
-        if ($this->isColumnModified(UsuarioTableMap::COL_NOME)) {
-            $criteria->add(UsuarioTableMap::COL_NOME, $this->nome);
-        }
-        if ($this->isColumnModified(UsuarioTableMap::COL_ADMIN)) {
-            $criteria->add(UsuarioTableMap::COL_ADMIN, $this->admin);
+        if ($this->isColumnModified(N3AccompliceTableMap::COL_BITRIX_ID)) {
+            $criteria->add(N3AccompliceTableMap::COL_BITRIX_ID, $this->bitrix_id);
         }
 
         return $criteria;
@@ -1058,8 +940,8 @@ abstract class Usuario implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildUsuarioQuery::create();
-        $criteria->add(UsuarioTableMap::COL_ID, $this->id);
+        $criteria = ChildN3AccompliceQuery::create();
+        $criteria->add(N3AccompliceTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -1121,17 +1003,15 @@ abstract class Usuario implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Usuario (or compatible) type.
+     * @param      object $copyObj An object of \N3Accomplice (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setEmail($this->getEmail());
-        $copyObj->setSenha($this->getSenha());
         $copyObj->setNome($this->getNome());
-        $copyObj->setAdmin($this->getAdmin());
+        $copyObj->setBitrixId($this->getBitrixId());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1147,7 +1027,7 @@ abstract class Usuario implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \Usuario Clone of current object.
+     * @return \N3Accomplice Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1168,10 +1048,8 @@ abstract class Usuario implements ActiveRecordInterface
     public function clear()
     {
         $this->id = null;
-        $this->email = null;
-        $this->senha = null;
         $this->nome = null;
-        $this->admin = null;
+        $this->bitrix_id = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1201,7 +1079,7 @@ abstract class Usuario implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(UsuarioTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(N3AccompliceTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

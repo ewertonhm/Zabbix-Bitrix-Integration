@@ -4,7 +4,7 @@ $serviceContainer->checkVersion(2);
 $serviceContainer->setAdapterClass('default', 'pgsql');
 $manager = new \Propel\Runtime\Connection\ConnectionManagerSingle();
 $manager->setConfiguration(array (
-  'dsn' => 'pgsql:host=localhost;port=5432;dbname=taskcontroller',
+  'dsn' => 'pgsql:host=127.0.0.1;port=5432;dbname=taskcontroller',
   'user' => 'postgres',
   'password' => 'A1cdl33$3',
   'settings' =>

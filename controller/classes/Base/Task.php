@@ -10,8 +10,8 @@ use \TaskAccompliceQuery as ChildTaskAccompliceQuery;
 use \TaskAuditor as ChildTaskAuditor;
 use \TaskAuditorQuery as ChildTaskAuditorQuery;
 use \TaskQuery as ChildTaskQuery;
-use \Usuario as ChildUsuario;
-use \UsuarioQuery as ChildUsuarioQuery;
+use \Unidade as ChildUnidade;
+use \UnidadeQuery as ChildUnidadeQuery;
 use \Exception;
 use \PDO;
 use Map\TaskAccompliceTableMap;
@@ -79,13 +79,6 @@ abstract class Task implements ActiveRecordInterface
     protected $id;
 
     /**
-     * The value for the usuario_id field.
-     *
-     * @var        int|null
-     */
-    protected $usuario_id;
-
-    /**
      * The value for the title field.
      *
      * @var        string
@@ -93,25 +86,18 @@ abstract class Task implements ActiveRecordInterface
     protected $title;
 
     /**
-     * The value for the descript field.
-     *
-     * @var        string
-     */
-    protected $descript;
-
-    /**
-     * The value for the deadline field.
-     *
-     * @var        string|null
-     */
-    protected $deadline;
-
-    /**
      * The value for the responsible_id field.
      *
      * @var        int|null
      */
     protected $responsible_id;
+
+    /**
+     * The value for the unidade_id field.
+     *
+     * @var        int|null
+     */
+    protected $unidade_id;
 
     /**
      * The value for the group_id field.
@@ -126,9 +112,9 @@ abstract class Task implements ActiveRecordInterface
     protected $aColaborador;
 
     /**
-     * @var        ChildUsuario
+     * @var        ChildUnidade
      */
-    protected $aUsuario;
+    protected $aUnidade;
 
     /**
      * @var        ObjectCollection|ChildTaskAccomplice[] Collection to store aggregation of ChildTaskAccomplice objects.
@@ -401,16 +387,6 @@ abstract class Task implements ActiveRecordInterface
     }
 
     /**
-     * Get the [usuario_id] column value.
-     *
-     * @return int|null
-     */
-    public function getUsuarioId()
-    {
-        return $this->usuario_id;
-    }
-
-    /**
      * Get the [title] column value.
      *
      * @return string
@@ -421,26 +397,6 @@ abstract class Task implements ActiveRecordInterface
     }
 
     /**
-     * Get the [descript] column value.
-     *
-     * @return string
-     */
-    public function getDescript()
-    {
-        return $this->descript;
-    }
-
-    /**
-     * Get the [deadline] column value.
-     *
-     * @return string|null
-     */
-    public function getDeadline()
-    {
-        return $this->deadline;
-    }
-
-    /**
      * Get the [responsible_id] column value.
      *
      * @return int|null
@@ -448,6 +404,16 @@ abstract class Task implements ActiveRecordInterface
     public function getResponsibleId()
     {
         return $this->responsible_id;
+    }
+
+    /**
+     * Get the [unidade_id] column value.
+     *
+     * @return int|null
+     */
+    public function getUnidadeId()
+    {
+        return $this->unidade_id;
     }
 
     /**
@@ -481,30 +447,6 @@ abstract class Task implements ActiveRecordInterface
     } // setId()
 
     /**
-     * Set the value of [usuario_id] column.
-     *
-     * @param int|null $v New value
-     * @return $this|\Task The current object (for fluent API support)
-     */
-    public function setUsuarioId($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->usuario_id !== $v) {
-            $this->usuario_id = $v;
-            $this->modifiedColumns[TaskTableMap::COL_USUARIO_ID] = true;
-        }
-
-        if ($this->aUsuario !== null && $this->aUsuario->getId() !== $v) {
-            $this->aUsuario = null;
-        }
-
-        return $this;
-    } // setUsuarioId()
-
-    /**
      * Set the value of [title] column.
      *
      * @param string $v New value
@@ -523,46 +465,6 @@ abstract class Task implements ActiveRecordInterface
 
         return $this;
     } // setTitle()
-
-    /**
-     * Set the value of [descript] column.
-     *
-     * @param string $v New value
-     * @return $this|\Task The current object (for fluent API support)
-     */
-    public function setDescript($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->descript !== $v) {
-            $this->descript = $v;
-            $this->modifiedColumns[TaskTableMap::COL_DESCRIPT] = true;
-        }
-
-        return $this;
-    } // setDescript()
-
-    /**
-     * Set the value of [deadline] column.
-     *
-     * @param string|null $v New value
-     * @return $this|\Task The current object (for fluent API support)
-     */
-    public function setDeadline($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->deadline !== $v) {
-            $this->deadline = $v;
-            $this->modifiedColumns[TaskTableMap::COL_DEADLINE] = true;
-        }
-
-        return $this;
-    } // setDeadline()
 
     /**
      * Set the value of [responsible_id] column.
@@ -587,6 +489,30 @@ abstract class Task implements ActiveRecordInterface
 
         return $this;
     } // setResponsibleId()
+
+    /**
+     * Set the value of [unidade_id] column.
+     *
+     * @param int|null $v New value
+     * @return $this|\Task The current object (for fluent API support)
+     */
+    public function setUnidadeId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->unidade_id !== $v) {
+            $this->unidade_id = $v;
+            $this->modifiedColumns[TaskTableMap::COL_UNIDADE_ID] = true;
+        }
+
+        if ($this->aUnidade !== null && $this->aUnidade->getId() !== $v) {
+            $this->aUnidade = null;
+        }
+
+        return $this;
+    } // setUnidadeId()
 
     /**
      * Set the value of [group_id] column.
@@ -647,22 +573,16 @@ abstract class Task implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : TaskTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : TaskTableMap::translateFieldName('UsuarioId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->usuario_id = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : TaskTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : TaskTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
             $this->title = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : TaskTableMap::translateFieldName('Descript', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->descript = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : TaskTableMap::translateFieldName('Deadline', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->deadline = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : TaskTableMap::translateFieldName('ResponsibleId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : TaskTableMap::translateFieldName('ResponsibleId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->responsible_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : TaskTableMap::translateFieldName('GroupId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : TaskTableMap::translateFieldName('UnidadeId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->unidade_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : TaskTableMap::translateFieldName('GroupId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->group_id = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -672,7 +592,7 @@ abstract class Task implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 7; // 7 = TaskTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = TaskTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Task'), 0, $e);
@@ -694,11 +614,11 @@ abstract class Task implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aUsuario !== null && $this->usuario_id !== $this->aUsuario->getId()) {
-            $this->aUsuario = null;
-        }
         if ($this->aColaborador !== null && $this->responsible_id !== $this->aColaborador->getId()) {
             $this->aColaborador = null;
+        }
+        if ($this->aUnidade !== null && $this->unidade_id !== $this->aUnidade->getId()) {
+            $this->aUnidade = null;
         }
     } // ensureConsistency
 
@@ -740,7 +660,7 @@ abstract class Task implements ActiveRecordInterface
         if ($deep) {  // also de-associate any related objects?
 
             $this->aColaborador = null;
-            $this->aUsuario = null;
+            $this->aUnidade = null;
             $this->collTaskAccomplices = null;
 
             $this->collTaskAuditors = null;
@@ -860,11 +780,11 @@ abstract class Task implements ActiveRecordInterface
                 $this->setColaborador($this->aColaborador);
             }
 
-            if ($this->aUsuario !== null) {
-                if ($this->aUsuario->isModified() || $this->aUsuario->isNew()) {
-                    $affectedRows += $this->aUsuario->save($con);
+            if ($this->aUnidade !== null) {
+                if ($this->aUnidade->isModified() || $this->aUnidade->isNew()) {
+                    $affectedRows += $this->aUnidade->save($con);
                 }
-                $this->setUsuario($this->aUsuario);
+                $this->setUnidade($this->aUnidade);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -952,20 +872,14 @@ abstract class Task implements ActiveRecordInterface
         if ($this->isColumnModified(TaskTableMap::COL_ID)) {
             $modifiedColumns[':p' . $index++]  = 'id';
         }
-        if ($this->isColumnModified(TaskTableMap::COL_USUARIO_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'usuario_id';
-        }
         if ($this->isColumnModified(TaskTableMap::COL_TITLE)) {
             $modifiedColumns[':p' . $index++]  = 'title';
         }
-        if ($this->isColumnModified(TaskTableMap::COL_DESCRIPT)) {
-            $modifiedColumns[':p' . $index++]  = 'descript';
-        }
-        if ($this->isColumnModified(TaskTableMap::COL_DEADLINE)) {
-            $modifiedColumns[':p' . $index++]  = 'deadline';
-        }
         if ($this->isColumnModified(TaskTableMap::COL_RESPONSIBLE_ID)) {
             $modifiedColumns[':p' . $index++]  = 'responsible_id';
+        }
+        if ($this->isColumnModified(TaskTableMap::COL_UNIDADE_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'unidade_id';
         }
         if ($this->isColumnModified(TaskTableMap::COL_GROUP_ID)) {
             $modifiedColumns[':p' . $index++]  = 'group_id';
@@ -984,20 +898,14 @@ abstract class Task implements ActiveRecordInterface
                     case 'id':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'usuario_id':
-                        $stmt->bindValue($identifier, $this->usuario_id, PDO::PARAM_INT);
-                        break;
                     case 'title':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
-                    case 'descript':
-                        $stmt->bindValue($identifier, $this->descript, PDO::PARAM_STR);
-                        break;
-                    case 'deadline':
-                        $stmt->bindValue($identifier, $this->deadline, PDO::PARAM_STR);
-                        break;
                     case 'responsible_id':
                         $stmt->bindValue($identifier, $this->responsible_id, PDO::PARAM_INT);
+                        break;
+                    case 'unidade_id':
+                        $stmt->bindValue($identifier, $this->unidade_id, PDO::PARAM_INT);
                         break;
                     case 'group_id':
                         $stmt->bindValue($identifier, $this->group_id, PDO::PARAM_STR);
@@ -1061,21 +969,15 @@ abstract class Task implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getUsuarioId();
-                break;
-            case 2:
                 return $this->getTitle();
                 break;
-            case 3:
-                return $this->getDescript();
-                break;
-            case 4:
-                return $this->getDeadline();
-                break;
-            case 5:
+            case 2:
                 return $this->getResponsibleId();
                 break;
-            case 6:
+            case 3:
+                return $this->getUnidadeId();
+                break;
+            case 4:
                 return $this->getGroupId();
                 break;
             default:
@@ -1109,12 +1011,10 @@ abstract class Task implements ActiveRecordInterface
         $keys = TaskTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getUsuarioId(),
-            $keys[2] => $this->getTitle(),
-            $keys[3] => $this->getDescript(),
-            $keys[4] => $this->getDeadline(),
-            $keys[5] => $this->getResponsibleId(),
-            $keys[6] => $this->getGroupId(),
+            $keys[1] => $this->getTitle(),
+            $keys[2] => $this->getResponsibleId(),
+            $keys[3] => $this->getUnidadeId(),
+            $keys[4] => $this->getGroupId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1137,20 +1037,20 @@ abstract class Task implements ActiveRecordInterface
 
                 $result[$key] = $this->aColaborador->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aUsuario) {
+            if (null !== $this->aUnidade) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'usuario';
+                        $key = 'unidade';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'usuario';
+                        $key = 'unidade';
                         break;
                     default:
-                        $key = 'Usuario';
+                        $key = 'Unidade';
                 }
 
-                $result[$key] = $this->aUsuario->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->aUnidade->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->collTaskAccomplices) {
 
@@ -1220,21 +1120,15 @@ abstract class Task implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setUsuarioId($value);
-                break;
-            case 2:
                 $this->setTitle($value);
                 break;
-            case 3:
-                $this->setDescript($value);
-                break;
-            case 4:
-                $this->setDeadline($value);
-                break;
-            case 5:
+            case 2:
                 $this->setResponsibleId($value);
                 break;
-            case 6:
+            case 3:
+                $this->setUnidadeId($value);
+                break;
+            case 4:
                 $this->setGroupId($value);
                 break;
         } // switch()
@@ -1267,22 +1161,16 @@ abstract class Task implements ActiveRecordInterface
             $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setUsuarioId($arr[$keys[1]]);
+            $this->setTitle($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setTitle($arr[$keys[2]]);
+            $this->setResponsibleId($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setDescript($arr[$keys[3]]);
+            $this->setUnidadeId($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setDeadline($arr[$keys[4]]);
-        }
-        if (array_key_exists($keys[5], $arr)) {
-            $this->setResponsibleId($arr[$keys[5]]);
-        }
-        if (array_key_exists($keys[6], $arr)) {
-            $this->setGroupId($arr[$keys[6]]);
+            $this->setGroupId($arr[$keys[4]]);
         }
 
         return $this;
@@ -1330,20 +1218,14 @@ abstract class Task implements ActiveRecordInterface
         if ($this->isColumnModified(TaskTableMap::COL_ID)) {
             $criteria->add(TaskTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(TaskTableMap::COL_USUARIO_ID)) {
-            $criteria->add(TaskTableMap::COL_USUARIO_ID, $this->usuario_id);
-        }
         if ($this->isColumnModified(TaskTableMap::COL_TITLE)) {
             $criteria->add(TaskTableMap::COL_TITLE, $this->title);
         }
-        if ($this->isColumnModified(TaskTableMap::COL_DESCRIPT)) {
-            $criteria->add(TaskTableMap::COL_DESCRIPT, $this->descript);
-        }
-        if ($this->isColumnModified(TaskTableMap::COL_DEADLINE)) {
-            $criteria->add(TaskTableMap::COL_DEADLINE, $this->deadline);
-        }
         if ($this->isColumnModified(TaskTableMap::COL_RESPONSIBLE_ID)) {
             $criteria->add(TaskTableMap::COL_RESPONSIBLE_ID, $this->responsible_id);
+        }
+        if ($this->isColumnModified(TaskTableMap::COL_UNIDADE_ID)) {
+            $criteria->add(TaskTableMap::COL_UNIDADE_ID, $this->unidade_id);
         }
         if ($this->isColumnModified(TaskTableMap::COL_GROUP_ID)) {
             $criteria->add(TaskTableMap::COL_GROUP_ID, $this->group_id);
@@ -1434,11 +1316,9 @@ abstract class Task implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setUsuarioId($this->getUsuarioId());
         $copyObj->setTitle($this->getTitle());
-        $copyObj->setDescript($this->getDescript());
-        $copyObj->setDeadline($this->getDeadline());
         $copyObj->setResponsibleId($this->getResponsibleId());
+        $copyObj->setUnidadeId($this->getUnidadeId());
         $copyObj->setGroupId($this->getGroupId());
 
         if ($deepCopy) {
@@ -1540,24 +1420,24 @@ abstract class Task implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildUsuario object.
+     * Declares an association between this object and a ChildUnidade object.
      *
-     * @param  ChildUsuario|null $v
+     * @param  ChildUnidade|null $v
      * @return $this|\Task The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setUsuario(ChildUsuario $v = null)
+    public function setUnidade(ChildUnidade $v = null)
     {
         if ($v === null) {
-            $this->setUsuarioId(NULL);
+            $this->setUnidadeId(NULL);
         } else {
-            $this->setUsuarioId($v->getId());
+            $this->setUnidadeId($v->getId());
         }
 
-        $this->aUsuario = $v;
+        $this->aUnidade = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildUsuario object, it will not be re-added.
+        // If this object has already been added to the ChildUnidade object, it will not be re-added.
         if ($v !== null) {
             $v->addTask($this);
         }
@@ -1568,26 +1448,26 @@ abstract class Task implements ActiveRecordInterface
 
 
     /**
-     * Get the associated ChildUsuario object
+     * Get the associated ChildUnidade object
      *
      * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildUsuario|null The associated ChildUsuario object.
+     * @return ChildUnidade|null The associated ChildUnidade object.
      * @throws PropelException
      */
-    public function getUsuario(ConnectionInterface $con = null)
+    public function getUnidade(ConnectionInterface $con = null)
     {
-        if ($this->aUsuario === null && ($this->usuario_id != 0)) {
-            $this->aUsuario = ChildUsuarioQuery::create()->findPk($this->usuario_id, $con);
+        if ($this->aUnidade === null && ($this->unidade_id != 0)) {
+            $this->aUnidade = ChildUnidadeQuery::create()->findPk($this->unidade_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aUsuario->addTasks($this);
+                $this->aUnidade->addTasks($this);
              */
         }
 
-        return $this->aUsuario;
+        return $this->aUnidade;
     }
 
 
@@ -2143,15 +2023,13 @@ abstract class Task implements ActiveRecordInterface
         if (null !== $this->aColaborador) {
             $this->aColaborador->removeTask($this);
         }
-        if (null !== $this->aUsuario) {
-            $this->aUsuario->removeTask($this);
+        if (null !== $this->aUnidade) {
+            $this->aUnidade->removeTask($this);
         }
         $this->id = null;
-        $this->usuario_id = null;
         $this->title = null;
-        $this->descript = null;
-        $this->deadline = null;
         $this->responsible_id = null;
+        $this->unidade_id = null;
         $this->group_id = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
@@ -2186,7 +2064,7 @@ abstract class Task implements ActiveRecordInterface
         $this->collTaskAccomplices = null;
         $this->collTaskAuditors = null;
         $this->aColaborador = null;
-        $this->aUsuario = null;
+        $this->aUnidade = null;
     }
 
     /**

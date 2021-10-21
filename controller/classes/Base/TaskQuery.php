@@ -21,19 +21,15 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  * @method     ChildTaskQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ChildTaskQuery orderByUsuarioId($order = Criteria::ASC) Order by the usuario_id column
  * @method     ChildTaskQuery orderByTitle($order = Criteria::ASC) Order by the title column
- * @method     ChildTaskQuery orderByDescript($order = Criteria::ASC) Order by the descript column
- * @method     ChildTaskQuery orderByDeadline($order = Criteria::ASC) Order by the deadline column
  * @method     ChildTaskQuery orderByResponsibleId($order = Criteria::ASC) Order by the responsible_id column
+ * @method     ChildTaskQuery orderByUnidadeId($order = Criteria::ASC) Order by the unidade_id column
  * @method     ChildTaskQuery orderByGroupId($order = Criteria::ASC) Order by the group_id column
  *
  * @method     ChildTaskQuery groupById() Group by the id column
- * @method     ChildTaskQuery groupByUsuarioId() Group by the usuario_id column
  * @method     ChildTaskQuery groupByTitle() Group by the title column
- * @method     ChildTaskQuery groupByDescript() Group by the descript column
- * @method     ChildTaskQuery groupByDeadline() Group by the deadline column
  * @method     ChildTaskQuery groupByResponsibleId() Group by the responsible_id column
+ * @method     ChildTaskQuery groupByUnidadeId() Group by the unidade_id column
  * @method     ChildTaskQuery groupByGroupId() Group by the group_id column
  *
  * @method     ChildTaskQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -54,15 +50,15 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTaskQuery rightJoinWithColaborador() Adds a RIGHT JOIN clause and with to the query using the Colaborador relation
  * @method     ChildTaskQuery innerJoinWithColaborador() Adds a INNER JOIN clause and with to the query using the Colaborador relation
  *
- * @method     ChildTaskQuery leftJoinUsuario($relationAlias = null) Adds a LEFT JOIN clause to the query using the Usuario relation
- * @method     ChildTaskQuery rightJoinUsuario($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Usuario relation
- * @method     ChildTaskQuery innerJoinUsuario($relationAlias = null) Adds a INNER JOIN clause to the query using the Usuario relation
+ * @method     ChildTaskQuery leftJoinUnidade($relationAlias = null) Adds a LEFT JOIN clause to the query using the Unidade relation
+ * @method     ChildTaskQuery rightJoinUnidade($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Unidade relation
+ * @method     ChildTaskQuery innerJoinUnidade($relationAlias = null) Adds a INNER JOIN clause to the query using the Unidade relation
  *
- * @method     ChildTaskQuery joinWithUsuario($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Usuario relation
+ * @method     ChildTaskQuery joinWithUnidade($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Unidade relation
  *
- * @method     ChildTaskQuery leftJoinWithUsuario() Adds a LEFT JOIN clause and with to the query using the Usuario relation
- * @method     ChildTaskQuery rightJoinWithUsuario() Adds a RIGHT JOIN clause and with to the query using the Usuario relation
- * @method     ChildTaskQuery innerJoinWithUsuario() Adds a INNER JOIN clause and with to the query using the Usuario relation
+ * @method     ChildTaskQuery leftJoinWithUnidade() Adds a LEFT JOIN clause and with to the query using the Unidade relation
+ * @method     ChildTaskQuery rightJoinWithUnidade() Adds a RIGHT JOIN clause and with to the query using the Unidade relation
+ * @method     ChildTaskQuery innerJoinWithUnidade() Adds a INNER JOIN clause and with to the query using the Unidade relation
  *
  * @method     ChildTaskQuery leftJoinTaskAccomplice($relationAlias = null) Adds a LEFT JOIN clause to the query using the TaskAccomplice relation
  * @method     ChildTaskQuery rightJoinTaskAccomplice($relationAlias = null) Adds a RIGHT JOIN clause to the query using the TaskAccomplice relation
@@ -84,44 +80,36 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTaskQuery rightJoinWithTaskAuditor() Adds a RIGHT JOIN clause and with to the query using the TaskAuditor relation
  * @method     ChildTaskQuery innerJoinWithTaskAuditor() Adds a INNER JOIN clause and with to the query using the TaskAuditor relation
  *
- * @method     \ColaboradorQuery|\UsuarioQuery|\TaskAccompliceQuery|\TaskAuditorQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \ColaboradorQuery|\UnidadeQuery|\TaskAccompliceQuery|\TaskAuditorQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildTask|null findOne(ConnectionInterface $con = null) Return the first ChildTask matching the query
  * @method     ChildTask findOneOrCreate(ConnectionInterface $con = null) Return the first ChildTask matching the query, or a new ChildTask object populated from the query conditions when no match is found
  *
  * @method     ChildTask|null findOneById(int $id) Return the first ChildTask filtered by the id column
- * @method     ChildTask|null findOneByUsuarioId(int $usuario_id) Return the first ChildTask filtered by the usuario_id column
  * @method     ChildTask|null findOneByTitle(string $title) Return the first ChildTask filtered by the title column
- * @method     ChildTask|null findOneByDescript(string $descript) Return the first ChildTask filtered by the descript column
- * @method     ChildTask|null findOneByDeadline(string $deadline) Return the first ChildTask filtered by the deadline column
  * @method     ChildTask|null findOneByResponsibleId(int $responsible_id) Return the first ChildTask filtered by the responsible_id column
+ * @method     ChildTask|null findOneByUnidadeId(int $unidade_id) Return the first ChildTask filtered by the unidade_id column
  * @method     ChildTask|null findOneByGroupId(string $group_id) Return the first ChildTask filtered by the group_id column *
 
  * @method     ChildTask requirePk($key, ConnectionInterface $con = null) Return the ChildTask by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTask requireOne(ConnectionInterface $con = null) Return the first ChildTask matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildTask requireOneById(int $id) Return the first ChildTask filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildTask requireOneByUsuarioId(int $usuario_id) Return the first ChildTask filtered by the usuario_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTask requireOneByTitle(string $title) Return the first ChildTask filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildTask requireOneByDescript(string $descript) Return the first ChildTask filtered by the descript column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildTask requireOneByDeadline(string $deadline) Return the first ChildTask filtered by the deadline column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTask requireOneByResponsibleId(int $responsible_id) Return the first ChildTask filtered by the responsible_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildTask requireOneByUnidadeId(int $unidade_id) Return the first ChildTask filtered by the unidade_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTask requireOneByGroupId(string $group_id) Return the first ChildTask filtered by the group_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildTask[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildTask objects based on current ModelCriteria
  * @psalm-method ObjectCollection&\Traversable<ChildTask> find(ConnectionInterface $con = null) Return ChildTask objects based on current ModelCriteria
  * @method     ChildTask[]|ObjectCollection findById(int $id) Return ChildTask objects filtered by the id column
  * @psalm-method ObjectCollection&\Traversable<ChildTask> findById(int $id) Return ChildTask objects filtered by the id column
- * @method     ChildTask[]|ObjectCollection findByUsuarioId(int $usuario_id) Return ChildTask objects filtered by the usuario_id column
- * @psalm-method ObjectCollection&\Traversable<ChildTask> findByUsuarioId(int $usuario_id) Return ChildTask objects filtered by the usuario_id column
  * @method     ChildTask[]|ObjectCollection findByTitle(string $title) Return ChildTask objects filtered by the title column
  * @psalm-method ObjectCollection&\Traversable<ChildTask> findByTitle(string $title) Return ChildTask objects filtered by the title column
- * @method     ChildTask[]|ObjectCollection findByDescript(string $descript) Return ChildTask objects filtered by the descript column
- * @psalm-method ObjectCollection&\Traversable<ChildTask> findByDescript(string $descript) Return ChildTask objects filtered by the descript column
- * @method     ChildTask[]|ObjectCollection findByDeadline(string $deadline) Return ChildTask objects filtered by the deadline column
- * @psalm-method ObjectCollection&\Traversable<ChildTask> findByDeadline(string $deadline) Return ChildTask objects filtered by the deadline column
  * @method     ChildTask[]|ObjectCollection findByResponsibleId(int $responsible_id) Return ChildTask objects filtered by the responsible_id column
  * @psalm-method ObjectCollection&\Traversable<ChildTask> findByResponsibleId(int $responsible_id) Return ChildTask objects filtered by the responsible_id column
+ * @method     ChildTask[]|ObjectCollection findByUnidadeId(int $unidade_id) Return ChildTask objects filtered by the unidade_id column
+ * @psalm-method ObjectCollection&\Traversable<ChildTask> findByUnidadeId(int $unidade_id) Return ChildTask objects filtered by the unidade_id column
  * @method     ChildTask[]|ObjectCollection findByGroupId(string $group_id) Return ChildTask objects filtered by the group_id column
  * @psalm-method ObjectCollection&\Traversable<ChildTask> findByGroupId(string $group_id) Return ChildTask objects filtered by the group_id column
  * @method     ChildTask[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
@@ -223,7 +211,7 @@ abstract class TaskQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, usuario_id, title, descript, deadline, responsible_id, group_id FROM task WHERE id = :p0';
+        $sql = 'SELECT id, title, responsible_id, unidade_id, group_id FROM task WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -355,49 +343,6 @@ abstract class TaskQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the usuario_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByUsuarioId(1234); // WHERE usuario_id = 1234
-     * $query->filterByUsuarioId(array(12, 34)); // WHERE usuario_id IN (12, 34)
-     * $query->filterByUsuarioId(array('min' => 12)); // WHERE usuario_id > 12
-     * </code>
-     *
-     * @see       filterByUsuario()
-     *
-     * @param     mixed $usuarioId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildTaskQuery The current query, for fluid interface
-     */
-    public function filterByUsuarioId($usuarioId = null, $comparison = null)
-    {
-        if (is_array($usuarioId)) {
-            $useMinMax = false;
-            if (isset($usuarioId['min'])) {
-                $this->addUsingAlias(TaskTableMap::COL_USUARIO_ID, $usuarioId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($usuarioId['max'])) {
-                $this->addUsingAlias(TaskTableMap::COL_USUARIO_ID, $usuarioId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(TaskTableMap::COL_USUARIO_ID, $usuarioId, $comparison);
-    }
-
-    /**
      * Filter the query on the title column
      *
      * Example usage:
@@ -420,56 +365,6 @@ abstract class TaskQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(TaskTableMap::COL_TITLE, $title, $comparison);
-    }
-
-    /**
-     * Filter the query on the descript column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByDescript('fooValue');   // WHERE descript = 'fooValue'
-     * $query->filterByDescript('%fooValue%', Criteria::LIKE); // WHERE descript LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $descript The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildTaskQuery The current query, for fluid interface
-     */
-    public function filterByDescript($descript = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($descript)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(TaskTableMap::COL_DESCRIPT, $descript, $comparison);
-    }
-
-    /**
-     * Filter the query on the deadline column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByDeadline('fooValue');   // WHERE deadline = 'fooValue'
-     * $query->filterByDeadline('%fooValue%', Criteria::LIKE); // WHERE deadline LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $deadline The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildTaskQuery The current query, for fluid interface
-     */
-    public function filterByDeadline($deadline = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($deadline)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(TaskTableMap::COL_DEADLINE, $deadline, $comparison);
     }
 
     /**
@@ -513,6 +408,49 @@ abstract class TaskQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(TaskTableMap::COL_RESPONSIBLE_ID, $responsibleId, $comparison);
+    }
+
+    /**
+     * Filter the query on the unidade_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUnidadeId(1234); // WHERE unidade_id = 1234
+     * $query->filterByUnidadeId(array(12, 34)); // WHERE unidade_id IN (12, 34)
+     * $query->filterByUnidadeId(array('min' => 12)); // WHERE unidade_id > 12
+     * </code>
+     *
+     * @see       filterByUnidade()
+     *
+     * @param     mixed $unidadeId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildTaskQuery The current query, for fluid interface
+     */
+    public function filterByUnidadeId($unidadeId = null, $comparison = null)
+    {
+        if (is_array($unidadeId)) {
+            $useMinMax = false;
+            if (isset($unidadeId['min'])) {
+                $this->addUsingAlias(TaskTableMap::COL_UNIDADE_ID, $unidadeId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($unidadeId['max'])) {
+                $this->addUsingAlias(TaskTableMap::COL_UNIDADE_ID, $unidadeId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(TaskTableMap::COL_UNIDADE_ID, $unidadeId, $comparison);
     }
 
     /**
@@ -673,44 +611,44 @@ abstract class TaskQuery extends ModelCriteria
         return $this->useExistsQuery('Colaborador', $modelAlias, $queryClass, 'NOT EXISTS');
     }
     /**
-     * Filter the query by a related \Usuario object
+     * Filter the query by a related \Unidade object
      *
-     * @param \Usuario|ObjectCollection $usuario The related object(s) to use as filter
+     * @param \Unidade|ObjectCollection $unidade The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
      * @return ChildTaskQuery The current query, for fluid interface
      */
-    public function filterByUsuario($usuario, $comparison = null)
+    public function filterByUnidade($unidade, $comparison = null)
     {
-        if ($usuario instanceof \Usuario) {
+        if ($unidade instanceof \Unidade) {
             return $this
-                ->addUsingAlias(TaskTableMap::COL_USUARIO_ID, $usuario->getId(), $comparison);
-        } elseif ($usuario instanceof ObjectCollection) {
+                ->addUsingAlias(TaskTableMap::COL_UNIDADE_ID, $unidade->getId(), $comparison);
+        } elseif ($unidade instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(TaskTableMap::COL_USUARIO_ID, $usuario->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(TaskTableMap::COL_UNIDADE_ID, $unidade->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByUsuario() only accepts arguments of type \Usuario or Collection');
+            throw new PropelException('filterByUnidade() only accepts arguments of type \Unidade or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Usuario relation
+     * Adds a JOIN clause to the query using the Unidade relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildTaskQuery The current query, for fluid interface
      */
-    public function joinUsuario($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinUnidade($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Usuario');
+        $relationMap = $tableMap->getRelation('Unidade');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -725,14 +663,14 @@ abstract class TaskQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Usuario');
+            $this->addJoinObject($join, 'Unidade');
         }
 
         return $this;
     }
 
     /**
-     * Use the Usuario relation Usuario object
+     * Use the Unidade relation Unidade object
      *
      * @see useQuery()
      *
@@ -740,19 +678,19 @@ abstract class TaskQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return \UsuarioQuery A secondary query class using the current class as primary query
+     * @return \UnidadeQuery A secondary query class using the current class as primary query
      */
-    public function useUsuarioQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useUnidadeQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinUsuario($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Usuario', '\UsuarioQuery');
+            ->joinUnidade($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Unidade', '\UnidadeQuery');
     }
 
     /**
-     * Use the Usuario relation Usuario object
+     * Use the Unidade relation Unidade object
      *
-     * @param callable(\UsuarioQuery):\UsuarioQuery $callable A function working on the related query
+     * @param callable(\UnidadeQuery):\UnidadeQuery $callable A function working on the related query
      *
      * @param string|null $relationAlias optional alias for the relation
      *
@@ -760,12 +698,12 @@ abstract class TaskQuery extends ModelCriteria
      *
      * @return $this
      */
-    public function withUsuarioQuery(
+    public function withUnidadeQuery(
         callable $callable,
         string $relationAlias = null,
         ?string $joinType = Criteria::LEFT_JOIN
     ) {
-        $relatedQuery = $this->useUsuarioQuery(
+        $relatedQuery = $this->useUnidadeQuery(
             $relationAlias,
             $joinType
         );
@@ -775,7 +713,7 @@ abstract class TaskQuery extends ModelCriteria
         return $this;
     }
     /**
-     * Use the relation to Usuario table for an EXISTS query.
+     * Use the relation to Unidade table for an EXISTS query.
      *
      * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
      *
@@ -783,26 +721,26 @@ abstract class TaskQuery extends ModelCriteria
      * @param string|null $modelAlias sets an alias for the nested query
      * @param string $typeOfExists Either ExistsCriterion::TYPE_EXISTS or ExistsCriterion::TYPE_NOT_EXISTS
      *
-     * @return \UsuarioQuery The inner query object of the EXISTS statement
+     * @return \UnidadeQuery The inner query object of the EXISTS statement
      */
-    public function useUsuarioExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    public function useUnidadeExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
     {
-        return $this->useExistsQuery('Usuario', $modelAlias, $queryClass, $typeOfExists);
+        return $this->useExistsQuery('Unidade', $modelAlias, $queryClass, $typeOfExists);
     }
 
     /**
-     * Use the relation to Usuario table for a NOT EXISTS query.
+     * Use the relation to Unidade table for a NOT EXISTS query.
      *
-     * @see useUsuarioExistsQuery()
+     * @see useUnidadeExistsQuery()
      *
      * @param string|null $modelAlias sets an alias for the nested query
      * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
      *
-     * @return \UsuarioQuery The inner query object of the NOT EXISTS statement
+     * @return \UnidadeQuery The inner query object of the NOT EXISTS statement
      */
-    public function useUsuarioNotExistsQuery($modelAlias = null, $queryClass = null)
+    public function useUnidadeNotExistsQuery($modelAlias = null, $queryClass = null)
     {
-        return $this->useExistsQuery('Usuario', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $this->useExistsQuery('Unidade', $modelAlias, $queryClass, 'NOT EXISTS');
     }
     /**
      * Filter the query by a related \TaskAccomplice object

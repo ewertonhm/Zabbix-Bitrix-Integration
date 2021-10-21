@@ -181,6 +181,13 @@ class ColaboradorTableMap extends TableMap
     1 => ':id',
   ),
 ), null, null, 'ColaboradorTecnologias', false);
+        $this->addRelation('ColaboradorUnidade', '\\ColaboradorUnidade', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':colaborador_id',
+    1 => ':id',
+  ),
+), null, null, 'ColaboradorUnidades', false);
         $this->addRelation('Task', '\\Task', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (

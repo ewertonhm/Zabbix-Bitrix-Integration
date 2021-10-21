@@ -10,7 +10,6 @@ use Map\UsuarioTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -24,16 +23,12 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsuarioQuery orderByEmail($order = Criteria::ASC) Order by the email column
  * @method     ChildUsuarioQuery orderBySenha($order = Criteria::ASC) Order by the senha column
  * @method     ChildUsuarioQuery orderByNome($order = Criteria::ASC) Order by the nome column
- * @method     ChildUsuarioQuery orderByApiKey($order = Criteria::ASC) Order by the api_key column
- * @method     ChildUsuarioQuery orderByBitrixId($order = Criteria::ASC) Order by the bitrix_id column
  * @method     ChildUsuarioQuery orderByAdmin($order = Criteria::ASC) Order by the admin column
  *
  * @method     ChildUsuarioQuery groupById() Group by the id column
  * @method     ChildUsuarioQuery groupByEmail() Group by the email column
  * @method     ChildUsuarioQuery groupBySenha() Group by the senha column
  * @method     ChildUsuarioQuery groupByNome() Group by the nome column
- * @method     ChildUsuarioQuery groupByApiKey() Group by the api_key column
- * @method     ChildUsuarioQuery groupByBitrixId() Group by the bitrix_id column
  * @method     ChildUsuarioQuery groupByAdmin() Group by the admin column
  *
  * @method     ChildUsuarioQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -44,18 +39,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsuarioQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildUsuarioQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildUsuarioQuery leftJoinTask($relationAlias = null) Adds a LEFT JOIN clause to the query using the Task relation
- * @method     ChildUsuarioQuery rightJoinTask($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Task relation
- * @method     ChildUsuarioQuery innerJoinTask($relationAlias = null) Adds a INNER JOIN clause to the query using the Task relation
- *
- * @method     ChildUsuarioQuery joinWithTask($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Task relation
- *
- * @method     ChildUsuarioQuery leftJoinWithTask() Adds a LEFT JOIN clause and with to the query using the Task relation
- * @method     ChildUsuarioQuery rightJoinWithTask() Adds a RIGHT JOIN clause and with to the query using the Task relation
- * @method     ChildUsuarioQuery innerJoinWithTask() Adds a INNER JOIN clause and with to the query using the Task relation
- *
- * @method     \TaskQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
- *
  * @method     ChildUsuario|null findOne(ConnectionInterface $con = null) Return the first ChildUsuario matching the query
  * @method     ChildUsuario findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUsuario matching the query, or a new ChildUsuario object populated from the query conditions when no match is found
  *
@@ -63,8 +46,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsuario|null findOneByEmail(string $email) Return the first ChildUsuario filtered by the email column
  * @method     ChildUsuario|null findOneBySenha(string $senha) Return the first ChildUsuario filtered by the senha column
  * @method     ChildUsuario|null findOneByNome(string $nome) Return the first ChildUsuario filtered by the nome column
- * @method     ChildUsuario|null findOneByApiKey(string $api_key) Return the first ChildUsuario filtered by the api_key column
- * @method     ChildUsuario|null findOneByBitrixId(string $bitrix_id) Return the first ChildUsuario filtered by the bitrix_id column
  * @method     ChildUsuario|null findOneByAdmin(int $admin) Return the first ChildUsuario filtered by the admin column *
 
  * @method     ChildUsuario requirePk($key, ConnectionInterface $con = null) Return the ChildUsuario by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -74,8 +55,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsuario requireOneByEmail(string $email) Return the first ChildUsuario filtered by the email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUsuario requireOneBySenha(string $senha) Return the first ChildUsuario filtered by the senha column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUsuario requireOneByNome(string $nome) Return the first ChildUsuario filtered by the nome column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUsuario requireOneByApiKey(string $api_key) Return the first ChildUsuario filtered by the api_key column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUsuario requireOneByBitrixId(string $bitrix_id) Return the first ChildUsuario filtered by the bitrix_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUsuario requireOneByAdmin(int $admin) Return the first ChildUsuario filtered by the admin column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildUsuario[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildUsuario objects based on current ModelCriteria
@@ -88,10 +67,6 @@ use Propel\Runtime\Exception\PropelException;
  * @psalm-method ObjectCollection&\Traversable<ChildUsuario> findBySenha(string $senha) Return ChildUsuario objects filtered by the senha column
  * @method     ChildUsuario[]|ObjectCollection findByNome(string $nome) Return ChildUsuario objects filtered by the nome column
  * @psalm-method ObjectCollection&\Traversable<ChildUsuario> findByNome(string $nome) Return ChildUsuario objects filtered by the nome column
- * @method     ChildUsuario[]|ObjectCollection findByApiKey(string $api_key) Return ChildUsuario objects filtered by the api_key column
- * @psalm-method ObjectCollection&\Traversable<ChildUsuario> findByApiKey(string $api_key) Return ChildUsuario objects filtered by the api_key column
- * @method     ChildUsuario[]|ObjectCollection findByBitrixId(string $bitrix_id) Return ChildUsuario objects filtered by the bitrix_id column
- * @psalm-method ObjectCollection&\Traversable<ChildUsuario> findByBitrixId(string $bitrix_id) Return ChildUsuario objects filtered by the bitrix_id column
  * @method     ChildUsuario[]|ObjectCollection findByAdmin(int $admin) Return ChildUsuario objects filtered by the admin column
  * @psalm-method ObjectCollection&\Traversable<ChildUsuario> findByAdmin(int $admin) Return ChildUsuario objects filtered by the admin column
  * @method     ChildUsuario[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
@@ -193,7 +168,7 @@ abstract class UsuarioQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, email, senha, nome, api_key, bitrix_id, admin FROM usuario WHERE id = :p0';
+        $sql = 'SELECT id, email, senha, nome, admin FROM usuario WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -400,56 +375,6 @@ abstract class UsuarioQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the api_key column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByApiKey('fooValue');   // WHERE api_key = 'fooValue'
-     * $query->filterByApiKey('%fooValue%', Criteria::LIKE); // WHERE api_key LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $apiKey The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildUsuarioQuery The current query, for fluid interface
-     */
-    public function filterByApiKey($apiKey = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($apiKey)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(UsuarioTableMap::COL_API_KEY, $apiKey, $comparison);
-    }
-
-    /**
-     * Filter the query on the bitrix_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByBitrixId('fooValue');   // WHERE bitrix_id = 'fooValue'
-     * $query->filterByBitrixId('%fooValue%', Criteria::LIKE); // WHERE bitrix_id LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $bitrixId The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildUsuarioQuery The current query, for fluid interface
-     */
-    public function filterByBitrixId($bitrixId = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($bitrixId)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(UsuarioTableMap::COL_BITRIX_ID, $bitrixId, $comparison);
-    }
-
-    /**
      * Filter the query on the admin column
      *
      * Example usage:
@@ -490,134 +415,6 @@ abstract class UsuarioQuery extends ModelCriteria
         return $this->addUsingAlias(UsuarioTableMap::COL_ADMIN, $admin, $comparison);
     }
 
-    /**
-     * Filter the query by a related \Task object
-     *
-     * @param \Task|ObjectCollection $task the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildUsuarioQuery The current query, for fluid interface
-     */
-    public function filterByTask($task, $comparison = null)
-    {
-        if ($task instanceof \Task) {
-            return $this
-                ->addUsingAlias(UsuarioTableMap::COL_ID, $task->getUsuarioId(), $comparison);
-        } elseif ($task instanceof ObjectCollection) {
-            return $this
-                ->useTaskQuery()
-                ->filterByPrimaryKeys($task->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByTask() only accepts arguments of type \Task or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Task relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildUsuarioQuery The current query, for fluid interface
-     */
-    public function joinTask($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Task');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Task');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Task relation Task object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \TaskQuery A secondary query class using the current class as primary query
-     */
-    public function useTaskQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinTask($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Task', '\TaskQuery');
-    }
-
-    /**
-     * Use the Task relation Task object
-     *
-     * @param callable(\TaskQuery):\TaskQuery $callable A function working on the related query
-     *
-     * @param string|null $relationAlias optional alias for the relation
-     *
-     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this
-     */
-    public function withTaskQuery(
-        callable $callable,
-        string $relationAlias = null,
-        ?string $joinType = Criteria::LEFT_JOIN
-    ) {
-        $relatedQuery = $this->useTaskQuery(
-            $relationAlias,
-            $joinType
-        );
-        $callable($relatedQuery);
-        $relatedQuery->endUse();
-
-        return $this;
-    }
-    /**
-     * Use the relation to Task table for an EXISTS query.
-     *
-     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
-     *
-     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
-     * @param string|null $modelAlias sets an alias for the nested query
-     * @param string $typeOfExists Either ExistsCriterion::TYPE_EXISTS or ExistsCriterion::TYPE_NOT_EXISTS
-     *
-     * @return \TaskQuery The inner query object of the EXISTS statement
-     */
-    public function useTaskExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
-    {
-        return $this->useExistsQuery('Task', $modelAlias, $queryClass, $typeOfExists);
-    }
-
-    /**
-     * Use the relation to Task table for a NOT EXISTS query.
-     *
-     * @see useTaskExistsQuery()
-     *
-     * @param string|null $modelAlias sets an alias for the nested query
-     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
-     *
-     * @return \TaskQuery The inner query object of the NOT EXISTS statement
-     */
-    public function useTaskNotExistsQuery($modelAlias = null, $queryClass = null)
-    {
-        return $this->useExistsQuery('Task', $modelAlias, $queryClass, 'NOT EXISTS');
-    }
     /**
      * Exclude object from result
      *

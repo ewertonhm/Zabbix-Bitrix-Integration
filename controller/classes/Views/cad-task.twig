@@ -4,34 +4,115 @@
     {% include 'navbar.html' %}
 {% endblock %}
 
-{% block content %}
+{% block cadastro %}
     <form method="post" action="cad-task.php">
         <fieldset>
             <label for="nameField">Cadastrar Task</label>
+            <!-- EDITAR -->
             {% if editar %}
+                <input type="hidden" name="id" value="{{editar.id}}">
+                <input type="text" name="title" value="{{ editar.task.nome }}"></input>
 
-            {% else %}
-                <input type="text" name="title" placeholder="Nome para o modelo"></input>
+                <label for="unidade">Unidade:</label>
+                <select name="unidade" id="unidades">
+                {{ dump(editar.unidade.id) }}
+                    {% for unidade in unidades %}
+                        {% if unidade.id == editar.unidade.id %}
+                            <option value="{{ unidade.id }}" selected>{{ unidade.sigla }} - {{ unidade.nome }} </option>
+                        {% else %}
+                            <option value="{{ unidade.id }}">{{ unidade.sigla }} - {{ unidade.nome }}</option>
+                            {{ dump(unidade.id) }}
+                        {% endif %}
+
+                    {% endfor %}
+                </select>
+
                 <label>Responsável</label>
                 <select name="responsible">
                 {% for colaborador in colaboradores %}
-                    <option value="{{ colaborador.id }}">{{ colaborador.nome }}</option>
+                    {% if colaborador.id == editar.task.responsible %}
+                        <option value="{{ colaborador.id }}" selected>{{ colaborador.nome }}</option>
+                    {% else %}
+                        <option value="{{ colaborador.id }}">{{ colaborador.nome }}</option>
+                    {% endif %}
                 {% endfor %}
                 </select>
                 <label>Participantes</label>
-                {% for colaborador in colaboradores %}
-                    <input type="checkbox" name="auditor[]" id="{{ colaborador.id }}" value="{{ colaborador.id }}">
-                    <label class="label-inline" for="{{ colaborador.id }}">{{ colaborador.nome }}</label><br>
-                {% endfor %}
+                <select multiple name="accomplice[]">
+                    <option value=''> -- </option>
+                    {% for colaborador in colaboradores %}
+                        <option 
+                            value="{{ colaborador.id }}" 
+                            data-unidade="{{ colaborador.unidade }}" 
+                            {% for a in editar.accomplices %}
+                                {% if a.id == colaborador.id %}
+                                    selected
+                                {% endif %}
+                            {% endfor %}
+                        >
+                            {{ colaborador.nome }}
+                        </option>
+                    {% endfor %}
+                </select>
+
                 <label>Observadores</label>
+                <select multiple name="auditor[]">
+                    <option value=''> -- </option>
+                    {% for colaborador in colaboradores %}
+                        <option 
+                            value="{{ colaborador.id }}" 
+                            data-unidade="{{ colaborador.unidade }}" 
+                            {% for a in editar.auditors %}
+                                {% if a.id == colaborador.id %}
+                                    selected
+                                {% endif %}
+                            {% endfor %}
+                        >
+                            {{ colaborador.nome }}
+                        </option>
+                    {% endfor %}
+                </select>
+            <!-- CRIAR -->
+            {% else %}
+                <input type="text" name="title" placeholder="Nome para o modelo"></input>
+                <label for="unidade">Unidade:</label>
+                <select name="unidade" id="unidades">
+                    <option disabled selected value> -- </option>
+                    {% for unidade in unidades %}
+                        <option value="{{ unidade.id }}" >{{ unidade.sigla }} - {{ unidade.nome }}</option>
+                    {% endfor %}
+                </select>
+                <label>Responsável</label>
+                <select name="responsible">
+                <option disabled selected> -- </option>
                 {% for colaborador in colaboradores %}
-                    <input type="checkbox" name="accomplice[]" id="{{ colaborador.id }}" value="{{ colaborador.id }}">
-                    <label class="label-inline" for="{{ colaborador.id }}">{{ colaborador.nome }}</label><br>
+                    <option class="hiddable" value="{{ colaborador.id }}" data-unidade="{{ colaborador.unidade }}" hidden>{{ colaborador.nome }}</option>
                 {% endfor %}
+                </select>
+                <label>Participantes</label>
+                <select multiple name="accomplice[]">
+                <option selected> -- </option>
+                {% for colaborador in colaboradores %}
+                    <option class="hiddable" value="{{ colaborador.id }}" data-unidade="{{ colaborador.unidade }}" hidden>{{ colaborador.nome }}</option>
+                {% endfor %}
+                </select>
+
+                <label>Observadores</label>
+                <select multiple name="auditor[]">
+                <option selected> -- </option>
+                {% for colaborador in colaboradores %}
+                    <option class="hiddable" value="{{ colaborador.id }}" data-unidade="{{ colaborador.unidade }}" hidden>{{ colaborador.nome }}</option>
+                {% endfor %}
+                </select>
+
             {% endif %}
             <input class="button-primary" type="submit" {% if editar %} value="Editar" name='editar' {% else %} value="Cadastrar" name='cadastrar'{% endif %}>
         </fieldset>
     </form>
+{% endblock %}
+
+
+{% block lista %}
     {% if tasks %}
         <table>
             <thead>
@@ -56,4 +137,8 @@
             </tbody>
         </table>
     {% endif %}
+    {% block script %}
+        {% include 'select-unidade.html' %}
+    {% endblock %}
 {% endblock %}
+

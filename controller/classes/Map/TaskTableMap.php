@@ -58,7 +58,7 @@ class TaskTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class TaskTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /**
      * the column name for the id field
@@ -76,29 +76,19 @@ class TaskTableMap extends TableMap
     const COL_ID = 'task.id';
 
     /**
-     * the column name for the usuario_id field
-     */
-    const COL_USUARIO_ID = 'task.usuario_id';
-
-    /**
      * the column name for the title field
      */
     const COL_TITLE = 'task.title';
 
     /**
-     * the column name for the descript field
-     */
-    const COL_DESCRIPT = 'task.descript';
-
-    /**
-     * the column name for the deadline field
-     */
-    const COL_DEADLINE = 'task.deadline';
-
-    /**
      * the column name for the responsible_id field
      */
     const COL_RESPONSIBLE_ID = 'task.responsible_id';
+
+    /**
+     * the column name for the unidade_id field
+     */
+    const COL_UNIDADE_ID = 'task.unidade_id';
 
     /**
      * the column name for the group_id field
@@ -117,11 +107,11 @@ class TaskTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'UsuarioId', 'Title', 'Descript', 'Deadline', 'ResponsibleId', 'GroupId', ),
-        self::TYPE_CAMELNAME     => array('id', 'usuarioId', 'title', 'descript', 'deadline', 'responsibleId', 'groupId', ),
-        self::TYPE_COLNAME       => array(TaskTableMap::COL_ID, TaskTableMap::COL_USUARIO_ID, TaskTableMap::COL_TITLE, TaskTableMap::COL_DESCRIPT, TaskTableMap::COL_DEADLINE, TaskTableMap::COL_RESPONSIBLE_ID, TaskTableMap::COL_GROUP_ID, ),
-        self::TYPE_FIELDNAME     => array('id', 'usuario_id', 'title', 'descript', 'deadline', 'responsible_id', 'group_id', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Id', 'Title', 'ResponsibleId', 'UnidadeId', 'GroupId', ),
+        self::TYPE_CAMELNAME     => array('id', 'title', 'responsibleId', 'unidadeId', 'groupId', ),
+        self::TYPE_COLNAME       => array(TaskTableMap::COL_ID, TaskTableMap::COL_TITLE, TaskTableMap::COL_RESPONSIBLE_ID, TaskTableMap::COL_UNIDADE_ID, TaskTableMap::COL_GROUP_ID, ),
+        self::TYPE_FIELDNAME     => array('id', 'title', 'responsible_id', 'unidade_id', 'group_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -131,11 +121,11 @@ class TaskTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'UsuarioId' => 1, 'Title' => 2, 'Descript' => 3, 'Deadline' => 4, 'ResponsibleId' => 5, 'GroupId' => 6, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'usuarioId' => 1, 'title' => 2, 'descript' => 3, 'deadline' => 4, 'responsibleId' => 5, 'groupId' => 6, ),
-        self::TYPE_COLNAME       => array(TaskTableMap::COL_ID => 0, TaskTableMap::COL_USUARIO_ID => 1, TaskTableMap::COL_TITLE => 2, TaskTableMap::COL_DESCRIPT => 3, TaskTableMap::COL_DEADLINE => 4, TaskTableMap::COL_RESPONSIBLE_ID => 5, TaskTableMap::COL_GROUP_ID => 6, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'usuario_id' => 1, 'title' => 2, 'descript' => 3, 'deadline' => 4, 'responsible_id' => 5, 'group_id' => 6, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'ResponsibleId' => 2, 'UnidadeId' => 3, 'GroupId' => 4, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'responsibleId' => 2, 'unidadeId' => 3, 'groupId' => 4, ),
+        self::TYPE_COLNAME       => array(TaskTableMap::COL_ID => 0, TaskTableMap::COL_TITLE => 1, TaskTableMap::COL_RESPONSIBLE_ID => 2, TaskTableMap::COL_UNIDADE_ID => 3, TaskTableMap::COL_GROUP_ID => 4, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'responsible_id' => 2, 'unidade_id' => 3, 'group_id' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -150,32 +140,12 @@ class TaskTableMap extends TableMap
         'task.id' => 'ID',
         'TaskTableMap::COL_ID' => 'ID',
         'COL_ID' => 'ID',
-        'UsuarioId' => 'USUARIO_ID',
-        'Task.UsuarioId' => 'USUARIO_ID',
-        'usuarioId' => 'USUARIO_ID',
-        'task.usuarioId' => 'USUARIO_ID',
-        'TaskTableMap::COL_USUARIO_ID' => 'USUARIO_ID',
-        'COL_USUARIO_ID' => 'USUARIO_ID',
-        'usuario_id' => 'USUARIO_ID',
-        'task.usuario_id' => 'USUARIO_ID',
         'Title' => 'TITLE',
         'Task.Title' => 'TITLE',
         'title' => 'TITLE',
         'task.title' => 'TITLE',
         'TaskTableMap::COL_TITLE' => 'TITLE',
         'COL_TITLE' => 'TITLE',
-        'Descript' => 'DESCRIPT',
-        'Task.Descript' => 'DESCRIPT',
-        'descript' => 'DESCRIPT',
-        'task.descript' => 'DESCRIPT',
-        'TaskTableMap::COL_DESCRIPT' => 'DESCRIPT',
-        'COL_DESCRIPT' => 'DESCRIPT',
-        'Deadline' => 'DEADLINE',
-        'Task.Deadline' => 'DEADLINE',
-        'deadline' => 'DEADLINE',
-        'task.deadline' => 'DEADLINE',
-        'TaskTableMap::COL_DEADLINE' => 'DEADLINE',
-        'COL_DEADLINE' => 'DEADLINE',
         'ResponsibleId' => 'RESPONSIBLE_ID',
         'Task.ResponsibleId' => 'RESPONSIBLE_ID',
         'responsibleId' => 'RESPONSIBLE_ID',
@@ -184,6 +154,14 @@ class TaskTableMap extends TableMap
         'COL_RESPONSIBLE_ID' => 'RESPONSIBLE_ID',
         'responsible_id' => 'RESPONSIBLE_ID',
         'task.responsible_id' => 'RESPONSIBLE_ID',
+        'UnidadeId' => 'UNIDADE_ID',
+        'Task.UnidadeId' => 'UNIDADE_ID',
+        'unidadeId' => 'UNIDADE_ID',
+        'task.unidadeId' => 'UNIDADE_ID',
+        'TaskTableMap::COL_UNIDADE_ID' => 'UNIDADE_ID',
+        'COL_UNIDADE_ID' => 'UNIDADE_ID',
+        'unidade_id' => 'UNIDADE_ID',
+        'task.unidade_id' => 'UNIDADE_ID',
         'GroupId' => 'GROUP_ID',
         'Task.GroupId' => 'GROUP_ID',
         'groupId' => 'GROUP_ID',
@@ -213,11 +191,9 @@ class TaskTableMap extends TableMap
         $this->setPrimaryKeyMethodInfo('task_id_seq');
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('usuario_id', 'UsuarioId', 'INTEGER', 'usuario', 'id', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', true, 90, null);
-        $this->addColumn('descript', 'Descript', 'VARCHAR', true, 500, null);
-        $this->addColumn('deadline', 'Deadline', 'VARCHAR', false, 50, null);
         $this->addForeignKey('responsible_id', 'ResponsibleId', 'INTEGER', 'colaborador', 'id', false, null, null);
+        $this->addForeignKey('unidade_id', 'UnidadeId', 'INTEGER', 'unidade', 'id', false, null, null);
         $this->addColumn('group_id', 'GroupId', 'VARCHAR', false, 10, null);
     } // initialize()
 
@@ -233,10 +209,10 @@ class TaskTableMap extends TableMap
     1 => ':id',
   ),
 ), null, null, null, false);
-        $this->addRelation('Usuario', '\\Usuario', RelationMap::MANY_TO_ONE, array (
+        $this->addRelation('Unidade', '\\Unidade', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
-    0 => ':usuario_id',
+    0 => ':unidade_id',
     1 => ':id',
   ),
 ), null, null, null, false);
@@ -398,19 +374,15 @@ class TaskTableMap extends TableMap
     {
         if (null === $alias) {
             $criteria->addSelectColumn(TaskTableMap::COL_ID);
-            $criteria->addSelectColumn(TaskTableMap::COL_USUARIO_ID);
             $criteria->addSelectColumn(TaskTableMap::COL_TITLE);
-            $criteria->addSelectColumn(TaskTableMap::COL_DESCRIPT);
-            $criteria->addSelectColumn(TaskTableMap::COL_DEADLINE);
             $criteria->addSelectColumn(TaskTableMap::COL_RESPONSIBLE_ID);
+            $criteria->addSelectColumn(TaskTableMap::COL_UNIDADE_ID);
             $criteria->addSelectColumn(TaskTableMap::COL_GROUP_ID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.usuario_id');
             $criteria->addSelectColumn($alias . '.title');
-            $criteria->addSelectColumn($alias . '.descript');
-            $criteria->addSelectColumn($alias . '.deadline');
             $criteria->addSelectColumn($alias . '.responsible_id');
+            $criteria->addSelectColumn($alias . '.unidade_id');
             $criteria->addSelectColumn($alias . '.group_id');
         }
     }
@@ -430,19 +402,15 @@ class TaskTableMap extends TableMap
     {
         if (null === $alias) {
             $criteria->removeSelectColumn(TaskTableMap::COL_ID);
-            $criteria->removeSelectColumn(TaskTableMap::COL_USUARIO_ID);
             $criteria->removeSelectColumn(TaskTableMap::COL_TITLE);
-            $criteria->removeSelectColumn(TaskTableMap::COL_DESCRIPT);
-            $criteria->removeSelectColumn(TaskTableMap::COL_DEADLINE);
             $criteria->removeSelectColumn(TaskTableMap::COL_RESPONSIBLE_ID);
+            $criteria->removeSelectColumn(TaskTableMap::COL_UNIDADE_ID);
             $criteria->removeSelectColumn(TaskTableMap::COL_GROUP_ID);
         } else {
             $criteria->removeSelectColumn($alias . '.id');
-            $criteria->removeSelectColumn($alias . '.usuario_id');
             $criteria->removeSelectColumn($alias . '.title');
-            $criteria->removeSelectColumn($alias . '.descript');
-            $criteria->removeSelectColumn($alias . '.deadline');
             $criteria->removeSelectColumn($alias . '.responsible_id');
+            $criteria->removeSelectColumn($alias . '.unidade_id');
             $criteria->removeSelectColumn($alias . '.group_id');
         }
     }

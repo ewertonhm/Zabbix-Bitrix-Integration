@@ -172,20 +172,20 @@ class UnidadeTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('ColaboradorUnidadeRelatedByColaboradorId', '\\ColaboradorUnidade', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':colaborador_id',
-    1 => ':id',
-  ),
-), null, null, 'ColaboradorUnidadesRelatedByColaboradorId', false);
-        $this->addRelation('ColaboradorUnidadeRelatedByUnidadeId', '\\ColaboradorUnidade', RelationMap::ONE_TO_MANY, array (
+        $this->addRelation('ColaboradorUnidade', '\\ColaboradorUnidade', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
     0 => ':unidade_id',
     1 => ':id',
   ),
-), null, null, 'ColaboradorUnidadesRelatedByUnidadeId', false);
+), null, null, 'ColaboradorUnidades', false);
+        $this->addRelation('Task', '\\Task', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':unidade_id',
+    1 => ':id',
+  ),
+), null, null, 'Tasks', false);
     } // buildRelations()
 
     /**

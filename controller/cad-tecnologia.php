@@ -25,6 +25,8 @@ if(isset($_GET['delete']) and $_GET['delete'] != '' and $_GET['delete'] != NULL)
 }
 
 $vars = [];
+$vars['page_name'] = 'Cadastro de Tecnologias';
+
 
 if(isset($_GET['edite']) and $_GET['edite'] != '' and $_GET['edite'] != NULL){
     $tecnologia = TecnologiaQuery::create()->findOneById($_GET['edite']);

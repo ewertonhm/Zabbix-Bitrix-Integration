@@ -1,0 +1,39 @@
+<script>
+
+function unhideResponsaveis(unidade){
+    unhide(document.querySelectorAll(".hiddable"),unidade);
+}
+
+function unhide(options, unidade){
+    for (let i = 0; i < options.length ; i++){
+        if(options[i].dataset.unidade == unidade){
+            options[i].style.display = 'block';
+        } else {
+            options[i].style.display = 'none';
+
+        }
+    }
+}
+
+var activities = document.getElementById("unidades");
+
+activities.addEventListener("click", function() {
+    var options = activities.querySelectorAll("option");
+    var count = options.length;
+    if(typeof(count) === "undefined" || count < 2)
+    {
+        addActivityItem();
+    }
+});
+
+activities.addEventListener("change", function() {
+    if(activities.value > 0)
+    {
+        addActivityItem();
+    }
+});
+
+function addActivityItem() {
+    unhideResponsaveis(activities.value);
+}
+</script>

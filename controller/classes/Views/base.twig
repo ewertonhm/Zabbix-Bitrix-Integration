@@ -22,19 +22,40 @@
         <link rel="stylesheet" href="css/modal.css">
         <link rel="stylesheet" href="css/navbar.css">
 
+        <!--FAVICONS-->
+        <link rel="manifest" href="https://www.unifique.com.br/site/dist/imgs/favicon/manifest.json" crossorigin="use-credentials">
+        <link rel="icon" type="image/png" sizes="any" href="https://www.unifique.com.br/site/dist/imgs/favicon/android-icon-192x192.png">
+        <link rel="shortcut icon" type="image/x-icon" href="https://www.unifique.com.br/site/dist/imgs/favicon/favicon-default.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="https://www.unifique.com.br/site/dist/imgs/favicon/apple-icon-180x180.png">
+        <meta name="msapplication-TileImage" content="https://www.unifique.com.br/site/dist/imgs/favicon/ms-icon-144x144.png">
+
     {% endblock %}
 </head>
 <body class="">
 {% block navbar %}
 
 {% endblock %}
-<div class="container">
+{% block center %}
+    <div class="row">
+        <div class="column">
+            <div class="container">
+            {% block cadastro %}
 
-{% block content %}
+
+            {% endblock %}
+            </div>
+        </div>
+        <div class="column">
+            <div class="container">
+            {% block lista %}
 
 
+            {% endblock %}
+            </div>
+
+        </div>
+    </div>
 {% endblock %}
-</div>
 {% block scripts %}
 
 {% endblock %}
