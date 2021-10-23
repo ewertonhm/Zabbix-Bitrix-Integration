@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+  <table name="api_keys" idMethod="native" phpName="ApiKeys">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="api_key" phpName="ApiKey" type="VARCHAR" size="32"/>
+  </table>
   <table name="colaborador" idMethod="native" phpName="Colaborador">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="nome" phpName="Nome" type="VARCHAR" size="90" required="true"/>

@@ -1,0 +1,38 @@
+{% extends "base.twig" %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block cadastro %}
+    <form method="post" action="cad-apikey.php">
+        <fieldset>
+            <label for="nameField">Gerar API Key</label>
+    
+            <input class="button-primary" type="submit" value="Gerar nova chave" name='cadastrar'>
+        </fieldset>
+    </form>
+{% endblock %}
+
+{% block lista %}
+    {% if keys %}
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Chave</th>
+                <th>Deletar</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for key in keys %}
+                    <tr>
+                        <td>{{ key.id }}</td>
+                        <td>{{ key.key }}</td>
+                        <td><a class="button button-small" href="cad-key.php?delete={{ key.id }}">Deletar</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

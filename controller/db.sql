@@ -9,6 +9,8 @@ DROP TABLE IF EXISTS "usuario";
 DROP TABLE IF EXISTS "unidade";
 DROP TABLE IF EXISTS "tecnologia";
 DROP TABLE IF EXISTS "n3_accomplice";
+DROP TABLE IF EXISTS "api_keys";
+
 
 
 CREATE TABLE usuario (
@@ -75,4 +77,9 @@ CREATE TABLE n3_accomplice (
                         id SERIAL PRIMARY KEY,
                         nome VARCHAR(100) NOT NULL,
                         bitrix_id VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE api_keys (
+    id SERIAL PRIMARY KEY,
+    api_key VARCHAR(32)
 );

@@ -7,6 +7,9 @@
       "propel/propel": "~2.0@dev",
         "symfony/var-dumper": "^5.3",
         "filp/whoops": "^2.14",
-        "twig/twig": "^3.0"
+        "twig/twig": "^3.0",
+        "slim/slim": "^4.9",
+        "slim/psr7": "^1.5",
+        "nesbot/carbon": "^2.53"
     }
   }

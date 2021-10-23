@@ -19,7 +19,7 @@
         <table>
             <thead>
             <tr>
-                <th>ID</th>
+                <th>Bitrix ID</th>
                 <th>Nome</th>
                 <th>Email</th>
                 <th>Cargo</th>
@@ -29,7 +29,7 @@
                 {% for r in resultados %}
                     <tr>
                         <td>{{ r.id }}</td>
-                        <td>{{ r.nome }}</td>
+                        <td>{{ r.nome }} {{ r.segundo_nome }} {{ r.sobre_nome }}</td>
                         <td>{{ r.email }}</td>
                         <td>{{ r.cargo }}</td>
                     </tr>

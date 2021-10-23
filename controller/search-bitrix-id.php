@@ -14,6 +14,8 @@ if(isset($_GET['nome']) and $_GET['nome'] != '' and $_GET['nome'] != NULL){
     foreach($results as $r){
         $vars['resultados'][$r['ID']]['id'] = $r['ID'];
         $vars['resultados'][$r['ID']]['nome'] = $r['NAME'];
+        $vars['resultados'][$r['ID']]['segundo_nome'] = $r['SECOND_NAME'];
+        $vars['resultados'][$r['ID']]['sobre_nome'] = $r['LAST_NAME'];
         $vars['resultados'][$r['ID']]['email'] = $r['EMAIL'];
         $vars['resultados'][$r['ID']]['cargo'] = $r['WORK_POSITION'];
     }
