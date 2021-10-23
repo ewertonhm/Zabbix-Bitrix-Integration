@@ -25,6 +25,18 @@ function BulkAckButton() {
 
   form.prepend(div_filter);
 }
+
+function ButtonCreateTask() {
+  var btn = document.createElement("button");
+  btn.className = "btn-grey";
+  btn.type = "button";
+  btn.textContent = "Create Task"; 
+  btn.id = "btn-create";
+
+  document.querySelector("#action_buttons").prepend(btn);
+  onClickCreateTask();
+}
+
 function CopyToClipboardButton(){
   var btn = document.createElement("button");
   btn.className = "btn-grey";
@@ -40,6 +52,7 @@ function callback(){
   if (document.querySelector("#flickerfreescreen_problem > form > div.filter-forms") === null){
     BulkAckButton();
     CopyToClipboardButton();
+    ButtonCreateTask();
     //console.log('Mutation Ocurred!')
   }
 }
@@ -62,18 +75,7 @@ function observe(){
 }
 
 function getSelected(){
-  lista = document.querySelectorAll("table.list-table > tbody > tr.row-selected");
-  
-  let tr = [];
-
-  lista.forEach(element => {
-    data = element.querySelectorAll("td");
-
-    a = [data[0].textContent,data[4].textContent,data[8].textContent,data[9].textContent];
-    tr.push(a);
-  });
-
-  tableString = convertToTable(tr);
+  tableString = convertToTable(selectedToArray());
   copyToClipboard(tableString);
 }
 
@@ -86,7 +88,7 @@ function getSelectedNoTable(){
     data = element.querySelectorAll("td");
 
     a = [data[0].textContent,data[4].textContent,data[8].textContent,data[9].textContent];
-    tr.push(a.join('|'));
+    tr.push(a.join(' '));
   });
 
   tableString = tr.join("\r\n");
@@ -132,7 +134,6 @@ function copyStringToClipboard (str) {
   document.body.removeChild(el);
 }
 
-
 function onClickCopyToClipboard(){
   var btn = document.querySelector("#btn-copy");
   btn.addEventListener("click", function (e) {
@@ -144,7 +145,47 @@ function onClickCopyToClipboard(){
   });
 }
 
+function selectedToArray(){
+  lista = document.querySelectorAll("table.list-table > tbody > tr.row-selected");
+  
+  let tr = [];
 
+  lista.forEach(element => {
+    data = element.querySelectorAll("td");
+
+    a = [data[0].textContent,data[4].textContent,data[8].textContent,data[9].textContent];
+    tr.push(a);
+  });
+  return tr;
+}
+
+function createTask(){
+  createPopupWindow();
+}
+
+function createPopupWindow(){
+  popup = window.open ('', 'pagina', "width=250 height=250");
+  popup.document.write (getModelList());
+}
+
+function fecharPopup(){
+  fecharWindow = popup.close()
+}
+
+function onClickCreateTask(){
+  var btn = document.querySelector("#btn-create");
+  btn.addEventListener("click", function (e) {
+    createTask();
+  });
+}
+
+function getModelList()
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", 'http://10.255.12.128/api/get_models/?API_KEY=262e8070d7d4157dfc01685f3b200b26', false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
 
 observe();
 
