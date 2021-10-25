@@ -15,7 +15,7 @@ use Carbon\Carbon;
 class Integration
 {
     public function createTask($params){
-        $model = TaskQuery::create()->findOneById($params['model_id']);
+        $model = TaskQuery::create()->findOneById((string)($params['model_id']));
 
         // TITLE //
         $title = $params['title'];
@@ -25,12 +25,14 @@ class Integration
 
         $alarms = [];
         $counter = 0;
-        while($counter < count($params['alarms_time'])){
-            $alarms[$counter]['time'] = $params['alarms_time'][$counter];
-            $alarms[$counter]['severity'] = $params['alarms_severity'][$counter];
-            $alarms[$counter]['host'] = $params['alarms_host'][$counter];
-            $alarms[$counter]['problem'] = $params['alarms_problem'][$counter];
-            $counter++;
+        if(isset($params['alarms_time'])){
+            while($counter < count($params['alarms_time'])){
+                $alarms[$counter]['time'] = $params['alarms_time'][$counter];
+                $alarms[$counter]['severity'] = $params['alarms_severity'][$counter];
+                $alarms[$counter]['host'] = $params['alarms_host'][$counter];
+                $alarms[$counter]['problem'] = $params['alarms_problem'][$counter];
+                $counter++;
+            }
         }
 
         $description = $this->converAlarmsToTable($description_txt, $alarms);
@@ -91,20 +93,24 @@ class Integration
             $participants,
             $tags
         );
+
         // RETURN_TASK_ID //
-        return $id;
+        return (string)$id;
     }
 
     public function converAlarmsToTable($description,$alarms = []){
         $string = $description.'[TABLE]';
-        foreach($alarms as $alarm){
-            $string = $string.'[TR]';
-            $string = $string.'[TD]'.$alarm['time'].'[/TD]';
-            $string = $string.'[TD]'.$alarm['severity'].'[/TD]';
-            $string = $string.'[TD]'.$alarm['host'].'[/TD]';
-            $string = $string.'[TD]'.$alarm['problem'].'[/TD]';
-            $string = $string.'[/TR]';
+        if(count($alarms) > 0){
+            foreach($alarms as $alarm){
+                $string = $string.'[TR]';
+                $string = $string.'[TD]'.$alarm['time'].'[/TD]';
+                $string = $string.'[TD]'.$alarm['severity'].'[/TD]';
+                $string = $string.'[TD]'.$alarm['host'].'[/TD]';
+                $string = $string.'[TD]'.$alarm['problem'].'[/TD]';
+                $string = $string.'[/TR]';
+            }
         }
+
         $string = $string.'[/TABLE]';
         return $string;
     }
