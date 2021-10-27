@@ -315,9 +315,12 @@ function createTask(){
   let title = document.querySelector('#task-title');
   let description = document.querySelector('#task-description');
   let model = document.querySelector('#task-model');
-
-  let task_id = sendTaskData(title.value,description.value,model.value,selectedToArray());
-
+  var task_id = ''
+  if(CREATOR_ID != '00000' && CREATOR_ID != ''){
+    task_id = sendTaskData(title.value,description.value,model.value,selectedToArray());
+  } else{
+    task_id = "Não foi possível criar, CREATOR_BITRIX_ID não configurado, configurar nas opções da extensão!"
+  }
   let form = document.querySelector("#id > div.table.filter-forms");
   form.removeChild(document.querySelector("#id > div.table.filter-forms > div.filter-container"));
   created = false;
@@ -408,8 +411,16 @@ function sendTaskData(title,description,model,alarms){
   return xmlHttp.responseText;
 }
 
+const CREATOR_ID = '';
+
+chrome.storage.sync.get({
+  bitrixId: '00000',
+}, function(items) {
+  console.log(items.bitrixId);
+  CREATOR_ID = items.bitrixId;
+});
+
 const API_KEY = '262e8070d7d4157dfc01685f3b200b26';
-const CREATOR_ID = '2831';
 
 var created = false;
 var show = false;

@@ -1,13 +1,20 @@
 {
-    "name" : "Bulk Ack no topo da tabela",
+    "name" : "Zabbix-Bitrix Integration",
     "version": "0.0.3",
     "manifest_version": 2,
-    "description" : "Insere o botão Bulk acknowledge no topo da tela",
+    "description" : "Insere funções extras ao zabbix",
+    
+    "options_ui": {
+        "page": "options.html",
+        "open_in_tab": false
+    },
+
     "content_scripts" : [
         {
             "js" : ["init.js"],
             "css": ["styles.css"],
             "matches" : ["*://zabbix.monitor.redeunifique.com.br/zabbix.php?action=problem.view*"]
         }
-    ]
+    ],
+    "permissions": ["storage"]
 }
