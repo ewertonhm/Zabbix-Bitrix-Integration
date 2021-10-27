@@ -13,6 +13,7 @@ if(isset($_POST['cadastrar']) and $_POST['nome'] != '' and $_POST['nome'] != NUL
     $unidade->setSigla($_POST['sigla']);
     $unidade->save();
 }
+
 if(isset($_POST['editar']) and $_POST['nome'] != '' and $_POST['nome'] != NULL){
     $unidade = UnidadeQuery::create()->findOneById($_POST['id']);
     $unidade->setNome($_POST['nome']);
@@ -37,7 +38,7 @@ if(isset($_GET['edite']) and $_GET['edite'] != '' and $_GET['edite'] != NULL){
     $vars['editar']['id'] = $unidade->getId();
 }
 
-$unidades = UnidadeQuery::create()->orderById()->find();
+$unidades = UnidadeQuery::create()->orderByNome()->find();
 
 $counter = 0;
 foreach ($unidades as $unidade){

@@ -121,9 +121,9 @@ if(isset($_GET['edite']) and $_GET['edite'] != '' and $_GET['edite'] != NULL){
     }
 }
 
-$colaboradores = ColaboradorQuery::create()->orderById()->find();
-$unidades = UnidadeQuery::create()->orderBySigla()->find();
-$tecnologias = TecnologiaQuery::create()->orderByTecnologia()->find();
+$colaboradores = ColaboradorQuery::create()->orderByNome()->find();
+$unidades = UnidadeQuery::create()->orderByNome()->find();
+$tecnologias = TecnologiaQuery::create()->orderById()->find();
 
 $counter = 0;
 foreach ($colaboradores as $colaborador){

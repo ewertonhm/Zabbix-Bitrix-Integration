@@ -19,7 +19,7 @@ VALUES (
 );
 
 INSERT INTO unidade (nome, sigla) VALUES ('Agrolândia/Ituporanga', 'TECH');
-INSERT INTO unidade (nome, sigla) VALUES ('Videira', 'VII');
+INSERT INTO unidade (nome, sigla) VALUES ('Balneário Camboriú', 'BCU');
 INSERT INTO unidade (nome, sigla) VALUES ('Benedito Novo', 'INT');
 INSERT INTO unidade (nome, sigla) VALUES ('Bombinhas', 'BOMB');
 INSERT INTO unidade (nome, sigla) VALUES ('Brusque', 'JGM');
@@ -51,6 +51,7 @@ INSERT INTO unidade (nome, sigla) VALUES ('São José', 'GWT');
 INSERT INTO unidade (nome, sigla) VALUES ('Schroeder / Barra Velha', 'RVIP');
 INSERT INTO unidade (nome, sigla) VALUES ('Timbó', 'TPA');
 INSERT INTO unidade (nome, sigla) VALUES ('Tijucas', 'INFOBY');
+INSERT INTO unidade (nome, sigla) VALUES ('União da Vitória / Porto União', 'UVA');
 INSERT INTO unidade (nome, sigla) VALUES ('Videira', 'VII');
 INSERT INTO unidade (nome, sigla) VALUES ('Xaxim', 'TECNET');
 

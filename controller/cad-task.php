@@ -40,7 +40,6 @@ if(isset($_POST['cadastrar']) and $_POST['title'] != '' and $_POST['title'] != N
 }
 // EDITAR 
 if(isset($_POST['editar']) and $_POST['title'] != '' and $_POST['title'] != NULL){
-    dump($_POST);
     $task = TaskQuery::create()->findOneById($_POST['id']);
 
     $taskAuditors = TaskAuditorQuery::create()->findByTaskId($task->getId());
@@ -132,7 +131,7 @@ foreach($colaboradores as $c){
     $vars['colaboradores'][$c->getId()]['unidade'] = $unidade->getUnidadeId();
 }
 
-$tasks = TaskQuery::create()->find();
+$tasks = TaskQuery::create()->orderByTitle()->find();
 foreach($tasks as $t){
     $vars['tasks'][$t->getId()]['title'] = $t->getTitle();
     $vars['tasks'][$t->getId()]['id'] = $t->getId();
@@ -142,11 +141,13 @@ foreach($tasks as $t){
     $vars['tasks'][$t->getId()]['responsible'] = $responsible->getNome();
 }
 
-$unidades = UnidadeQuery::create()->find();
+$unidades = UnidadeQuery::create()->orderByNome()->find();
+$counter = 0;
 foreach($unidades as $u){
-    $vars['unidades'][$u->getId()]['id'] = $u->getId();
-    $vars['unidades'][$u->getId()]['nome'] = $u->getNome();
-    $vars['unidades'][$u->getId()]['sigla'] = $u->getSigla();
+    $vars['unidades'][$counter]['id'] = $u->getId();
+    $vars['unidades'][$counter]['nome'] = $u->getNome();
+    $vars['unidades'][$counter]['sigla'] = $u->getSigla();
+    $counter++;
 }
 
 

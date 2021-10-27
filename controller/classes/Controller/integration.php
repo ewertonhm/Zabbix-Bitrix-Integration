@@ -38,7 +38,7 @@ class Integration
         $description = $this->converAlarmsToTable($description_txt, $alarms);
 
         // DEADLINE //
-        $deadline = Carbon::create()->today()->setTimezone('America/Sao_Paulo')->hour('18')->addWeekDay()->format("c");
+        $deadline = Carbon::create()->today()->setTimezone('America/Sao_Paulo')->hour('18')->addWeekDay('2')->format("c");
 
         // GROUP_ID //
         $groupid = $model->getGroupId();
@@ -76,6 +76,7 @@ class Integration
         $monitoramento = N3AccompliceQuery::create()->find();
         foreach($monitoramento as $n3){
             $observers[$counter] = $n3->getBitrixId();
+            $counter++;
         }
 
         // TAGS (Opcional) //
@@ -117,7 +118,7 @@ class Integration
 
     public static function getTaskModels(){
         $taskModel = [];
-        $model = TaskQuery::create()->find();
+        $model = TaskQuery::create()->orderByTitle()->find();
         $counter = 0;
         foreach($model as $m){
             $taskModel[$counter]['id'] = $m->getId();
