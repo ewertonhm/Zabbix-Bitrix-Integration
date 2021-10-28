@@ -26,15 +26,40 @@ function BulkAckButton() {
   form.prepend(div_filter);
 }
 
-function ButtonCreateTask() {
+function buttonConnecting() {
   var btn = document.createElement("button");
   btn.className = "btn-grey";
   btn.type = "button";
-  btn.textContent = "Create Task"; 
-  btn.id = "btn-create";
-
+  btn.textContent = "Connecting...";
+  btn.setAttribute("disabled","true");
+  btn.id = "btn-connecting";
   document.querySelector("#action_buttons").prepend(btn);
-  onClickCreateTask();
+}
+
+function removeButtonConnecting(){
+  let form = document.querySelector("#action_buttons");
+  form.removeChild(document.querySelector("#btn-connecting"));
+}
+
+async function ButtonCreateTask() {
+  let modelArray = await Promise.resolve(modelos).then(function(models){
+    removeButtonConnecting();
+    modelos_array = eval('(' + models + ')');
+    var btn = document.createElement("button");
+    btn.className = "btn-grey";
+    btn.type = "button";
+    if(Array.isArray(modelos_array)){
+      btn.textContent = "Create Task"; 
+    } else {
+      btn.textContent = "Can't connect to server!";
+      btn.setAttribute("disabled","true");
+    }
+
+    btn.id = "btn-create";
+  
+    document.querySelector("#action_buttons").prepend(btn);
+    onClickCreateTask();
+  });
 }
 
 function CopyToClipboardButton(){
@@ -52,6 +77,7 @@ function callback(){
   if (document.querySelector("#flickerfreescreen_problem > form > div.filter-forms") === null){
     BulkAckButton();
     CopyToClipboardButton();
+    buttonConnecting();
     ButtonCreateTask();
     //console.log('Mutation Ocurred!')
   }
@@ -176,7 +202,6 @@ function removeShownTask(){
 }
 
 function createSubmitField(){
-
   var div_container = document.createElement("div");
   div_container.className = "filter-container";
   div_container.style.display = "block";
@@ -264,7 +289,7 @@ function createSubmitField(){
             model.id = "task-model";
             model.style.width = "500px";
             div_3_1.appendChild(model);
-            modelos.forEach(function(modelo){
+            modelos_array.forEach(function(modelo){
               let option = document.createElement('option');
               option.value = modelo['id'];
               option.textContent = modelo['nome'];
@@ -372,11 +397,19 @@ function showTaskCreated(task_id){
 
 function getModelList()
 {
-  var xmlHttp = new XMLHttpRequest();
-  xmlHttp.open( "POST", 'http://10.255.12.128/api/get_models/', false ); // false for synchronous request
-  xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xmlHttp.send( 'API_KEY='+API_KEY );
-  return xmlHttp.responseText;
+  return new Promise(resolve => {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "POST", 'http://10.255.12.128/api/get_models/', true ); // false for synchronous request
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xmlHttp.onload = function(e) {
+      resolve(xmlHttp.response);
+    };
+    xmlHttp.onerror = function () {
+      resolve(undefined);
+      console.error("** An error occurred during the XMLHttpRequest");
+    };
+    xmlHttp.send( 'API_KEY='+API_KEY );
+  })
 }
 
 function sendTaskData(title,description,model,alarms){
@@ -411,7 +444,7 @@ function sendTaskData(title,description,model,alarms){
   return xmlHttp.responseText;
 }
 
-const CREATOR_ID = '';
+var CREATOR_ID = '';
 
 chrome.storage.sync.get({
   bitrixId: '00000',
@@ -424,9 +457,10 @@ const API_KEY = '262e8070d7d4157dfc01685f3b200b26';
 
 var created = false;
 var show = false;
-//fetchModelList();
-var modelos_json = getModelList();
-var modelos = eval('(' + modelos_json + ')');
+
+var modelos = getModelList();
+var modelos_array = '';
+
 observe();
 
 
