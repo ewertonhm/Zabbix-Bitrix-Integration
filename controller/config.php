@@ -5,10 +5,9 @@ require_once 'vendor/autoload.php';
 // setup Propel
 require_once 'generated-conf/config.php';
 
-/*
+
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-*/
 use Propel\Runtime\Propel;
 
 //setup whoops
@@ -25,7 +24,6 @@ $twig = new \Twig\Environment($loader, [
 // comentar após o desenvolvimento
 $twig->addExtension(new \Twig\Extension\DebugExtension());
 
-/*$defaultLogger = new Logger('defaultLogger');
-$defaultLogger->pushHandler(new StreamHandler('/var/log/propel.log', Logger::WARNING));
-Propel::getServiceContainer()->setLogger('defaultLogger', $defaultLogger);
-*/
+$logger = new Logger('defaultLogger');
+$logger->pushHandler(new StreamHandler('php://stderr'));
+Propel::getServiceContainer()->setLogger('defaultLogger', $logger);

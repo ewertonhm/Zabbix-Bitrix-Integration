@@ -17,6 +17,10 @@ $app = AppFactory::create();
 $app->redirect('/', '/inicio.php', 301);
 $app->redirect('/index.php', '/inicio.php', 301);
 
+
+
+
+
 // get models
 $app->get('/api/get_models/', function(Request $request, Response $response){
     $params = $request->getQueryParams();
@@ -55,6 +59,15 @@ $app->post('/api/get_models/', function(Request $request, Response $response){
 
 });
 
+$app->options('/api/set_task/', function ($request, $response, $args) {
+    return $response
+        ->withHeader('Access-Control-Allow-Origin', 'http://zabbix.monitor.redeunifique.com.br')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
+        ->withHeader('Vary', 'Origin');
+});
+
+
 // set task
 $app->post('/api/set_task/', function(Request $request, Response $response){
     $params = (array)$request->getParsedBody();
@@ -66,20 +79,18 @@ $app->post('/api/set_task/', function(Request $request, Response $response){
         $response->getBody()->write($task);
     }
     return $response
-        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Origin', 'http://zabbix.monitor.redeunifique.com.br')
         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
+        ->withHeader('Vary', 'Origin');
 });
 
 
-
-
-/**
- * Catch-all route to serve a 404 Not Found page if none of the routes match
- * NOTE: make sure this route is defined last
- */
-$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
-    throw new HttpNotFoundException($request);
+// Catch-all route to serve a 404 Not Found page if none of the routes match
+// NOTE: make sure this route is defined last
+$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($req, $res) {
+    $handler = $this->notFoundHandler; // handle using the default Slim page not found handler
+    return $handler($req, $res);
 });
 
 $app->run();

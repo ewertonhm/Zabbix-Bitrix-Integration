@@ -8,7 +8,7 @@ if(!isset($_SESSION['logado']) OR $_SESSION['logado'] != true){
 
 require_once "config.php";
 
-putenv("PGPASSWORD=A1cdl33$3");
+putenv("PGPASSWORD=sngesp.,");
 $dumpcmd = array("pg_dump", "-h", escapeshellarg("localhost"), "-U", escapeshellarg("postgres"), "-F", "c", "-b", "-v", "-f", escapeshellarg("backup.sql"), escapeshellarg("taskcontroller"));
 exec( join(' ', $dumpcmd), $cmdout, $cmdresult );
 putenv("PGPASSWORD");

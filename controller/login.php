@@ -1,6 +1,6 @@
 <?php
 session_start();
-if($_SESSION['logado'] == true){
+if(isset($_SESSION['logado']) and $_SESSION['logado'] == true){
     header("location: index.php");
 }
 require_once 'config.php';

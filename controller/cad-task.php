@@ -127,8 +127,13 @@ foreach($colaboradores as $c){
     $vars['colaboradores'][$c->getId()]['nome'] = $c->getNome();
     $vars['colaboradores'][$c->getId()]['id'] = $c->getId();
 
-    $unidade = ColaboradorUnidadeQuery::create()->findOneByColaboradorId($c->getId());
-    $vars['colaboradores'][$c->getId()]['unidade'] = $unidade->getUnidadeId();
+    $unidade = ColaboradorUnidadeQuery::create()->findByColaboradorId($c->getId());
+    $unidadeCounter = 0;
+    foreach($unidade as $u){
+        $vars['colaboradores'][$c->getId()]['unidade'][$unidadeCounter] = $u->getUnidadeId();
+        $unidadeCounter++;
+    }
+    
 }
 
 $tasks = TaskQuery::create()->orderByTitle()->find();
