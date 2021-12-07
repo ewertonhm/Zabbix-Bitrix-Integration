@@ -43,7 +43,7 @@
                     {% for colaborador in colaboradores %}
                         <option 
                             value="{{ colaborador.id }}" 
-                            data-unidade="{{ colaborador.unidade }}" 
+                            data-unidade="{% for unidade in colaborador.unidade %}{{ unidade }}|{% endfor %}" 
                             {% for a in editar.accomplices %}
                                 {% if a.id == colaborador.id %}
                                     selected
@@ -61,7 +61,7 @@
                     {% for colaborador in colaboradores %}
                         <option 
                             value="{{ colaborador.id }}" 
-                            data-unidade="{{ colaborador.unidade }}" 
+                            data-unidade="{% for unidade in colaborador.unidade %}{{ unidade }}|{% endfor %}"
                             {% for a in editar.auditors %}
                                 {% if a.id == colaborador.id %}
                                     selected
@@ -86,14 +86,20 @@
                 <select name="responsible">
                 <option disabled selected> -- </option>
                 {% for colaborador in colaboradores %}
-                    <option class="hiddable" value="{{ colaborador.id }}" data-unidade="{{ colaborador.unidade }}" hidden>{{ colaborador.nome }}</option>
+                    <option class="hiddable" value="{{ colaborador.id }}" 
+                        data-unidade="{% for unidade in colaborador.unidade %}{{ unidade }}|{% endfor %}"
+                        hidden>{{ colaborador.nome }}
+                    </option>
                 {% endfor %}
                 </select>
                 <label>Participantes</label>
                 <select multiple name="accomplice[]">
                 <option selected> -- </option>
                 {% for colaborador in colaboradores %}
-                    <option class="hiddable" value="{{ colaborador.id }}" data-unidade="{{ colaborador.unidade }}" hidden>{{ colaborador.nome }}</option>
+                    <option class="hiddable" value="{{ colaborador.id }}" 
+                        data-unidade="{% for unidade in colaborador.unidade %}{{ unidade }}|{% endfor %}"
+                        hidden>{{ colaborador.nome }}
+                    </option>
                 {% endfor %}
                 </select>
 
@@ -101,7 +107,10 @@
                 <select multiple name="auditor[]">
                 <option selected> -- </option>
                 {% for colaborador in colaboradores %}
-                    <option class="hiddable" value="{{ colaborador.id }}" data-unidade="{{ colaborador.unidade }}" hidden>{{ colaborador.nome }}</option>
+                    <option class="hiddable" value="{{ colaborador.id }}"
+                        data-unidade="{% for unidade in colaborador.unidade %}{{ unidade }}|{% endfor %}"
+                        hidden>{{ colaborador.nome }}
+                    </option>
                 {% endfor %}
                 </select>
 

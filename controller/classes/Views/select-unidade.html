@@ -6,11 +6,19 @@ function unhideResponsaveis(unidade){
 
 function unhide(options, unidade){
     for (let i = 0; i < options.length ; i++){
-        if(options[i].dataset.unidade == unidade){
+        let unidade_to_test = options[i].dataset.unidade.split("|");
+        let hidden = true;
+
+        for (let a = 0; a<unidade_to_test.length; a++){
+            let test = unidade_to_test[a].replace(/\s/g, '');
+            if(test != '' && test == unidade){
+                hidden = false;
+            }
+        }
+        if (hidden != true){
             options[i].style.display = 'block';
         } else {
             options[i].style.display = 'none';
-
         }
     }
 }
