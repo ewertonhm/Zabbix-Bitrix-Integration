@@ -1,0 +1,28 @@
+{
+    "name" : "Zabbix-Bitrix Integration",
+    "version": "0.0.4",
+    "manifest_version": 2,
+    "description" : "Insere funções extras ao zabbix",
+    
+    "options_ui": {
+        "page": "options.html",
+        "open_in_tab": false,
+        "browser_style": true,
+        "chrome_style": true
+    },
+
+    "content_scripts" : [
+        {
+            "js" : ["init.js"],
+            "css": ["styles.css"],
+            "matches" : ["*://zabbix.monitor.redeunifique.com.br/zabbix.php?action=problem.view*"]
+        }
+    ],
+    "permissions": [
+        "storage",
+        "webRequest",
+        {
+            "cross-domain-content": ["http://192.168.65.145"]
+        }
+    ]
+}
